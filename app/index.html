@@ -12,24 +12,38 @@
 <div class="app">
   <!-- Sidebar -->
   <aside class="sidebar">
-    <a href="../index.html" class="sidebar-logo">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="4" fill="#4A7C59"/>
-        <circle cx="12" cy="12" r="8" stroke="#4A7C59" stroke-width="1" opacity="0.4"/>
-        <circle cx="12" cy="12" r="11" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/>
-      </svg>
-      Daily Tree
-    </a>
-    <div class="sidebar-label">Years</div>
+    <div class="sidebar-top">
+      <a href="../index.html" class="sidebar-logo">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="4" fill="#4A7C59"/>
+          <circle cx="12" cy="12" r="8" stroke="#4A7C59" stroke-width="1" opacity="0.4"/>
+          <circle cx="12" cy="12" r="11" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/>
+        </svg>
+        Daily Tree
+      </a>
+      <button class="lang-toggle" id="lang-toggle" title="Switch language">EN / 中文</button>
+    </div>
+    <div class="sidebar-label" data-i18n="years">Years</div>
     <ul class="year-list" id="year-list">
       <!-- populated by JS -->
     </ul>
-    <p class="sidebar-hint">Click a year to view entries.<br>Click + to add today's moment.</p>
+    <p class="sidebar-hint" data-i18n="sidebarHint">Click a year to read. Click + to record today.</p>
   </aside>
 
   <!-- Main Forest Canvas -->
   <main class="main-canvas">
     <canvas id="forest-canvas"></canvas>
+
+    <!-- Empty forest hint -->
+    <div class="forest-hint" id="forest-hint">
+      <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="6" fill="#4A7C59" opacity="0.5"/>
+        <circle cx="24" cy="24" r="14" stroke="#4A7C59" stroke-width="1" opacity="0.2"/>
+        <circle cx="24" cy="24" r="22" stroke="#4A7C59" stroke-width="0.5" opacity="0.1"/>
+      </svg>
+      <p class="forest-hint-title" data-i18n="emptyForestTitle">Start your forest</p>
+      <p class="forest-hint-desc" data-i18n="emptyForestDesc">Click + to write your first entry. A tree will grow from nothing.</p>
+    </div>
   </main>
 </div>
 
@@ -53,17 +67,21 @@
         </svg>
       </button>
     </div>
-    <label class="modal-label" for="entry-text">What matters most today?</label>
+    <label class="modal-label" for="entry-text" data-i18n="whatMattersToday">What matters most today?</label>
     <textarea
       class="modal-textarea"
       id="entry-text"
+      data-i18n-placeholder="placeholder"
       placeholder="One moment. One thought. One thing worth remembering..."
       maxlength="500"
     ></textarea>
     <div class="modal-footer">
-      <span class="modal-hint"><span id="char-count">0</span> / 500 · Ctrl+Enter to save</span>
+      <div class="modal-footer-left">
+        <span class="char-count"><span id="char-count">0</span> <span data-i18n="charCount">/ 500</span></span>
+        <span class="modal-hint" data-i18n="ctrlEnter">Ctrl+Enter to save</span>
+      </div>
       <button class="modal-submit" id="entry-submit">
-        Save Entry
+        <span data-i18n="saveEntry">Save</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="20 6 9 17 4 12"/>
         </svg>
@@ -88,7 +106,27 @@
   </ul>
 </div>
 
-<!-- Three.js -->
+<!-- Guide Overlay -->
+<div class="guide-overlay" id="guide-overlay">
+  <div class="guide-card">
+    <div class="guide-header">
+      <span class="guide-eyebrow">Daily Tree</span>
+      <span class="guide-num" id="guide-num">01</span>
+    </div>
+    <div class="guide-steps">
+      <div class="guide-dot active" data-step="0"></div>
+      <div class="guide-dot" data-step="1"></div>
+      <div class="guide-dot" data-step="2"></div>
+    </div>
+    <h2 class="guide-step-title" id="guide-step-title">One moment a day</h2>
+    <p class="guide-step-desc" id="guide-step-desc">Click the + button to record the single most important thing that happened today.</p>
+    <div class="guide-actions">
+      <button class="guide-skip" id="guide-skip">Skip</button>
+      <button class="guide-next" id="guide-next">Try it now</button>
+    </div>
+  </div>
+</div>
+
 <script type="module" src="app.js"></script>
 </body>
 </html>

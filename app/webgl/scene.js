@@ -124,6 +124,33 @@ export class ForestScene {
     this.renderer.render(this.scene, this.camera);
   }
 
+  growTree(tree) {
+    if (!tree || !tree.group) return;
+    // Animate trunk growing taller
+    const trunk = tree.group.children[0];
+    if (!trunk) return;
+    const startHeight = tree.group.userData.trunkHeight;
+    const targetHeight = startHeight + 6;
+    let progress = 0;
+    const animate = () => {
+      progress += 0.04;
+      if (progress >= 1) {
+        tree.group.userData.trunkHeight = targetHeight;
+        return;
+      }
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const newH = startHeight + (targetHeight - startHeight) * eased;
+      trunk.scale.y = 1 + (newH / startHeight - 1) * eased;
+      trunk.position.y = newH / 2;
+      // Move circles up
+      tree.circles.forEach((c, i) => {
+        c.position.y += (targetHeight - startHeight) * 0.03;
+      });
+      requestAnimationFrame(animate);
+    };
+    animate();
+  }
+
   addTree(Tree, year, entryCount, options = {}) {
     const tree = new Tree(year, entryCount, { THREE, ...options });
     tree.group.position.x = (year - this._currentYear()) * 50;
