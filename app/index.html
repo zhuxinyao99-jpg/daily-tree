@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Tree — Watch your life grow in rings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <a href="../index.html" class="sidebar-logo">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="4" fill="#4A7C59"/>
+        <circle cx="12" cy="12" r="8" stroke="#4A7C59" stroke-width="1" opacity="0.4"/>
+        <circle cx="12" cy="12" r="11" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/>
+      </svg>
+      Daily Tree
+    </a>
+    <div class="sidebar-label">Years</div>
+    <ul class="year-list" id="year-list">
+      <!-- populated by JS -->
+    </ul>
+    <p class="sidebar-hint">Click a year to view entries.<br>Click + to add today's moment.</p>
+  </aside>
+
+  <!-- Main Forest Canvas -->
+  <main class="main-canvas">
+    <canvas id="forest-canvas"></canvas>
+  </main>
+</div>
+
+<!-- FAB -->
+<button class="fab" id="fab-new" title="New entry (Ctrl+N)">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+    <line x1="12" y1="5" x2="12" y2="19"/>
+    <line x1="5" y1="12" x2="19" y2="12"/>
+  </svg>
+</button>
+
+<!-- Entry Modal -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="modal-year" id="modal-year">2025</span>
+      <button class="modal-close" id="modal-close" title="Close (Esc)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <label class="modal-label" for="entry-text">What matters most today?</label>
+    <textarea
+      class="modal-textarea"
+      id="entry-text"
+      placeholder="One moment. One thought. One thing worth remembering..."
+      maxlength="500"
+    ></textarea>
+    <div class="modal-footer">
+      <span class="modal-hint"><span id="char-count">0</span> / 500 · Ctrl+Enter to save</span>
+      <button class="modal-submit" id="entry-submit">
+        Save Entry
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Year Detail Panel -->
+<div class="year-panel" id="year-panel">
+  <div class="panel-header">
+    <span class="panel-title" id="panel-title">2025</span>
+    <button class="panel-close" id="panel-close" title="Close">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+  </div>
+  <ul class="panel-entries" id="panel-entries">
+    <!-- populated by JS -->
+  </ul>
+</div>
+
+<!-- Three.js -->
+<script type="module" src="app.js"></script>
+</body>
+</html>

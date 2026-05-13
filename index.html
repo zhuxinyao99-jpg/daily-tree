@@ -19,16 +19,8 @@
       --whisper-border-strong: rgba(255,255,255,0.1);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
     body {
       font-family: 'Outfit', system-ui, sans-serif;
       background: var(--void-black);
@@ -37,18 +29,15 @@
       overflow-x: hidden;
     }
 
-    /* Navigation */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 100;
       padding: 1.25rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(10, 10, 11, 0.8);
+      background: rgba(10,10,11,0.8);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--whisper-border);
     }
@@ -63,30 +52,21 @@
       color: var(--mist-white);
       text-decoration: none;
     }
-
-    .nav-logo svg {
-      width: 24px;
-      height: 24px;
-    }
+    .nav-logo svg { width: 24px; height: 24px; }
 
     .nav-links {
       display: flex;
       align-items: center;
       gap: 2rem;
     }
-
     .nav-links a {
       font-size: 0.875rem;
       font-weight: 500;
-      color: rgba(232, 232, 236, 0.6);
+      color: rgba(232,232,236,0.6);
       text-decoration: none;
-      transition: color 0.15s ease;
-      letter-spacing: 0.01em;
+      transition: color 0.15s;
     }
-
-    .nav-links a:hover {
-      color: var(--mist-white);
-    }
+    .nav-links a:hover { color: var(--mist-white); }
 
     .nav-cta {
       display: inline-flex;
@@ -99,47 +79,27 @@
       font-weight: 600;
       border-radius: 9999px;
       text-decoration: none;
-      transition: background 0.15s ease, transform 0.15s ease;
+      transition: all 0.15s;
     }
-
-    .nav-cta:hover {
-      background: var(--living-glow);
-      transform: translateY(-1px);
-    }
+    .nav-cta:hover { background: var(--living-glow); transform: translateY(-1px); }
 
     /* Hero */
     .hero {
       min-height: 100dvh;
-      display: flex;
-      align-items: center;
-      padding: 8rem 2rem 6rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       position: relative;
       overflow: hidden;
     }
 
-    .hero::before {
-      content: '';
-      position: absolute;
-      top: -200px;
-      right: -200px;
-      width: 800px;
-      height: 800px;
-      background: radial-gradient(circle, rgba(74, 124, 89, 0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-
-    .hero-inner {
-      max-width: 980px;
-      margin: 0 auto;
-      width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
     .hero-content {
-      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 8rem 2rem 6rem;
+      padding-left: max(2rem, calc((100vw - 980px) / 2 + 2rem));
+      position: relative;
+      z-index: 2;
     }
 
     .hero-eyebrow {
@@ -154,7 +114,6 @@
       margin-bottom: 1.5rem;
       font-family: 'JetBrains Mono', monospace;
     }
-
     .hero-eyebrow::before {
       content: '';
       display: block;
@@ -168,14 +127,13 @@
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.07;
-      color: var(--mist-white);
       margin-bottom: 1.5rem;
     }
 
     .hero-sub {
-      font-size: 1.125rem;
+      font-size: 1.0625rem;
       font-weight: 400;
-      color: rgba(232, 232, 236, 0.6);
+      color: rgba(232,232,236,0.55);
       line-height: 1.7;
       margin-bottom: 2.5rem;
       max-width: 440px;
@@ -185,6 +143,7 @@
       display: flex;
       align-items: center;
       gap: 1rem;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
@@ -198,19 +157,11 @@
       font-weight: 600;
       border-radius: 9999px;
       text-decoration: none;
-      transition: background 0.15s ease, transform 0.15s ease;
+      transition: all 0.15s;
       border: none;
       cursor: pointer;
     }
-
-    .btn-primary:hover {
-      background: var(--living-glow);
-      transform: translateY(-1px);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-    }
+    .btn-primary:hover { background: var(--living-glow); transform: translateY(-1px); }
 
     .btn-ghost {
       display: inline-flex;
@@ -218,27 +169,22 @@
       gap: 0.5rem;
       padding: 0.75rem 1.25rem;
       background: transparent;
-      color: rgba(232, 232, 236, 0.7);
+      color: rgba(232,232,236,0.65);
       font-size: 0.9375rem;
       font-weight: 500;
       border-radius: 9999px;
       text-decoration: none;
       border: 1px solid var(--whisper-border-strong);
-      transition: all 0.15s ease;
+      transition: all 0.15s;
     }
+    .btn-ghost:hover { color: var(--mist-white); border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); }
 
-    .btn-ghost:hover {
-      color: var(--mist-white);
-      border-color: rgba(255,255,255,0.2);
-      background: rgba(255,255,255,0.04);
-    }
-
-    /* Hero Visual — Animated Tree Ring */
     .hero-visual {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
+      overflow: hidden;
     }
 
     .tree-ring-container {
@@ -257,37 +203,10 @@
       animation: breathe-ring 4s ease-in-out infinite;
     }
 
-    .ring-1 {
-      width: 100px;
-      height: 100px;
-      border-color: var(--canopy-green);
-      opacity: 0.9;
-      animation-delay: 0s;
-    }
-
-    .ring-2 {
-      width: 170px;
-      height: 170px;
-      border-color: var(--living-glow);
-      opacity: 0.7;
-      animation-delay: 0.5s;
-    }
-
-    .ring-3 {
-      width: 250px;
-      height: 250px;
-      border-color: var(--root-earth);
-      opacity: 0.5;
-      animation-delay: 1s;
-    }
-
-    .ring-4 {
-      width: 340px;
-      height: 340px;
-      border-color: rgba(74, 124, 89, 0.3);
-      opacity: 0.35;
-      animation-delay: 1.5s;
-    }
+    .ring-1 { width: 100px; height: 100px; border-color: var(--canopy-green); opacity: 0.9; animation-delay: 0s; }
+    .ring-2 { width: 170px; height: 170px; border-color: var(--living-glow); opacity: 0.7; animation-delay: 0.5s; }
+    .ring-3 { width: 250px; height: 250px; border-color: var(--root-earth); opacity: 0.5; animation-delay: 1s; }
+    .ring-4 { width: 340px; height: 340px; border-color: rgba(74,124,89,0.3); opacity: 0.35; animation-delay: 1.5s; }
 
     .tree-dot {
       position: absolute;
@@ -298,7 +217,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 20px rgba(107, 155, 122, 0.6);
+      box-shadow: 0 0 20px rgba(107,155,122,0.6);
       animation: pulse-dot 3s ease-in-out infinite;
     }
 
@@ -306,36 +225,20 @@
       position: absolute;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.625rem;
-      color: rgba(232, 232, 236, 0.3);
+      color: rgba(232,232,236,0.3);
       letter-spacing: 0.05em;
     }
-
-    .ring-label-2025 {
-      top: calc(50% - 50px - 1.5rem);
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .ring-label-2024 {
-      top: calc(50% - 85px - 1.5rem);
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .ring-label-2023 {
-      top: calc(50% - 125px - 1.5rem);
-      left: 50%;
-      transform: translateX(-50%);
-    }
+    .ring-label-2025 { top: calc(50% - 50px - 1.5rem); left: 50%; transform: translateX(-50%); }
+    .ring-label-2024 { top: calc(50% - 85px - 1.5rem); left: 50%; transform: translateX(-50%); }
+    .ring-label-2023 { top: calc(50% - 125px - 1.5rem); left: 50%; transform: translateX(-50%); }
 
     @keyframes breathe-ring {
-      0%, 100% { transform: translate(-50%, -50%) scale(0.97); }
-      50% { transform: translate(-50%, -50%) scale(1.03); }
+      0%, 100% { transform: translate(-50%,-50%) scale(0.97); }
+      50% { transform: translate(-50%,-50%) scale(1.03); }
     }
-
     @keyframes pulse-dot {
-      0%, 100% { box-shadow: 0 0 20px rgba(107, 155, 122, 0.6); }
-      50% { box-shadow: 0 0 40px rgba(107, 155, 122, 0.9), 0 0 60px rgba(74, 124, 89, 0.4); }
+      0%, 100% { box-shadow: 0 0 20px rgba(107,155,122,0.6); }
+      50% { box-shadow: 0 0 40px rgba(107,155,122,0.9), 0 0 60px rgba(74,124,89,0.4); }
     }
 
     /* Features */
@@ -343,12 +246,7 @@
       padding: 6rem 2rem;
       border-top: 1px solid var(--whisper-border);
     }
-
-    .features-inner {
-      max-width: 980px;
-      margin: 0 auto;
-    }
-
+    .features-inner { max-width: 980px; margin: 0 auto; }
     .section-label {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.6875rem;
@@ -364,51 +262,21 @@
       grid-template-columns: 1.2fr 1fr 0.8fr;
       gap: 2rem;
     }
-
     .feature-card {
       padding: 2rem;
       background: var(--forest-floor);
       border: 1px solid var(--whisper-border);
       border-radius: 1.25rem;
-      transition: border-color 0.2s ease;
+      transition: border-color 0.2s;
     }
-
-    .feature-card:hover {
-      border-color: rgba(255,255,255,0.12);
-    }
-
-    .feature-icon {
-      width: 40px;
-      height: 40px;
-      margin-bottom: 1.25rem;
-      color: var(--canopy-green);
-    }
-
-    .feature-card h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      margin-bottom: 0.625rem;
-      color: var(--mist-white);
-    }
-
-    .feature-card p {
-      font-size: 0.875rem;
-      color: rgba(232, 232, 236, 0.5);
-      line-height: 1.65;
-    }
+    .feature-card:hover { border-color: rgba(255,255,255,0.12); }
+    .feature-icon { width: 40px; height: 40px; margin-bottom: 1.25rem; color: var(--canopy-green); }
+    .feature-card h3 { font-size: 1rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.625rem; }
+    .feature-card p { font-size: 0.875rem; color: rgba(232,232,236,0.5); line-height: 1.65; }
 
     /* Demo Section */
-    .demo-section {
-      padding: 6rem 2rem;
-      border-top: 1px solid var(--whisper-border);
-    }
-
-    .demo-inner {
-      max-width: 980px;
-      margin: 0 auto;
-    }
-
+    .demo-section { padding: 6rem 2rem; border-top: 1px solid var(--whisper-border); }
+    .demo-inner { max-width: 980px; margin: 0 auto; }
     .demo-header {
       display: flex;
       align-items: flex-end;
@@ -416,21 +284,8 @@
       margin-bottom: 3rem;
       gap: 2rem;
     }
-
-    .demo-header h2 {
-      font-size: clamp(1.75rem, 3vw, 2.5rem);
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      line-height: 1.15;
-      max-width: 480px;
-    }
-
-    .demo-header p {
-      font-size: 0.9375rem;
-      color: rgba(232, 232, 236, 0.5);
-      max-width: 360px;
-      line-height: 1.65;
-    }
+    .demo-header h2 { font-size: clamp(1.75rem,3vw,2.5rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; max-width: 480px; }
+    .demo-header p { font-size: 0.9375rem; color: rgba(232,232,236,0.5); max-width: 360px; line-height: 1.65; }
 
     .demo-window {
       background: var(--forest-floor);
@@ -438,7 +293,6 @@
       border-radius: 1rem;
       overflow: hidden;
     }
-
     .demo-titlebar {
       display: flex;
       align-items: center;
@@ -446,51 +300,35 @@
       padding: 0.875rem 1.25rem;
       border-bottom: 1px solid var(--whisper-border);
     }
-
-    .demo-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.1);
-    }
-
+    .demo-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); }
     .demo-dot.red { background: #E07A4A; opacity: 0.7; }
-    .demo-dot.yellow { background: #C4A77D; opacity: 0.7; }
+    .demo-dot.yellow { background: var(--root-earth); opacity: 0.7; }
     .demo-dot.green { background: var(--canopy-green); opacity: 0.7; }
-
-    .demo-url {
-      flex: 1;
-      text-align: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      color: rgba(232, 232, 236, 0.3);
-    }
+    .demo-url { flex: 1; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: rgba(232,232,236,0.3); }
 
     .demo-content {
       height: 420px;
       background: var(--void-black);
-      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
     }
 
-    /* Mini tree visualization in demo */
     .mini-forest {
       display: flex;
       align-items: flex-end;
       gap: 3rem;
       padding: 3rem;
     }
-
     .mini-tree {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-      animation: tree-grow 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+      animation: tree-grow 0.6s cubic-bezier(0.34,1.56,0.64,1) forwards;
+      opacity: 0;
     }
-
     .mini-tree:nth-child(1) { animation-delay: 0.1s; }
     .mini-tree:nth-child(2) { animation-delay: 0.25s; }
     .mini-tree:nth-child(3) { animation-delay: 0.4s; }
@@ -500,20 +338,12 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .mini-trunk {
-      background: var(--bark-brown);
-      border-radius: 2px;
-      width: 4px;
-    }
-
+    .mini-trunk { background: var(--bark-brown); border-radius: 2px; width: 4px; }
     .mini-tree:nth-child(1) .mini-trunk { height: 60px; }
     .mini-tree:nth-child(2) .mini-trunk { height: 40px; }
     .mini-tree:nth-child(3) .mini-trunk { height: 80px; }
 
-    .mini-crown {
-      position: relative;
-    }
-
+    .mini-crown { position: relative; }
     .mini-circle {
       position: absolute;
       border-radius: 50%;
@@ -521,72 +351,46 @@
       opacity: 0.7;
       animation: mini-breathe 4s ease-in-out infinite;
     }
-
     .mini-tree:nth-child(1) .mini-circle:nth-child(1) { width: 50px; height: 50px; top: -25px; left: -23px; animation-delay: 0s; }
     .mini-tree:nth-child(1) .mini-circle:nth-child(2) { width: 35px; height: 35px; top: -20px; left: -5px; animation-delay: 0.7s; }
     .mini-tree:nth-child(1) .mini-circle:nth-child(3) { width: 28px; height: 28px; top: -12px; left: -20px; animation-delay: 1.4s; }
-
     .mini-tree:nth-child(2) .mini-circle:nth-child(1) { width: 40px; height: 40px; top: -20px; left: -18px; animation-delay: 0.2s; }
     .mini-tree:nth-child(2) .mini-circle:nth-child(2) { width: 30px; height: 30px; top: -15px; left: 0px; animation-delay: 0.9s; }
-
     .mini-tree:nth-child(3) .mini-circle:nth-child(1) { width: 65px; height: 65px; top: -32px; left: -30px; animation-delay: 0s; }
     .mini-tree:nth-child(3) .mini-circle:nth-child(2) { width: 45px; height: 45px; top: -22px; left: -10px; animation-delay: 0.6s; }
     .mini-tree:nth-child(3) .mini-circle:nth-child(3) { width: 35px; height: 35px; top: -18px; left: -28px; animation-delay: 1.2s; }
 
-    .mini-year {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6875rem;
-      color: rgba(232, 232, 236, 0.35);
-      letter-spacing: 0.08em;
-    }
-
+    .mini-year { font-family: 'JetBrains Mono', monospace; font-size: 0.6875rem; color: rgba(232,232,236,0.35); letter-spacing: 0.08em; }
     @keyframes mini-breathe {
       0%, 100% { transform: scale(0.96); opacity: 0.65; }
       50% { transform: scale(1.04); opacity: 0.8; }
     }
 
-    /* Tech Stack */
-    .tech-stack {
-      padding: 4rem 2rem;
+    /* Try it section */
+    .try-section {
+      padding: 6rem 2rem;
       border-top: 1px solid var(--whisper-border);
-    }
-
-    .tech-inner {
-      max-width: 980px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
       text-align: center;
-      gap: 2rem;
     }
+    .try-inner { max-width: 560px; margin: 0 auto; }
+    .try-inner h2 { font-size: clamp(1.75rem,3vw,2.5rem); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 1rem; }
+    .try-inner p { font-size: 1rem; color: rgba(232,232,236,0.5); margin-bottom: 2rem; line-height: 1.7; }
 
-    .tech-inner h2 {
-      font-size: 1.25rem;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--mist-white);
-    }
-
-    .tech-badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      justify-content: center;
-    }
-
+    /* Tech Stack */
+    .tech-stack { padding: 4rem 2rem; border-top: 1px solid var(--whisper-border); }
+    .tech-inner { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2rem; }
+    .tech-inner h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
+    .tech-badges { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
     .tech-badge {
       display: inline-flex;
-      align-items: center;
       padding: 0.375rem 0.875rem;
       background: var(--forest-floor);
       border: 1px solid var(--whisper-border);
       border-radius: 9999px;
       font-size: 0.8125rem;
       font-weight: 500;
-      color: rgba(232, 232, 236, 0.6);
+      color: rgba(232,232,236,0.6);
       font-family: 'JetBrains Mono', monospace;
-      letter-spacing: 0.02em;
     }
 
     /* Footer */
@@ -599,147 +403,80 @@
       max-width: 980px;
       margin: 0 auto;
     }
+    footer p { font-size: 0.8125rem; color: rgba(232,232,236,0.35); }
+    footer a { color: rgba(232,232,236,0.5); text-decoration: none; transition: color 0.15s; }
+    footer a:hover { color: var(--mist-white); }
 
-    footer p {
-      font-size: 0.8125rem;
-      color: rgba(232, 232, 236, 0.35);
-    }
-
-    footer a {
-      color: rgba(232, 232, 236, 0.5);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    footer a:hover {
-      color: var(--mist-white);
-    }
-
-    /* Responsive */
     @media (max-width: 768px) {
-      .hero-inner {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-      }
-
-      .hero-visual {
-        order: -1;
-      }
-
-      .tree-ring-container {
-        width: 280px;
-        height: 280px;
-      }
-
-      .features-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-      }
-
-      .demo-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      nav {
-        padding: 1rem 1.25rem;
-      }
-
-      .nav-links {
-        gap: 1.25rem;
-      }
-
-      .nav-links a:not(.nav-cta) {
-        display: none;
-      }
-
-      footer {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
+      .hero { grid-template-columns: 1fr; }
+      .hero-visual { order: -1; height: 280px; }
+      .tree-ring-container { width: 280px; height: 280px; }
+      .features-grid { grid-template-columns: 1fr; gap: 1rem; }
+      .demo-header { flex-direction: column; align-items: flex-start; }
+      nav { padding: 1rem 1.25rem; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Navigation -->
   <nav>
     <a href="#" class="nav-logo">
-      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="4" fill="#4A7C59"/>
-        <circle cx="12" cy="12" r="8" stroke="#4A7C59" stroke-width="1" opacity="0.4"/>
-        <circle cx="12" cy="12" r="11" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" fill="#4A7C59"/><circle cx="12" cy="12" r="8" stroke="#4A7C59" stroke-width="1" opacity="0.4"/><circle cx="12" cy="12" r="11" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/></svg>
       Daily Tree
     </a>
     <div class="nav-links">
       <a href="#features">Features</a>
       <a href="#demo">Demo</a>
-      <a href="https://github.com" target="_blank">GitHub</a>
-      <a href="#" class="nav-cta">Start Planting</a>
+      <a href="https://github.com/zhuxinyao99-jpg/daily-tree" target="_blank">GitHub</a>
+      <a href="app/" class="nav-cta">Open App</a>
     </div>
   </nav>
 
-  <!-- Hero -->
   <section class="hero">
-    <div class="hero-inner">
-      <div class="hero-content">
-        <div class="hero-eyebrow">A personal forest of your life</div>
-        <h1>Watch your life grow in rings.</h1>
-        <p class="hero-sub">Every day you write an entry, a tree adds a ring. Over years, a forest forms — a living map of your time, your thoughts, and your growth.</p>
-        <div class="hero-actions">
-          <a href="#" class="btn-primary">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-              <path d="M12 5v14M5 12l7 7 7-7"/>
-            </svg>
-            Start Your Forest
-          </a>
-          <a href="#demo" class="btn-ghost">See it in action</a>
-        </div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">A personal forest of your life</div>
+      <h1>Watch your life grow in rings.</h1>
+      <p class="hero-sub">Every day you write an entry, a tree adds a ring. Over years, a forest forms — a living map of your time, your thoughts, and your growth.</p>
+      <div class="hero-actions">
+        <a href="app/" class="btn-primary">
+          Start Your Forest
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#demo" class="btn-ghost">See it in action</a>
       </div>
-      <div class="hero-visual">
-        <div class="tree-ring-container">
-          <span class="ring-label ring-label-2025">2025</span>
-          <span class="ring-label ring-label-2024">2024</span>
-          <span class="ring-label ring-label-2023">2023</span>
-          <div class="ring ring-1"></div>
-          <div class="ring ring-2"></div>
-          <div class="ring ring-3"></div>
-          <div class="ring ring-4"></div>
-          <div class="tree-dot"></div>
-        </div>
+    </div>
+    <div class="hero-visual">
+      <div class="tree-ring-container">
+        <span class="ring-label ring-label-2025">2025</span>
+        <span class="ring-label ring-label-2024">2024</span>
+        <span class="ring-label ring-label-2023">2023</span>
+        <div class="ring ring-1"></div>
+        <div class="ring ring-2"></div>
+        <div class="ring ring-3"></div>
+        <div class="ring ring-4"></div>
+        <div class="tree-dot"></div>
       </div>
     </div>
   </section>
 
-  <!-- Features -->
   <section class="features" id="features">
     <div class="features-inner">
       <div class="section-label">What makes it different</div>
       <div class="features-grid">
         <div class="feature-card">
-          <svg class="feature-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/>
-            <circle cx="20" cy="20" r="7" stroke="currentColor" stroke-width="1" opacity="0.6"/>
-            <circle cx="20" cy="20" r="3" fill="currentColor"/>
-          </svg>
+          <svg class="feature-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="7" stroke="currentColor" stroke-width="1" opacity="0.6"/><circle cx="20" cy="20" r="3" fill="currentColor"/></svg>
           <h3>Time as rings</h3>
           <p>Each year is a tree. Each entry adds growth. The older the tree, the more you can see the shape of that time in your life.</p>
         </div>
         <div class="feature-card">
-          <svg class="feature-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="8" y="8" width="24" height="24" rx="4" stroke="currentColor" stroke-width="1.5"/>
-            <path d="M14 20h12M20 14v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          </svg>
+          <svg class="feature-icon" viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M14 20h12M20 14v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           <h3>365 moments</h3>
           <p>One entry per day maximum. It forces you to find the single most important thing worth remembering.</p>
         </div>
         <div class="feature-card">
-          <svg class="feature-icon" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 8v4M20 28v4M8 20h4M28 20h4M11 11l2.8 2.8M26.2 26.2L29 29M29 11l-2.8 2.8M13.8 26.2L11 29" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <circle cx="20" cy="20" r="6" stroke="currentColor" stroke-width="1.5"/>
-          </svg>
+          <svg class="feature-icon" viewBox="0 0 40 40" fill="none"><path d="M20 8v4M20 28v4M8 20h4M28 20h4M11 11l2.8 2.8M26.2 26.2L29 29M29 11l-2.8 2.8M13.8 26.2L11 29" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="20" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
           <h3>Never forget a day</h3>
           <p>Sleeping trees remind you which years you were present. Archived years hold their shape forever, even when dormant.</p>
         </div>
@@ -747,11 +484,13 @@
     </div>
   </section>
 
-  <!-- Demo -->
   <section class="demo-section" id="demo">
     <div class="demo-inner">
       <div class="demo-header">
-        <h2>A forest is personal by nature</h2>
+        <div>
+          <div class="section-label">The app</div>
+          <h2>A forest is personal by nature</h2>
+        </div>
         <p>No social feed. No shares. Just you and your growing archive. Every tree tells the story of a year.</p>
       </div>
       <div class="demo-window">
@@ -759,33 +498,22 @@
           <div class="demo-dot red"></div>
           <div class="demo-dot yellow"></div>
           <div class="demo-dot green"></div>
-          <div class="demo-url">dailytree.app</div>
+          <div class="demo-url">dailytree.app / app</div>
         </div>
         <div class="demo-content">
           <div class="mini-forest">
             <div class="mini-tree">
-              <div class="mini-crown">
-                <div class="mini-circle"></div>
-                <div class="mini-circle"></div>
-                <div class="mini-circle"></div>
-              </div>
+              <div class="mini-crown"><div class="mini-circle"></div><div class="mini-circle"></div><div class="mini-circle"></div></div>
               <div class="mini-trunk"></div>
               <span class="mini-year">2023</span>
             </div>
             <div class="mini-tree">
-              <div class="mini-crown">
-                <div class="mini-circle"></div>
-                <div class="mini-circle"></div>
-              </div>
+              <div class="mini-crown"><div class="mini-circle"></div><div class="mini-circle"></div></div>
               <div class="mini-trunk"></div>
               <span class="mini-year">2024</span>
             </div>
             <div class="mini-tree">
-              <div class="mini-crown">
-                <div class="mini-circle"></div>
-                <div class="mini-circle"></div>
-                <div class="mini-circle"></div>
-              </div>
+              <div class="mini-crown"><div class="mini-circle"></div><div class="mini-circle"></div><div class="mini-circle"></div></div>
               <div class="mini-trunk"></div>
               <span class="mini-year">2025</span>
             </div>
@@ -795,25 +523,34 @@
     </div>
   </section>
 
-  <!-- Tech Stack -->
+  <section class="try-section">
+    <div class="try-inner">
+      <h2>Ready to plant your forest?</h2>
+      <p>Your data stays in your browser. Nothing leaves your device. Start today — it is already 2025.</p>
+      <a href="app/" class="btn-primary" style="display: inline-flex;">
+        Open Daily Tree
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+  </section>
+
   <section class="tech-stack">
     <div class="tech-inner">
       <h2>Built with</h2>
       <div class="tech-badges">
         <span class="tech-badge">Three.js</span>
+        <span class="tech-badge">WebGL</span>
         <span class="tech-badge">Vanilla JS</span>
         <span class="tech-badge">LocalStorage</span>
-        <span class="tech-badge">WebGL</span>
         <span class="tech-badge">CSS Animations</span>
         <span class="tech-badge">No backend</span>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
   <footer>
     <p>Daily Tree — Open source. Your data stays yours.</p>
-    <p><a href="https://github.com" target="_blank">View on GitHub</a> · <a href="#">MIT License</a></p>
+    <p><a href="https://github.com/zhuxinyao99-jpg/daily-tree" target="_blank">GitHub</a> · <a href="app/">Open App</a></p>
   </footer>
 
 </body>
