@@ -1,156 +1,214 @@
-// Tree generation and animation for Daily Tree
-// THREE must be available globally as `THREE` before this module loads.
+// Daily Tree V2 — Organic leaf-cluster tree
+// THREE must be available globally before this module loads.
+
+// Seeded pseudo-random (LCG) — deterministic per year+index
+function seededRng(seed) {
+  let s = Math.abs(seed) || 1;
+  return function () {
+    s = (s * 16807) % 2147483647;
+    return (s - 1) / 2147483646;
+  };
+}
+
+function getSeason() {
+  const m = new Date().getMonth(); // 0-11
+  if (m >= 2 && m <= 4) return 'spring';
+  if (m >= 5 && m <= 7) return 'summer';
+  if (m >= 8 && m <= 10) return 'autumn';
+  return 'winter';
+}
 
 export class Tree {
   constructor(year, entryCount, options) {
-    this.year = year;
+    this.year       = year;
     this.entryCount = entryCount || 0;
-    this.THREE = options.THREE || window.THREE;
+    this.THREE      = options.THREE || window.THREE;
     this.lastEntryDate = options.lastEntryDate || null;
+    this.isCurrentYear = (year === new Date().getFullYear());
 
-    this.group = new this.THREE.Group();
-    this.group.userData.trunkHeight = 20;
-    this.circles = [];
-    this.leaves = [];
+    this.group  = new this.THREE.Group();
+    this.blobs  = [];     // leaf blob meshes
+    this.glowMesh = null; // soft glow sphere
 
     this._build();
   }
 
-  _build() {
-    this._buildTrunk();
-    this._buildCanopy();
-  }
+  // ── State ────────────────────────────────────────────────────────────────
 
-  _buildTrunk() {
-    var h = this._computeTrunkHeight();
-    this.group.userData.trunkHeight = h;
-
-    var geo = new this.THREE.CylinderGeometry(1.5, 2.5, h, 8);
-    var mat = new this.THREE.MeshStandardMaterial({
-      color: this._getTrunkColor(),
-      roughness: 0.9,
-      metalness: 0.0,
-    });
-    var trunk = new this.THREE.Mesh(geo, mat);
-    trunk.position.y = h / 2;
-    trunk.castShadow = true;
-    this.group.add(trunk);
-    this.trunk = trunk;
-  }
-
-  _buildCanopy() {
-    var entryCount = this.entryCount;
-    var maxCircles = Math.min(entryCount, 30);
-    var state = this._getTreeState();
-
-    for (var i = 0; i < maxCircles; i++) {
-      var ratio = (i + 1) / maxCircles;
-      var y = 8 + ratio * (this.group.userData.trunkHeight - 10);
-      var r = 6 + entryCount * 0.3 + ratio * 5;
-      var circle = this._makeCircle(r, state, ratio);
-      circle.position.y = y;
-      this.group.add(circle);
-      this.circles.push(circle);
-    }
-
-    if (entryCount > 0) {
-      var topY = this.group.userData.trunkHeight;
-      var numLeaves = Math.min(entryCount, 12);
-      for (var j = 0; j < numLeaves; j++) {
-        var leaf = this._makeLeaf(state, 3 + Math.random() * 3);
-        var angle = (j / numLeaves) * Math.PI * 2;
-        var spread = 4 + entryCount * 0.3;
-        leaf.position.set(
-          Math.cos(angle) * spread,
-          topY + Math.random() * 8,
-          Math.sin(angle) * spread
-        );
-        this.group.add(leaf);
-        this.leaves.push(leaf);
-      }
-    }
-  }
-
-  _makeCircle(radius, state, ratio) {
-    var geo = new this.THREE.CircleGeometry(radius, 32);
-    var color = this._getStateColor(state);
-    var mat = new this.THREE.MeshStandardMaterial({
-      color: color,
-      transparent: true,
-      opacity: this._getStateOpacity(state, ratio),
-      roughness: 0.7,
-      metalness: 0.1,
-      side: this.THREE.DoubleSide,
-    });
-    var mesh = new this.THREE.Mesh(geo, mat);
-    // Face upward (camera looks down from above at ~45deg)
-    mesh.rotation.x = Math.PI / 2;
-    mesh.userData.baseOpacity = mat.opacity;
-    return mesh;
-  }
-
-  _makeLeaf(state, size) {
-    var geo = new this.THREE.SphereGeometry(size || 3, 6, 6);
-    var mat = new this.THREE.MeshStandardMaterial({
-      color: this._getStateColor(state),
-      transparent: true,
-      opacity: this._getStateOpacity(state, 1),
-      roughness: 0.8,
-    });
-    var mesh = new this.THREE.Mesh(geo, mat);
-    mesh.userData.baseOpacity = mat.opacity;
-    return mesh;
-  }
-
-  _computeTrunkHeight() {
-    return Math.min(20 + this.entryCount * 3, 80);
-  }
-
-  _getTreeState() {
+  getState() {
     if (this.entryCount === 0) return 'empty';
-    var now = Date.now();
-    var msPerDay = 86400000;
-    var daysSince = (now - new Date(this.lastEntryDate).getTime()) / msPerDay;
+    const daysSince = (Date.now() - new Date(this.lastEntryDate)) / 86400000;
     if (daysSince <= 14) return 'living';
     if (daysSince <= 30) return 'dormant';
     return 'archived';
   }
 
-  _getStateColor(state) {
-    if (state === 'living') return 0x4A7C59;
-    if (state === 'dormant') return 0x3D4F5F;
-    if (state === 'archived') return 0x5C4A3A;
-    return 0x2A2A2A;
+  // ── Colors ───────────────────────────────────────────────────────────────
+
+  _leafColor(state) {
+    const season = this.isCurrentYear ? getSeason() : 'summer';
+    if (state === 'archived') return new this.THREE.Color(0x3D3020);
+    if (state === 'dormant')  return new this.THREE.Color(0x2E3D30);
+    // living — varies by season
+    if (season === 'spring')  return new this.THREE.Color(0x7DB88A);
+    if (season === 'summer')  return new this.THREE.Color(0x4A7C59);
+    if (season === 'autumn')  return new this.THREE.Color(0xB8863C);
+    if (season === 'winter')  return new this.THREE.Color(0x2A3530);
+    return new this.THREE.Color(0x4A7C59);
   }
 
-  _getTrunkColor() {
-    var s = this._getTreeState();
-    if (s === 'living') return 0x8B7355;
-    if (s === 'dormant') return 0x6B6050;
-    if (s === 'archived') return 0x4A3A2A;
-    return 0x3A2A1A;
+  _trunkColor(state) {
+    if (state === 'living')   return new this.THREE.Color(0x8B7355);
+    if (state === 'dormant')  return new this.THREE.Color(0x6B6050);
+    if (state === 'archived') return new this.THREE.Color(0x4A3A2A);
+    return new this.THREE.Color(0x3A2A1A);
   }
 
-  _getStateOpacity(state, ratio) {
-    if (state === 'living') return 0.75 - ratio * 0.2;
-    if (state === 'dormant') return 0.4 - ratio * 0.2;
-    if (state === 'archived') return 0.3 - ratio * 0.15;
-    return 0.15;
+  // ── Build ────────────────────────────────────────────────────────────────
+
+  _build() {
+    const state = this.getState();
+    this._buildTrunk(state);
+    this._buildRoots(state);
+    if (this.entryCount > 0 && state !== 'empty') {
+      this._buildCanopy(state);
+    }
+    if (state === 'living') {
+      this._buildGlow();
+    }
   }
+
+  _buildTrunk(state) {
+    const h = this._trunkHeight();
+    const geo = new this.THREE.CylinderGeometry(1.2, 2.2, h, 10, 1);
+    const mat = new this.THREE.MeshStandardMaterial({
+      color: this._trunkColor(state),
+      roughness: 0.95,
+      metalness: 0.0,
+    });
+    const trunk = new this.THREE.Mesh(geo, mat);
+    trunk.position.y = h / 2;
+    trunk.castShadow = true;
+    this.group.add(trunk);
+    this.trunk = trunk;
+    this.group.userData.trunkHeight = h;
+  }
+
+  _buildRoots(state) {
+    if (this.entryCount < 5) return;
+    const rng = seededRng(this.year * 7 + 1);
+    const rootMat = new this.THREE.MeshStandardMaterial({
+      color: this._trunkColor(state),
+      roughness: 0.98,
+    });
+    const numRoots = 3 + Math.floor(rng() * 2); // 3–4 roots
+    for (let i = 0; i < numRoots; i++) {
+      const angle = (i / numRoots) * Math.PI * 2 + rng() * 0.4;
+      const len   = 5 + rng() * 4;
+      const pts   = [
+        new this.THREE.Vector3(0, 1, 0),
+        new this.THREE.Vector3(Math.cos(angle) * len * 0.5, 0.4, Math.sin(angle) * len * 0.5),
+        new this.THREE.Vector3(Math.cos(angle) * len, 0, Math.sin(angle) * len),
+      ];
+      const curve  = new this.THREE.CatmullRomCurve3(pts);
+      const geo    = new this.THREE.TubeGeometry(curve, 8, 0.5, 5, false);
+      const mesh   = new this.THREE.Mesh(geo, rootMat);
+      this.group.add(mesh);
+    }
+  }
+
+  _buildCanopy(state) {
+    const h         = this._trunkHeight();
+    const count     = this._blobCount();
+    const rng       = seededRng(this.year * 13 + this.entryCount);
+    const leafColor = this._leafColor(state);
+    const opacity   = state === 'dormant' ? 0.4 : (state === 'archived' ? 0.25 : 0.75);
+
+    const crownY = h * 0.75;
+    const crownW = 8 + Math.min(this.entryCount, 60) * 0.35;
+    const crownH = 12 + Math.min(this.entryCount, 60) * 0.28;
+
+    for (let i = 0; i < count; i++) {
+      // Box-Muller for Gaussian distribution
+      const u  = rng(), v = rng();
+      const nx = Math.sqrt(-2 * Math.log(u + 0.001)) * Math.cos(2 * Math.PI * v);
+      const ny = Math.sqrt(-2 * Math.log(rng() + 0.001)) * Math.cos(2 * Math.PI * rng());
+      const nz = (rng() - 0.5) * 0.6;
+
+      const bx = nx * crownW * 0.4;
+      const by = crownY + Math.abs(ny) * crownH * 0.5 + ny * crownH * 0.2;
+      const bz = nz * crownW * 0.25;
+
+      const distFromCenter = Math.sqrt(nx * nx + ny * ny);
+      const size = (4 + rng() * 5) * (1 - distFromCenter * 0.15);
+
+      const geo = new this.THREE.SphereGeometry(Math.max(size, 2), 7, 6);
+      geo.scale(1 + rng() * 0.4, 0.7 + rng() * 0.5, 0.8 + rng() * 0.3);
+
+      const mat = new this.THREE.MeshStandardMaterial({
+        color: leafColor,
+        transparent: true,
+        opacity: opacity * (0.6 + rng() * 0.4),
+        roughness: 0.85,
+        metalness: 0.0,
+      });
+      const blob = new this.THREE.Mesh(geo, mat);
+      blob.position.set(bx, by, bz);
+      blob.userData.baseOpacity = mat.opacity;
+      blob.castShadow = true;
+      this.group.add(blob);
+      this.blobs.push(blob);
+    }
+  }
+
+  _buildGlow() {
+    const h      = this._trunkHeight();
+    const crownY = h * 0.75;
+    const geo = new this.THREE.SphereGeometry(this._crownRadius() * 0.6, 8, 8);
+    const mat = new this.THREE.MeshBasicMaterial({
+      color: 0x4A7C59,
+      transparent: true,
+      opacity: 0.06,
+    });
+    this.glowMesh = new this.THREE.Mesh(geo, mat);
+    this.glowMesh.position.y = crownY;
+    this.group.add(this.glowMesh);
+  }
+
+  // ── Geometry helpers ─────────────────────────────────────────────────────
+
+  _trunkHeight() {
+    return Math.min(18 + this.entryCount * 0.6, 60);
+  }
+
+  _blobCount() {
+    if (this.entryCount === 0) return 0;
+    return Math.min(4 + Math.floor(this.entryCount * 0.9), 60);
+  }
+
+  _crownRadius() {
+    return 8 + Math.min(this.entryCount, 60) * 0.35;
+  }
+
+  // ── Animation ────────────────────────────────────────────────────────────
 
   update(elapsed) {
-    var s = this._getTreeState();
-    if (s === 'living') {
-      var breathe = Math.sin(elapsed * 0.8 + this.year * 0.5) * 0.04;
-      this.circles.forEach(function(c, i) {
-        if (c.material) {
-          c.material.opacity = c.userData.baseOpacity + breathe * (1 - i / this.circles.length);
-        }
-      }, this);
-    } else if (s === 'dormant') {
-      var slow = Math.sin(elapsed * 0.3 + this.year * 0.3) * 0.015;
-      this.circles.forEach(function(c) {
-        if (c.material) c.material.opacity = c.userData.baseOpacity + slow;
+    const state = this.getState();
+    if (state === 'living') {
+      this.blobs.forEach((b, i) => {
+        const phase = Math.sin(elapsed * 0.5 + i * 0.3) * 0.008;
+        b.material.opacity = b.userData.baseOpacity + phase;
+      });
+      if (this.glowMesh) {
+        this.glowMesh.material.opacity = 0.06 + Math.sin(elapsed * 0.9) * 0.02;
+      }
+      if (this.trunk) {
+        this.trunk.rotation.z = Math.sin(elapsed * 0.4) * 0.01;
+      }
+    } else if (state === 'dormant') {
+      const slow = Math.sin(elapsed * 0.25) * 0.01;
+      this.blobs.forEach(b => {
+        b.material.opacity = b.userData.baseOpacity + slow;
       });
     }
   }
