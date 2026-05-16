@@ -12,13 +12,13 @@
 <body>
 
 <!-- ── Floating chips ── -->
-<div class="chip-streak" id="chip-streak" style="display:none">
+<div class="chip-streak" id="chip-streak" role="status" aria-live="polite" style="display:none">
   <span class="chip-streak-icon">🔥</span>
   <span class="chip-streak-num" id="streak-num">0</span>
   <span class="chip-streak-label" id="streak-label">days</span>
 </div>
 
-<div class="chip-today" id="chip-today">
+<div class="chip-today" id="chip-today" role="status" aria-live="polite">
   <div class="chip-today-dot" id="chip-today-dot"></div>
   <span class="chip-today-msg" id="chip-today-msg" data-i18n="todayNotRecorded">Today's tree hasn't grown yet.</span>
 </div>
@@ -63,22 +63,22 @@
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
       </svg>
     </button>
-    <button class="dock-icon-btn lang-toggle" id="lang-toggle" title="Switch language">
+    <button class="dock-icon-btn lang-toggle" id="lang-toggle" aria-label="Switch language" title="Switch language">
       <span style="font-size:10px;font-family:var(--font-mono);letter-spacing:.05em">EN/中</span>
     </button>
   </div>
 </nav>
 
 <!-- ── Entry Modal ── -->
-<div class="modal-overlay" id="modal-overlay">
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true" aria-label="New entry">
   <div class="modal-card">
     <div class="modal-header">
       <div class="modal-header-left">
         <span class="modal-year-badge" id="modal-year">2026</span>
         <span class="modal-label" id="modal-label" data-i18n="whatMattersToday">What matters most today?</span>
       </div>
-      <button class="modal-close" id="modal-close">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <button class="modal-close" id="modal-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
@@ -98,22 +98,22 @@
 </div>
 
 <!-- ── Year Detail Panel ── -->
-<div class="year-panel" id="year-panel">
-  <div class="panel-handle"></div>
+<div class="year-panel" id="year-panel" role="dialog" aria-modal="true" aria-label="Year entries">
+  <div class="panel-handle" aria-hidden="true"></div>
   <div class="panel-header">
     <div class="panel-header-left">
       <span class="panel-title" id="panel-title">2026</span>
       <span class="panel-today-status" id="panel-today-badge"></span>
     </div>
     <div class="panel-header-right">
-      <button class="panel-add-btn" id="panel-add-btn">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <button class="panel-add-btn" id="panel-add-btn" aria-label="Record today">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
           <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
         </svg>
         <span data-i18n="addEntry">Record today</span>
       </button>
-      <button class="panel-close" id="panel-close">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <button class="panel-close" id="panel-close" aria-label="Close">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
@@ -123,15 +123,15 @@
 </div>
 
 <!-- ── Search Overlay ── -->
-<div class="search-overlay" id="search-overlay">
+<div class="search-overlay" id="search-overlay" role="dialog" aria-modal="true" aria-label="Search entries">
   <div class="search-inner">
     <div class="search-bar">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
         <circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="22" y2="22"/>
       </svg>
       <input class="search-input" id="search-input" type="text" data-i18n-placeholder="searchPlaceholder" placeholder="Search your entries...">
-      <button class="search-close" id="search-close">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <button class="search-close" id="search-close" aria-label="Close search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
@@ -141,12 +141,12 @@
 </div>
 
 <!-- ── Settings Panel ── -->
-<div class="settings-overlay" id="settings-overlay">
+<div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true" aria-label="Settings">
   <div class="settings-card">
     <div class="settings-header">
       <h2 class="settings-title" data-i18n="settingsTitle">Settings</h2>
-      <button class="settings-close" id="settings-close">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+      <button class="settings-close" id="settings-close" aria-label="Close settings">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
         </svg>
       </button>
@@ -180,7 +180,7 @@
 </div>
 
 <!-- ── Guide Overlay ── -->
-<div class="guide-overlay" id="guide-overlay">
+<div class="guide-overlay" id="guide-overlay" role="dialog" aria-modal="true" aria-label="Getting started">
   <div class="guide-card">
     <div class="guide-steps" id="guide-steps">
       <div class="guide-dot active" data-step="0"></div>
