@@ -153,6 +153,7 @@
     const entries = loadEntries();
     let streak = 0;
     const d = new Date();
+    d.setDate(d.getDate() - 1); // start from yesterday
     while (true) {
       const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
       const year = d.getFullYear();
@@ -395,6 +396,7 @@
       entries.slice().reverse().forEach(entry => {
         const li = document.createElement('li');
         li.className = 'entry-item';
+        li.setAttribute('data-date', entry.date.substring(0, 10));
         const date    = new Date(entry.date);
         const isToday = entry.date.substring(0,10) === getTodayKey();
         const dateStr = date.toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US', { month: 'short', day: 'numeric' });
@@ -526,6 +528,13 @@
         closeSearch();
         selectedYear = year;
         showYearPanel(year);
+        const entryDate = entry.date.substring(0, 10);
+        const targetLi = document.querySelector(`#panel-entries li[data-date="${entryDate}"]`);
+        if (targetLi) {
+          targetLi.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          targetLi.classList.add('highlight-flash');
+          setTimeout(() => targetLi.classList.remove('highlight-flash'), 1200);
+        }
       });
       list.appendChild(li);
     });
@@ -600,8 +609,13 @@
   // ── Export / Import ───────────────────────────────────────────────────────
 
   function exportBackup() {
-    const data  = localStorage.getItem(STORAGE_KEY) || '{}';
-    const blob  = new Blob([data], { type: 'application/json' });
+    const data = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      try { data[k] = JSON.parse(localStorage.getItem(k)); }
+      catch { data[k] = localStorage.getItem(k); }
+    }
+    const blob  = new Blob([JSON.stringify(data)], { type: 'application/json' });
     const url   = URL.createObjectURL(blob);
     const a     = document.createElement('a');
     const today = new Date().toISOString().substring(0, 10);
@@ -619,7 +633,9 @@
       try {
         const data = JSON.parse(e.target.result);
         if (typeof data !== 'object' || Array.isArray(data)) throw new Error('invalid');
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        Object.keys(data).forEach(k => {
+          localStorage.setItem(k, typeof data[k] === 'string' ? data[k] : JSON.stringify(data[k]));
+        });
         refreshForest();
         showToast(t('importSuccess'), 'success');
         closeSettings();
