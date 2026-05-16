@@ -286,7 +286,7 @@
     if (!yearEntries || yearEntries.length === 0) {
       // show empty hint, don't render a tree
       const hint = document.getElementById('forest-hint');
-      if (hint) hint.style.display = '';
+      if (hint) hint.style.display = 'flex';
       updateDock(entries, currentYear);
       updateTodayChip();
       updateStreakChip();

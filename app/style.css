@@ -541,3 +541,11 @@ body {
 @keyframes float-up {
   to { transform: translateX(-50%) translateY(-60px); opacity: 0; }
 }
+
+@keyframes entryFlash {
+  0%   { background: rgba(74,124,89,0.25); }
+  100% { background: transparent; }
+}
+.highlight-flash {
+  animation: entryFlash 1.2s ease-out forwards;
+}
