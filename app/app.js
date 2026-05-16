@@ -280,11 +280,20 @@
     const entries     = loadEntries();
     const currentYear = new Date().getFullYear();
     const yearEntries = entries[currentYear] || [];
-    const lastDate    = yearEntries.length > 0
-      ? yearEntries[yearEntries.length - 1].date
-      : `${currentYear}-01-01T00:00:00`;
 
     forestScene.removeAllTrees();
+
+    if (!yearEntries || yearEntries.length === 0) {
+      // show empty hint, don't render a tree
+      const hint = document.getElementById('forest-hint');
+      if (hint) hint.style.display = '';
+      updateDock(entries, currentYear);
+      updateTodayChip();
+      updateStreakChip();
+      return;
+    }
+
+    const lastDate = yearEntries[yearEntries.length - 1].date;
     forestScene.addTree(window._TreeClass, currentYear, yearEntries.length, { lastEntryDate: lastDate });
 
     updateDock(entries, currentYear);
@@ -589,13 +598,14 @@
     }
     clearTimeout(_reminderTimeout);
     const [h, m]  = (timeStr || '21:00').split(':').map(Number);
+    if (isNaN(h) || isNaN(m)) return; // invalid time string, do not schedule
     const now     = new Date();
     const target  = new Date(now);
     target.setHours(h, m, 0, 0);
     if (target <= now) target.setDate(target.getDate() + 1);
     const ms = target - now;
     _reminderTimeout = setTimeout(() => {
-      if (Notification.permission === 'granted') {
+      if ('Notification' in window && Notification.permission === 'granted') {
         new Notification('Daily Tree', {
           body: currentLang === 'zh' ? '今天的树还没有成长哦 🌱' : "Your tree is waiting to grow today 🌱",
         });
@@ -634,6 +644,7 @@
         const data = JSON.parse(e.target.result);
         if (typeof data !== 'object' || Array.isArray(data)) throw new Error('invalid');
         Object.keys(data).forEach(k => {
+          if (!k.startsWith('daily_tree')) return; // skip unexpected keys
           localStorage.setItem(k, typeof data[k] === 'string' ? data[k] : JSON.stringify(data[k]));
         });
         refreshForest();
