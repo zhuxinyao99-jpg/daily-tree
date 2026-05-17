@@ -1,0 +1,145 @@
+<h2>树的视觉风格 — 年轮如何呈现？</h2>
+<p class="subtitle">在"有机发光"方向下，年轮的具体形态。三种方案都保留 WebGL / Three.js 渲染。</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #0D1117;
+      display: flex; align-items: center; justify-content: center;
+      height: 180px; gap: 20px;
+      position: relative; overflow: hidden;
+    ">
+      <!-- Radial glow bg -->
+      <div style="position:absolute; width:200px; height:200px; border-radius:50%; background: radial-gradient(circle, rgba(74,124,89,0.12) 0%, transparent 65%); top:50%; left:50%; transform:translate(-50%,-50%);"></div>
+
+      <!-- Small archived tree -->
+      <svg viewBox="0 0 50 70" fill="none" width="42" style="position:relative;">
+        <rect x="22" y="48" width="6" height="18" rx="2" fill="#3D3228"/>
+        <circle cx="25" cy="34" r="14" stroke="#3D4F5F" stroke-width="0.6" opacity="0.4"/>
+        <circle cx="25" cy="34" r="9"  stroke="#3D4F5F" stroke-width="0.8" opacity="0.3"/>
+        <circle cx="25" cy="34" r="4"  fill="#2A3540" opacity="0.6"/>
+      </svg>
+
+      <!-- Current year tree - glowing -->
+      <svg viewBox="0 0 80 100" fill="none" width="72" style="position:relative;">
+        <defs>
+          <radialGradient id="glowA" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#4A7C59" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#4A7C59" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <circle cx="40" cy="42" r="36" fill="url(#glowA)"/>
+        <rect x="36" y="70" width="8" height="26" rx="3" fill="#6B5A40"/>
+        <circle cx="40" cy="42" r="28" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/>
+        <circle cx="40" cy="42" r="21" stroke="#4A7C59" stroke-width="0.8" opacity="0.35"/>
+        <circle cx="40" cy="42" r="14" stroke="#6B9B7A" stroke-width="1.2" opacity="0.55"/>
+        <circle cx="40" cy="42" r="8"  stroke="#6B9B7A" stroke-width="1.5" opacity="0.75"/>
+        <circle cx="40" cy="42" r="4"  fill="#4A7C59" opacity="0.9"/>
+      </svg>
+
+      <!-- Medium past year -->
+      <svg viewBox="0 0 60 80" fill="none" width="52" style="position:relative;">
+        <rect x="26" y="54" width="8" height="22" rx="2" fill="#4A3A2A"/>
+        <circle cx="30" cy="38" r="18" stroke="#5C4A3A" stroke-width="0.6" opacity="0.4"/>
+        <circle cx="30" cy="38" r="12" stroke="#5C4A3A" stroke-width="0.8" opacity="0.3"/>
+        <circle cx="30" cy="38" r="6"  fill="#3D2E1E" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>A. 大小对比 + 光晕叠加</h3>
+      <p>当年树明显更大、光晕最亮。历史树渐小渐暗，形成纵深感。简单直观，当年树有强烈的"今天"存在感。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #0A0C10;
+      display: flex; align-items: center; justify-content: center;
+      height: 180px; gap: 14px;
+      position: relative; overflow: hidden;
+    ">
+      <div style="position:absolute; width:280px; height:100px; background: radial-gradient(ellipse, rgba(74,124,89,0.08) 0%, transparent 70%); bottom: 20px; left: 50%; transform:translateX(-50%);"></div>
+
+      <!-- Row of trees same height, but ring density differs -->
+      <svg viewBox="0 0 55 75" fill="none" width="48" style="position:relative;">
+        <rect x="24" y="52" width="7" height="20" rx="2" fill="#3D3228"/>
+        <!-- few thin rings = fewer entries -->
+        <circle cx="27" cy="36" r="14" stroke="#5C4A3A" stroke-width="0.7" opacity="0.35"/>
+        <circle cx="27" cy="36" r="8"  stroke="#5C4A3A" stroke-width="0.9" opacity="0.25"/>
+        <circle cx="27" cy="36" r="4"  fill="#3D2E1E" opacity="0.45"/>
+      </svg>
+
+      <svg viewBox="0 0 60 80" fill="none" width="54" style="position:relative;">
+        <rect x="26" y="56" width="8" height="22" rx="2" fill="#5A4830"/>
+        <!-- medium density -->
+        <circle cx="30" cy="38" r="18" stroke="#4A6A55" stroke-width="0.6" opacity="0.3"/>
+        <circle cx="30" cy="38" r="13" stroke="#4A6A55" stroke-width="0.9" opacity="0.45"/>
+        <circle cx="30" cy="38" r="8"  stroke="#6B9B7A" stroke-width="1.1" opacity="0.55"/>
+        <circle cx="30" cy="38" r="4"  fill="#4A7C59" opacity="0.65"/>
+      </svg>
+
+      <svg viewBox="0 0 65 86" fill="none" width="60" style="position:relative;">
+        <defs><radialGradient id="glowB2" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4A7C59" stop-opacity="0.35"/><stop offset="100%" stop-color="#4A7C59" stop-opacity="0"/></radialGradient></defs>
+        <circle cx="32" cy="40" r="30" fill="url(#glowB2)"/>
+        <rect x="28" y="64" width="8" height="22" rx="3" fill="#6B5A40"/>
+        <!-- dense rings = many entries, same visual height as others but richer -->
+        <circle cx="32" cy="40" r="22" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/>
+        <circle cx="32" cy="40" r="17" stroke="#4A7C59" stroke-width="0.8" opacity="0.35"/>
+        <circle cx="32" cy="40" r="12" stroke="#6B9B7A" stroke-width="1" opacity="0.55"/>
+        <circle cx="32" cy="40" r="8"  stroke="#6B9B7A" stroke-width="1.3" opacity="0.7"/>
+        <circle cx="32" cy="40" r="4"  fill="#4A7C59" opacity="0.9"/>
+        <!-- glow pulse dot -->
+        <circle cx="32" cy="40" r="4"  fill="#6B9B7A" opacity="0.4"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>B. 相同高度，年轮密度代表记录数</h3>
+      <p>所有树高度相近，但记录多的树年轮更密、光晕更强。像真实年轮切面：看树心就知道这年过得多"丰盛"。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #080A0E;
+      display: flex; align-items: center; justify-content: center;
+      height: 180px;
+      position: relative; overflow: hidden;
+    ">
+      <!-- Single full-width hero tree for current year -->
+      <div style="position:absolute; width:200px; height:200px; border-radius:50%; background: radial-gradient(circle, rgba(74,124,89,0.18) 0%, transparent 55%); top:50%; left:50%; transform:translate(-50%,-50%);"></div>
+
+      <!-- Left small satellite trees -->
+      <svg viewBox="0 0 40 56" fill="none" width="34" style="position:absolute; left: 30px; opacity: 0.7;">
+        <rect x="17" y="38" width="6" height="16" rx="2" fill="#3D3228"/>
+        <circle cx="20" cy="26" r="12" stroke="#3D4F5F" stroke-width="0.7" opacity="0.4"/>
+        <circle cx="20" cy="26" r="7"  stroke="#3D4F5F" stroke-width="0.9" opacity="0.3"/>
+        <circle cx="20" cy="26" r="3"  fill="#2A3540" opacity="0.6"/>
+      </svg>
+      <svg viewBox="0 0 40 56" fill="none" width="28" style="position:absolute; right: 28px; opacity: 0.5;">
+        <rect x="17" y="38" width="6" height="16" rx="2" fill="#2A221A"/>
+        <circle cx="20" cy="26" r="10" stroke="#3D4F5F" stroke-width="0.6" opacity="0.3"/>
+        <circle cx="20" cy="26" r="6"  stroke="#3D4F5F" stroke-width="0.8" opacity="0.2"/>
+        <circle cx="20" cy="26" r="3"  fill="#1E2830" opacity="0.5"/>
+      </svg>
+
+      <!-- Hero current year tree -->
+      <svg viewBox="0 0 90 110" fill="none" width="88" style="position:relative;">
+        <defs><radialGradient id="glowC" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="#4A7C59" stop-opacity="0.6"/><stop offset="70%" stop-color="#4A7C59" stop-opacity="0.1"/><stop offset="100%" stop-color="#4A7C59" stop-opacity="0"/></radialGradient></defs>
+        <circle cx="45" cy="50" r="42" fill="url(#glowC)"/>
+        <rect x="40" y="84" width="10" height="24" rx="3" fill="#7A6848"/>
+        <circle cx="45" cy="50" r="34" stroke="#4A7C59" stroke-width="0.4" opacity="0.18"/>
+        <circle cx="45" cy="50" r="26" stroke="#4A7C59" stroke-width="0.7" opacity="0.3"/>
+        <circle cx="45" cy="50" r="18" stroke="#6B9B7A" stroke-width="1" opacity="0.5"/>
+        <circle cx="45" cy="50" r="11" stroke="#6B9B7A" stroke-width="1.4" opacity="0.7"/>
+        <circle cx="45" cy="50" r="5"  fill="#4A7C59" opacity="1"/>
+        <circle cx="45" cy="50" r="8"  fill="#4A7C59" opacity="0.25"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>C. 当年树居中主角，历史在两侧</h3>
+      <p>当年树占主视野、最大最亮；过去年份作为背景陪衬，往两侧淡出。强调"今天"的重要性，历史感来自渐隐。</p>
+    </div>
+  </div>
+
+</div>
