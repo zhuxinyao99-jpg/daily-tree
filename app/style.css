@@ -251,6 +251,28 @@ body {
 .modal-close:hover { color: var(--mist); background: rgba(255,255,255,0.07); }
 .modal-close svg { width: 16px; height: 16px; }
 
+.modal-date-row {
+  display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.875rem;
+  padding: 0 0.5rem;
+}
+.modal-date-label {
+  font-size: 0.8rem; color: var(--root-earth);
+  font-weight: 500; white-space: nowrap;
+}
+.modal-date-input {
+  flex: 1; padding: 0.5rem 0.75rem;
+  font-family: var(--font-mono); font-size: 0.85rem;
+  border: 1px solid var(--whisper-border);
+  border-radius: 0.375rem;
+  background: rgba(255,255,255,0.04);
+  color: var(--mist); cursor: pointer;
+  transition: border-color 0.15s;
+}
+.modal-date-input:focus {
+  outline: none;
+  border-color: rgba(74,124,89,0.5);
+}
+
 .modal-textarea {
   width: 100%; min-height: 120px; max-height: 260px;
   background: rgba(255,255,255,0.04);
@@ -548,4 +570,117 @@ body {
 }
 .highlight-flash {
   animation: entryFlash 1.2s ease-out forwards;
+}
+
+/* ── Cards Section ── */
+.cards-section {
+  position: fixed;
+  bottom: 90px;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: rgba(10, 10, 11, 0.6);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--whisper-border);
+  z-index: 50;
+  padding: 0.75rem 0;
+}
+
+.cards-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+}
+
+.cards-wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  user-select: none;
+}
+
+.card {
+  flex: 0 0 100%;
+  padding: 0.875rem 1.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-right: 1px solid var(--whisper-border);
+  cursor: grab;
+  transition: background 0.2s;
+}
+
+.card:last-child {
+  border-right: none;
+}
+
+.card:active {
+  cursor: grabbing;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+  gap: 0.75rem;
+}
+
+.card-date {
+  font-size: 0.75rem;
+  color: var(--root-earth);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  letter-spacing: 0.03em;
+  flex-shrink: 0;
+}
+
+.card-content {
+  font-size: 0.9rem;
+  color: var(--mist-white);
+  line-height: 1.4;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  word-break: break-word;
+}
+
+.card-actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+
+.card-edit,
+.card-delete {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--whisper-border);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--mist-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.card-edit:hover {
+  border-color: var(--canopy-green);
+  color: var(--canopy-green);
+  background: rgba(74, 124, 89, 0.1);
+}
+
+.card-delete:hover {
+  border-color: #FF6B6B;
+  color: #FF6B6B;
+  background: rgba(255, 107, 107, 0.1);
 }

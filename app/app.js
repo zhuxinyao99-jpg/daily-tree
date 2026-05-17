@@ -137,6 +137,14 @@
     entries[year].push({ id: Date.now(), text: text.slice(0, 500), date: new Date().toISOString() });
     saveEntries(entries);
   }
+  function addEntryWithDate(dateStr, text) {
+    const [year, month, day] = dateStr.split('-').map(Number);
+    const entries = loadEntries();
+    if (!entries[year]) entries[year] = [];
+    const d = new Date(year, month - 1, day, 12, 0, 0);
+    entries[year].push({ id: Date.now(), text: text.slice(0, 500), date: d.toISOString() });
+    saveEntries(entries);
+  }
   function updateEntry(id, text) {
     const entries = loadEntries();
     for (const y in entries) {
@@ -290,6 +298,7 @@
       updateDock(entries, currentYear);
       updateTodayChip();
       updateStreakChip();
+      if (cardCarousel) cardCarousel._renderCards([]);
       return;
     }
 
@@ -301,6 +310,21 @@
     updateTodayChip();
     updateStreakChip();
     updateEmptyHint();
+
+    // Show today's entries in card carousel
+    const todayKey = getTodayKey();
+    const todayEntries = yearEntries.filter(e => e.date.substring(0, 10) === todayKey);
+    if (cardCarousel) {
+      if (todayEntries.length > 0) {
+        const section = document.getElementById('cards-section');
+        if (section) section.style.display = 'flex';
+        cardCarousel._renderCards(todayEntries);
+      } else {
+        const section = document.getElementById('cards-section');
+        if (section) section.style.display = 'none';
+        if (cardCarousel) cardCarousel._renderCards([]);
+      }
+    }
   }
 
   function updateEmptyHint() {
@@ -446,9 +470,29 @@
     const textarea  = document.getElementById('entry-text');
     const yearLabel = document.getElementById('modal-year');
     const label     = document.getElementById('modal-label');
+    const dateRow   = document.getElementById('modal-date-row');
+    const dateInput = document.getElementById('entry-date');
+    const isEditing = !!entryToEdit;
+
     if (yearLabel) yearLabel.textContent = year;
     if (textarea)  { textarea.value = entryToEdit ? entryToEdit.text : ''; updateCharCount(); }
     if (label)     label.textContent = entryToEdit ? t('editEntry') : t('whatMattersToday');
+
+    // Show/hide date picker
+    if (dateRow) dateRow.style.display = isEditing ? 'none' : 'flex';
+    if (dateInput) {
+      if (isEditing) {
+        // When editing, show the entry's date but keep input hidden
+        const entryDate = entryToEdit.date.substring(0, 10);
+        dateInput.value = entryDate;
+      } else {
+        // When adding new entry, default to today
+        const today = new Date();
+        const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+        dateInput.value = todayStr;
+      }
+    }
+
     overlay?.classList.add('active');
     setTimeout(() => textarea?.focus(), 150);
   }
@@ -472,7 +516,9 @@
       updateEntry(_editEntry.id, text);
       showToast(t('saved'), 'success');
     } else {
-      addEntry(year, text);
+      const dateInput = document.getElementById('entry-date');
+      const selectedDate = dateInput ? dateInput.value : getTodayKey();
+      addEntryWithDate(selectedDate, text);
       showSaveSuccess();
     }
     closeModal();
@@ -480,6 +526,185 @@
     const panel = document.getElementById('year-panel');
     if (panel?.classList.contains('open')) showYearPanel(year);
   }
+
+  // ── Card Carousel ────────────────────────────────────────────────────────
+
+  class CardCarousel {
+    constructor(wrapperId) {
+      this.wrapper = document.getElementById(wrapperId);
+      this.container = this.wrapper?.parentElement;
+      this.currentIndex = 0;
+      this.isDragging = false;
+      this.dragStartX = 0;
+      this.dragStartY = 0;
+      this.entries = [];
+      this._bindEvents();
+    }
+
+    _bindEvents() {
+      if (!this.wrapper) return;
+      this.wrapper.addEventListener('mousedown', (e) => this._onDragStart(e));
+      this.wrapper.addEventListener('mousemove', (e) => this._onDragMove(e));
+      this.wrapper.addEventListener('mouseup', (e) => this._onDragEnd(e));
+      this.wrapper.addEventListener('mouseleave', (e) => this._onDragEnd(e));
+      this.wrapper.addEventListener('touchstart', (e) => this._onDragStart(e), false);
+      this.wrapper.addEventListener('touchmove', (e) => this._onDragMove(e), false);
+      this.wrapper.addEventListener('touchend', (e) => this._onDragEnd(e), false);
+    }
+
+    _getPointerPos(e) {
+      if (e.touches) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      } else {
+        return { x: e.clientX, y: e.clientY };
+      }
+    }
+
+    _onDragStart(e) {
+      this.isDragging = true;
+      const pos = this._getPointerPos(e);
+      this.dragStartX = pos.x;
+      this.dragStartY = pos.y;
+    }
+
+    _onDragMove(e) {
+      if (!this.isDragging) return;
+    }
+
+    _onDragEnd(e) {
+      if (!this.isDragging) return;
+      this.isDragging = false;
+
+      const pos = this._getPointerPos(e);
+      const deltaX = pos.x - this.dragStartX;
+      const deltaY = Math.abs(pos.y - this.dragStartY);
+
+      // Detect horizontal swipe (ignore vertical scrolls)
+      if (deltaY > 20) return;
+      if (Math.abs(deltaX) < 50) return;
+
+      // Swipe left: next card
+      if (deltaX < 0 && this.currentIndex < this.entries.length - 1) {
+        this.goToCard(this.currentIndex + 1);
+      }
+      // Swipe right: prev card
+      else if (deltaX > 0 && this.currentIndex > 0) {
+        this.goToCard(this.currentIndex - 1);
+      }
+    }
+
+    _renderCards(entries) {
+      if (!this.wrapper) return;
+      this.entries = entries;
+      this.wrapper.innerHTML = '';
+      this.currentIndex = 0;
+
+      if (entries.length === 0) return;
+
+      entries.forEach((entry, idx) => {
+        const date = new Date(entry.date);
+        const dateStr = date.toLocaleDateString(currentLang === 'zh' ? 'zh-CN' : 'en-US', {
+          month: 'short',
+          day: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+        });
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="card-date">${dateStr}</span>
+            <div class="card-actions">
+              <button class="card-edit" data-id="${entry.id}" aria-label="Edit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path d="M3 17.25V21h3.75L17.81 9.94m-5.62-5.62l3.54-3.54a2 2 0 012.83 0l3.54 3.54a2 2 0 010 2.83l-3.54 3.54"/>
+                </svg>
+              </button>
+              <button class="card-delete" data-id="${entry.id}" data-date="${entry.date.substring(0, 10)}" aria-label="Delete">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                  <line x1="10" y1="11" x2="10" y2="17"></line>
+                  <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div class="card-content">${escapeHtml(entry.text)}</div>
+        `;
+        this.wrapper.appendChild(card);
+      });
+
+      this._updateTransform();
+      this._attachCardEventListeners();
+    }
+
+    _updateTransform() {
+      if (!this.wrapper) return;
+      const offset = -this.currentIndex * 100;
+      this.wrapper.style.transform = `translateX(${offset}%)`;
+    }
+
+    _attachCardEventListeners() {
+      const cards = this.wrapper?.querySelectorAll('.card') || [];
+      cards.forEach(card => {
+        const editBtn = card.querySelector('.card-edit');
+        const delBtn = card.querySelector('.card-delete');
+
+        editBtn?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = parseInt(editBtn.getAttribute('data-id'), 10);
+          const year = new Date().getFullYear();
+          const entry = getYearEntries(year).find(x => x.id === id);
+          if (entry) openModal(year, entry);
+        });
+
+        delBtn?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const id = parseInt(delBtn.getAttribute('data-id'), 10);
+          const date = delBtn.getAttribute('data-date');
+          this._deleteCard(id, date);
+        });
+      });
+    }
+
+    _deleteCard(id, dateStr) {
+      const confirmDelete = currentLang === 'zh'
+        ? '确定删除这条记录？'
+        : 'Delete this entry?';
+
+      if (!confirm(confirmDelete)) return;
+
+      const entries = loadEntries();
+      for (const year in entries) {
+        const idx = entries[year].findIndex(e => e.id === id);
+        if (idx >= 0) {
+          entries[year].splice(idx, 1);
+          saveEntries(entries);
+          break;
+        }
+      }
+
+      showToast(currentLang === 'zh' ? '已删除' : 'Deleted', 'success');
+      refreshForest();
+      const year = new Date().getFullYear();
+      const todayEntries = getYearEntries(year).filter(e => e.date.substring(0, 10) === getTodayKey());
+      if (todayEntries.length > 0) {
+        this._renderCards(todayEntries);
+      } else {
+        this._renderCards([]);
+      }
+    }
+
+    goToCard(index) {
+      if (index < 0 || index >= this.entries.length) return;
+      this.currentIndex = index;
+      this._updateTransform();
+    }
+  }
+
+  let cardCarousel = null;
 
   // ── Search ────────────────────────────────────────────────────────────────
 
@@ -688,6 +913,9 @@
   // ── Events ────────────────────────────────────────────────────────────────
 
   function bindEvents() {
+    // Initialize card carousel
+    cardCarousel = new CardCarousel('cards-wrapper');
+
     // Lang toggle
     document.getElementById('lang-toggle')?.addEventListener('click', () => {
       setLang(currentLang === 'en' ? 'zh' : 'en');

@@ -1,0 +1,176 @@
+<div style="max-width: 1200px; margin: 0 auto; padding: 2rem;">
+  <h2>Daily Tree 重设计方案</h2>
+  <p class="subtitle">Landing Page + 应用内树的完整视觉和交互设计</p>
+
+  <div class="section" style="margin-top: 3rem; margin-bottom: 3rem;">
+    <h3 style="margin-bottom: 1.5rem; color: #4A7C59;">📄 Landing Page 设计</h3>
+
+    <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 2rem; margin-bottom: 2rem;">
+      <h4 style="color: #E8E8EC; margin-bottom: 1rem;">核心布局</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
+        <div style="font-size: 0.95rem; color: rgba(232,232,236,0.7); line-height: 1.8;">
+          <p><strong>导航栏：</strong> 固定顶部（LOGO / 导航 / 语言切换 / CTA）</p>
+          <p><strong>Hero Section：</strong> 大字标题 + 引入 "你的森林在呼吸"</p>
+          <p><strong>主要内容区：</strong> 两组卡片系统</p>
+          <ul style="margin-top: 1rem; padding-left: 1.5rem;">
+            <li>卡片组 A：用户行为三阶段（日记→月总结→年成长）</li>
+            <li>卡片组 B：四季变化展示（春→夏→秋→冬）</li>
+          </ul>
+          <p style="margin-top: 1rem;"><strong>用户交互：</strong> 点击卡片切换，每个卡片下方显示对应的树</p>
+        </div>
+
+        <div style="background: rgba(10,10,11,0.5); border: 1px dashed rgba(255,255,255,0.1); padding: 1.5rem; border-radius: 8px;">
+          <p style="color: rgba(232,232,236,0.6); font-size: 0.9rem; line-height: 1.7; margin: 0;">
+            <strong>视角：</strong> 3/4 俯视角<br>
+            <strong>风格：</strong> 高逼真树形<br>
+            <strong>效果：</strong> 四季变化明显<br>
+            <strong>目标：</strong> 一眼看出树在成长
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: rgba(74,124,89,0.08); border: 1px solid rgba(74,124,89,0.3); border-radius: 8px; padding: 2rem;">
+      <h4 style="color: #4A7C59; margin-bottom: 1rem;">三个阶段卡片示意</h4>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-bottom: 1.5rem;">
+        <div style="text-align: center;">
+          <div style="background: rgba(74,124,89,0.15); height: 120px; border-radius: 8px; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; color: rgba(232,232,236,0.4);">
+            [树的图像1]
+          </div>
+          <p style="font-weight: 600; color: #4A7C59; margin: 0.5rem 0 0.25rem;">日记</p>
+          <p style="font-size: 0.85rem; color: rgba(232,232,236,0.6); margin: 0;">每一个记录都是树的养分</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="background: rgba(74,124,89,0.15); height: 120px; border-radius: 8px; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; color: rgba(232,232,236,0.4);">
+            [树的图像2]
+          </div>
+          <p style="font-weight: 600; color: #4A7C59; margin: 0.5rem 0 0.25rem;">月总结</p>
+          <p style="font-size: 0.85rem; color: rgba(232,232,236,0.6); margin: 0;">一个月的坚持见证树的成长</p>
+        </div>
+        <div style="text-align: center;">
+          <div style="background: rgba(74,124,89,0.15); height: 120px; border-radius: 8px; margin-bottom: 0.75rem; display: flex; align-items: center; justify-content: center; color: rgba(232,232,236,0.4);">
+            [树的图像3]
+          </div>
+          <p style="font-weight: 600; color: #4A7C59; margin: 0.5rem 0 0.25rem;">年成长</p>
+          <p style="font-size: 0.85rem; color: rgba(232,232,236,0.6); margin: 0;">一年的坚持，树已成材</p>
+        </div>
+      </div>
+      <p style="color: rgba(232,232,236,0.5); font-size: 0.9rem; margin: 0; text-align: center;">💡 用户可点击切换卡片，展示树的不同成长阶段</p>
+    </div>
+  </div>
+
+  <div class="section" style="margin-bottom: 3rem;">
+    <h3 style="margin-bottom: 1.5rem; color: #4A7C59;">📱 应用内设计（手机App）</h3>
+
+    <div style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 2rem; margin-bottom: 2rem;">
+      <h4 style="color: #E8E8EC; margin-bottom: 1rem;">整体布局和交互流程</h4>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div>
+          <p style="color: rgba(232,232,236,0.7); font-size: 0.95rem; line-height: 1.8; margin: 0;">
+            <strong>主画面：</strong><br>
+            1️⃣ 顶部：Streak chip（火焰 + 天数）<br>
+            2️⃣ 中央：Three.js 树（侧视图，可拖动旋转）<br>
+            3️⃣ 背景：根据天气动态变化<br>
+            4️⃣ 底部：卡片轮播（当天的所有记录）<br>
+            5️⃣ Dock：年份选择 + 新增 + 搜索 + 设置
+          </p>
+        </div>
+
+        <div style="background: rgba(74,124,89,0.08); border: 1px solid rgba(74,124,89,0.3); padding: 1.5rem; border-radius: 8px;">
+          <p style="color: rgba(232,232,236,0.7); font-size: 0.95rem; line-height: 1.8; margin: 0;">
+            <strong>树的成长里程碑：</strong><br>
+            🌱 Day 0: 种子<br>
+            🌱 Day 7: 小芽<br>
+            🌱 Day 15: 幼苗<br>
+            🌱 Day 30: 小树<br>
+            🌱 Day 180: 成树<br>
+            🌳 Day 365: 古树
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: rgba(74,124,89,0.08); border: 1px solid rgba(74,124,89,0.3); border-radius: 8px; padding: 2rem; margin-bottom: 2rem;">
+      <h4 style="color: #4A7C59; margin-bottom: 1rem;">天气背景系统</h4>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem;">
+        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; text-align: center;">
+          <p style="color: #FFD700; font-size: 1.5rem; margin: 0;">☀️</p>
+          <p style="font-size: 0.85rem; color: rgba(232,232,236,0.6); margin: 0.5rem 0 0;">晴天</p>
+          <p style="font-size: 0.75rem; color: rgba(232,232,236,0.4); margin: 0;">明亮温暖</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; text-align: center;">
+          <p style="color: #A9C5D1; font-size: 1.5rem; margin: 0;">☁️</p>
+          <p style="font-size: 0.85rem; color: rgba(232,232,236,0.6); margin: 0.5rem 0 0;">阴天</p>
+          <p style="font-size: 0.75rem; color: rgba(232,232,236,0.4); margin: 0;">柔和宁静</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; text-align: center;">
+          <p style="color: #6B9B7A; font-size: 1.5rem; margin: 0;">🌧️</p>
+          <p style="font-size: 0.85rem; color: rgba(232,232,236,0.6); margin: 0.5rem 0 0;">雨天</p>
+          <p style="font-size: 0.75rem; color: rgba(232,232,236,0.4); margin: 0;">滋润生长</p>
+        </div>
+        <div style="background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; text-align: center;">
+          <p style="color: #E0E0E0; font-size: 1.5rem; margin: 0;">❄️</p>
+          <p style="font-size: 0.85rem; color: rgba(232,232,236,0.6); margin: 0.5rem 0 0;">雪天</p>
+          <p style="font-size: 0.75rem; color: rgba(232,232,236,0.4); margin: 0;">静谧洁净</p>
+        </div>
+      </div>
+      <p style="color: rgba(232,232,236,0.5); font-size: 0.9rem; margin: 1.5rem 0 0; text-align: center;">根据用户当前位置的实时天气，背景会自动变化</p>
+    </div>
+
+    <div style="background: rgba(108,92,231,0.08); border: 1px solid rgba(108,92,231,0.3); border-radius: 8px; padding: 2rem;">
+      <h4 style="color: #6C5CE7; margin-bottom: 1rem;">当天卡片交互</h4>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+        <div>
+          <p style="color: rgba(232,232,236,0.7); font-size: 0.95rem; line-height: 1.8;">
+            <strong>卡片内容：</strong><br>
+            • 显示当天的所有记录<br>
+            • 左右滑动翻页浏览<br>
+            • 可查看完整文本<br>
+          </p>
+          <p style="color: rgba(232,232,236,0.7); font-size: 0.95rem; line-height: 1.8; margin-top: 1rem;">
+            <strong>当天编辑：</strong><br>
+            • 每条记录可删改<br>
+            • 点击卡片编辑<br>
+            • 实时同步到树
+          </p>
+        </div>
+        <div style="background: rgba(10,10,11,0.5); padding: 1.5rem; border-radius: 8px; border: 1px dashed rgba(255,255,255,0.1);">
+          <p style="font-size: 0.85rem; color: rgba(232,232,236,0.6); margin: 0; line-height: 1.7;">
+            <strong>交互流程示例：</strong><br>
+            1. 用户点击 + 按钮<br>
+            2. 弹出 modal，展示当天日期和年份<br>
+            3. 写入内容后提交<br>
+            4. 树增加微小变化<br>
+            5. 新卡片出现在底部<br>
+            6. 用户可左右滑动查看所有当天记录
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="background: rgba(10,10,11,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; padding: 2rem; margin-top: 3rem;">
+    <h3 style="color: #E8E8EC; margin-bottom: 1rem;">🎨 视觉方向总结</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; font-size: 0.95rem;">
+      <div>
+        <p style="color: rgba(232,232,236,0.7); line-height: 1.8; margin: 0;">
+          <strong style="color: #E8E8EC;">色彩调性：</strong><br>
+          保持现有设计系统的深色沉稳感，但通过季节变化和天气效果增加"生命力"。色彩不过鲜亮，保留质感和安静的感觉。
+        </p>
+      </div>
+      <div>
+        <p style="color: rgba(232,232,236,0.7); line-height: 1.8; margin: 0;">
+          <strong style="color: #E8E8EC;">英文字体：</strong><br>
+          Landing page 的英文字体升级为艺术字（Fraunces 等高端衬线体），提升优雅感。应用内保持 Outfit 的现代感。
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .section { margin-bottom: 2rem; }
+  h3 { font-size: 1.25rem; font-weight: 600; }
+  h4 { font-size: 1rem; font-weight: 600; }
+</style>

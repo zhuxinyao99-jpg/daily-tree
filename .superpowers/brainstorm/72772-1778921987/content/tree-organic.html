@@ -1,0 +1,201 @@
+<h2>有质感的树 — 像你自己</h2>
+<p class="subtitle">从左到右是同一棵树的成长阶段。哪种风格最有你想要的那种感觉？</p>
+
+<div class="cards">
+
+  <!-- A: 水彩插画风 -->
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #0A0D0B;
+      display: flex; align-items: flex-end; justify-content: center;
+      height: 220px; padding-bottom: 12px;
+      position: relative; overflow: hidden;
+    ">
+      <!-- soft ground fog -->
+      <div style="position:absolute;bottom:0;left:0;right:0;height:40px;background:linear-gradient(to top,rgba(74,124,89,0.06),transparent);"></div>
+
+      <!-- Growth stages in one card -->
+      <div style="display:flex;align-items:flex-end;gap:12px;position:relative;z-index:1;">
+        <!-- stage 1: seedling -->
+        <svg viewBox="0 0 44 80" fill="none" width="38">
+          <path d="M22 72 C22 60 21 50 22 36" stroke="#7A6848" stroke-width="2" stroke-linecap="round"/>
+          <path d="M22 36 C16 28 10 24 14 18 C18 12 24 22 22 36" fill="rgba(74,124,89,0.35)" stroke="#4A7C59" stroke-width="0.8"/>
+          <path d="M22 40 C28 32 34 30 30 22 C26 16 20 26 22 40" fill="rgba(74,124,89,0.25)" stroke="#4A7C59" stroke-width="0.6"/>
+        </svg>
+
+        <!-- stage 2: young tree -->
+        <svg viewBox="0 0 60 100" fill="none" width="52">
+          <path d="M30 90 C30 74 28 60 30 40" stroke="#8B7355" stroke-width="3" stroke-linecap="round"/>
+          <!-- organic crown blobs -->
+          <ellipse cx="24" cy="44" rx="10" ry="12" fill="rgba(74,124,89,0.3)" stroke="#4A7C59" stroke-width="0.8" opacity="0.8" transform="rotate(-10 24 44)"/>
+          <ellipse cx="36" cy="38" rx="11" ry="13" fill="rgba(107,155,122,0.35)" stroke="#6B9B7A" stroke-width="0.8" opacity="0.85"/>
+          <ellipse cx="30" cy="28" rx="9" ry="11" fill="rgba(74,124,89,0.4)" stroke="#4A7C59" stroke-width="0.8" opacity="0.9"/>
+          <!-- highlight -->
+          <ellipse cx="34" cy="24" rx="4" ry="5" fill="rgba(107,155,122,0.2)" stroke="none"/>
+        </svg>
+
+        <!-- stage 3: mature glowing tree -->
+        <div style="position:relative;">
+          <div style="position:absolute;top:10px;left:50%;transform:translateX(-50%);width:100px;height:100px;border-radius:50%;background:radial-gradient(circle,rgba(74,124,89,0.2) 0%,transparent 65%);pointer-events:none;"></div>
+          <svg viewBox="0 0 90 130" fill="none" width="82">
+            <defs>
+              <radialGradient id="leafGrad" cx="50%" cy="40%" r="55%">
+                <stop offset="0%" stop-color="#7DB88A" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#3D6B4A" stop-opacity="0.6"/>
+              </radialGradient>
+              <filter id="softBlur"><feGaussianBlur stdDeviation="1.2"/></filter>
+            </defs>
+            <!-- trunk with texture -->
+            <path d="M45 118 C43 100 41 82 44 60 C46 45 44 32 45 18" stroke="#8B7355" stroke-width="5" stroke-linecap="round"/>
+            <path d="M45 100 C43 100 41 82 44 60" stroke="#6B5A40" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+            <!-- roots hint -->
+            <path d="M45 118 C38 122 32 126 26 124" stroke="#7A6848" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+            <path d="M45 118 C52 122 58 126 64 124" stroke="#7A6848" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+
+            <!-- branches -->
+            <path d="M44 72 C36 65 26 62 20 55" stroke="#8B7355" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+            <path d="M45 62 C54 55 64 52 70 45" stroke="#8B7355" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+            <path d="M44 50 C38 43 30 40 24 34" stroke="#7A6848" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+            <path d="M45 44 C52 37 60 34 66 28" stroke="#7A6848" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+
+            <!-- leaf clusters - organic blobs -->
+            <ellipse cx="38" cy="74" rx="16" ry="14" fill="url(#leafGrad)" opacity="0.55" transform="rotate(-15 38 74)"/>
+            <ellipse cx="62" cy="66" rx="18" ry="15" fill="url(#leafGrad)" opacity="0.6" transform="rotate(10 62 66)"/>
+            <ellipse cx="32" cy="56" rx="14" ry="16" fill="url(#leafGrad)" opacity="0.65" transform="rotate(-20 32 56)"/>
+            <ellipse cx="62" cy="50" rx="15" ry="13" fill="url(#leafGrad)" opacity="0.65" transform="rotate(15 62 50)"/>
+            <ellipse cx="38" cy="44" rx="16" ry="15" fill="url(#leafGrad)" opacity="0.7" transform="rotate(-8 38 44)"/>
+            <ellipse cx="58" cy="36" rx="14" ry="14" fill="url(#leafGrad)" opacity="0.7"/>
+            <ellipse cx="45" cy="26" rx="18" ry="16" fill="url(#leafGrad)" opacity="0.8"/>
+
+            <!-- top highlight -->
+            <ellipse cx="45" cy="20" rx="10" ry="9" fill="rgba(180,220,185,0.2)" stroke="none"/>
+            <!-- glow center -->
+            <circle cx="45" cy="24" r="5" fill="#A8D5B0" opacity="0.3" filter="url(#softBlur)"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 有机叶团 + 根系</h3>
+      <p>树冠由不规则叶团组成，有明暗层次。能看到树干纹路和根系。生长时新叶从顶部和枝尖冒出。有温度，像在画里。</p>
+    </div>
+  </div>
+
+  <!-- B: 粒子叶片风 -->
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #080B0A;
+      display: flex; align-items: flex-end; justify-content: center;
+      height: 220px; padding-bottom: 12px;
+      position: relative; overflow: hidden;
+    ">
+      <!-- scattered leaf particles -->
+      <div style="position:absolute;inset:0;">
+        <div style="position:absolute;width:4px;height:6px;border-radius:50% 50% 50% 0;background:rgba(74,124,89,0.4);top:30px;left:30px;transform:rotate(30deg);"></div>
+        <div style="position:absolute;width:3px;height:5px;border-radius:50% 50% 50% 0;background:rgba(107,155,122,0.3);top:45px;right:35px;transform:rotate(-20deg);"></div>
+        <div style="position:absolute;width:3px;height:4px;border-radius:50% 50% 50% 0;background:rgba(74,124,89,0.25);top:25px;left:65px;transform:rotate(45deg);"></div>
+        <div style="position:absolute;width:4px;height:5px;border-radius:50% 50% 50% 0;background:rgba(196,167,125,0.2);top:55px;right:55px;transform:rotate(-40deg);"></div>
+      </div>
+
+      <!-- mature particle tree -->
+      <div style="position:relative;">
+        <div style="position:absolute;top:5px;left:50%;transform:translateX(-50%);width:110px;height:110px;border-radius:50%;background:radial-gradient(circle,rgba(74,124,89,0.18) 0%,transparent 60%);"></div>
+        <svg viewBox="0 0 100 140" fill="none" width="88">
+          <!-- trunk -->
+          <path d="M50 132 C49 110 48 88 50 60 C51 45 50 28 50 14" stroke="#8B7355" stroke-width="5.5" stroke-linecap="round"/>
+          <path d="M50 120 C48 110 47 90 49 70" stroke="#6B5040" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+          <!-- root -->
+          <path d="M50 132 C42 136 34 138 28 136" stroke="#7A6848" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+          <path d="M50 132 C58 136 66 138 72 136" stroke="#7A6848" stroke-width="2.5" stroke-linecap="round" opacity="0.5"/>
+
+          <!-- leaves as individual leaf shapes -->
+          <!-- each leaf = a teardrop path -->
+          <path d="M50 14 C46 8 40 10 44 16 C46 20 50 18 50 14" fill="#6B9B7A" opacity="0.9"/>
+          <path d="M42 22 C36 14 28 18 34 26 C38 30 44 26 42 22" fill="#4A7C59" opacity="0.85"/>
+          <path d="M58 20 C64 12 72 16 66 24 C62 28 56 24 58 20" fill="#6B9B7A" opacity="0.85"/>
+          <path d="M36 34 C28 26 20 30 28 38 C32 42 38 38 36 34" fill="#4A7C59" opacity="0.8"/>
+          <path d="M64 32 C72 24 80 28 72 36 C68 40 62 36 64 32" fill="#5A8A68" opacity="0.8"/>
+          <path d="M34 46 C24 38 16 44 26 52 C30 56 36 50 34 46" fill="#4A7C59" opacity="0.75"/>
+          <path d="M66 44 C76 36 84 42 74 50 C70 54 64 48 66 44" fill="#6B9B7A" opacity="0.75"/>
+          <path d="M30 58 C20 50 12 56 22 64 C26 68 32 62 30 58" fill="#3D6B4A" opacity="0.7"/>
+          <path d="M70 56 C80 48 88 54 78 62 C74 66 68 60 70 56" fill="#4A7C59" opacity="0.7"/>
+          <path d="M40 66 C32 56 22 62 32 70 C36 74 42 68 40 66" fill="#3D6B4A" opacity="0.65"/>
+          <path d="M60 64 C68 54 78 60 68 68 C64 72 58 66 60 64" fill="#4A7C59" opacity="0.65"/>
+          <path d="M38 78 C28 68 18 74 30 82 C34 86 40 80 38 78" fill="#3D6B4A" opacity="0.6"/>
+          <path d="M62 76 C72 66 82 72 70 80 C66 84 60 78 62 76" fill="#3D5A47" opacity="0.6"/>
+          <!-- highlight leaves (newest growth) -->
+          <path d="M48 10 C44 4 38 6 42 12 C44 16 48 14 48 10" fill="#A8D5B0" opacity="0.7"/>
+          <path d="M52 10 C56 4 62 6 58 12 C56 16 52 14 52 10" fill="#A8D5B0" opacity="0.7"/>
+        </svg>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 单片叶形态</h3>
+      <p>每片叶子是独立的叶形。新记录 = 顶端长出新叶，能清楚感受"今天又长了一片叶"。叶片会随风轻微摆动。</p>
+    </div>
+  </div>
+
+  <!-- C: 发光粒子+剪影 -->
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #07090C;
+      display: flex; align-items: flex-end; justify-content: center;
+      height: 220px; padding-bottom: 12px;
+      position: relative; overflow: hidden;
+    ">
+      <div style="position:absolute;top:20px;left:50%;transform:translateX(-50%);width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(74,124,89,0.22) 0%,transparent 55%);"></div>
+
+      <svg viewBox="0 0 110 145" fill="none" width="96" style="position:relative;">
+        <defs>
+          <radialGradient id="silGlow" cx="50%" cy="35%" r="50%">
+            <stop offset="0%" stop-color="#4A7C59" stop-opacity="0.7"/>
+            <stop offset="100%" stop-color="#1A2E22" stop-opacity="0.95"/>
+          </radialGradient>
+          <filter id="glow2">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/>
+            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+          </filter>
+        </defs>
+        <!-- trunk silhouette -->
+        <path d="M55 138 C53 118 51 96 54 70 L56 70 C59 96 57 118 55 138Z" fill="#5A4830"/>
+        <!-- crown silhouette - organic -->
+        <path d="M55 68
+          C55 68 42 62 34 52 C26 42 28 28 36 22
+          C40 18 44 18 48 20
+          C50 14 52 8 55 6
+          C58 8 60 14 62 20
+          C66 18 70 18 74 22
+          C82 28 84 42 76 52
+          C68 62 55 68 55 68Z"
+          fill="url(#silGlow)"/>
+        <!-- inner texture lines -->
+        <path d="M55 20 C52 30 50 42 52 55" stroke="rgba(107,155,122,0.2)" stroke-width="0.8" stroke-linecap="round"/>
+        <path d="M55 20 C58 30 60 42 58 55" stroke="rgba(107,155,122,0.2)" stroke-width="0.8" stroke-linecap="round"/>
+        <!-- glowing particles around crown -->
+        <circle cx="55" cy="8"  r="2.5" fill="#A8D5B0" opacity="0.9" filter="url(#glow2)"/>
+        <circle cx="35" cy="24" r="1.8" fill="#6B9B7A" opacity="0.7" filter="url(#glow2)"/>
+        <circle cx="75" cy="24" r="1.8" fill="#6B9B7A" opacity="0.7" filter="url(#glow2)"/>
+        <circle cx="28" cy="44" r="1.5" fill="#4A7C59" opacity="0.6"/>
+        <circle cx="82" cy="44" r="1.5" fill="#4A7C59" opacity="0.6"/>
+        <circle cx="34" cy="60" r="1.5" fill="#4A7C59" opacity="0.5"/>
+        <circle cx="76" cy="60" r="1.5" fill="#4A7C59" opacity="0.5"/>
+        <!-- floating particles -->
+        <circle cx="20" cy="50" r="1" fill="#6B9B7A" opacity="0.35"/>
+        <circle cx="88" cy="38" r="1" fill="#6B9B7A" opacity="0.3"/>
+        <circle cx="15" cy="32" r="0.8" fill="#4A7C59" opacity="0.25"/>
+        <circle cx="92" cy="58" r="0.8" fill="#4A7C59" opacity="0.2"/>
+        <!-- year rings in trunk -->
+        <ellipse cx="55" cy="110" rx="3.5" ry="1.2" fill="none" stroke="#4A3A28" stroke-width="0.6" opacity="0.4"/>
+        <ellipse cx="55" cy="116" rx="3.5" ry="1.2" fill="none" stroke="#4A3A28" stroke-width="0.6" opacity="0.3"/>
+        <ellipse cx="55" cy="122" rx="3.5" ry="1.2" fill="none" stroke="#4A3A28" stroke-width="0.6" opacity="0.2"/>
+      </svg>
+    </div>
+    <div class="card-body">
+      <h3>C. 剪影 + 发光粒子</h3>
+      <p>树是深色有机剪影，边缘有发光粒子逸散，树干内可见年轮纹理。神秘感强，像黑暗中活着的生命体。</p>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align:center;color:rgba(232,232,236,0.35);font-size:12px;margin-top:16px;">以上都是 SVG 示意图，实际实现会用 Three.js/Canvas 渲染，质感和动态效果会更丰富</p>
