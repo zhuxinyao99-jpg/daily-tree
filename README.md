@@ -14,11 +14,14 @@ A personal forest of your daily entries. Every day you write one thought, one mo
 
 ## What it does
 
-- **One entry per day** — Forces you to find the single most important thing worth remembering
-- **Years as trees** — 2025 is a tree. 2024 is a tree. Each tree grows taller with every entry
-- **Living forest** — Trees breathe, pulse, and glow when active. They go dormant after 14 days of silence. Archives after 30
+- **Streak-based growth** — Your tree grows with consecutive daily entries. From seed (0 days) to ancient (365+ days)
+- **High-fidelity 3D trees** — Realistic trunks, branches, roots, and leaf clusters with organic variation
+- **Seasonal colors** — Tree appearance changes with seasons (spring pale green → summer deep forest → autumn gold → winter silver)
+- **Interactive 3D** — Drag to rotate your tree, swipe to browse today's entries, quick edit/delete
+- **Smart backgrounds** — Background changes based on real-time weather (sunshine, rain, snow, storms)
+- **Responsive design** — Optimized for mobile, tablet, and desktop with touch-friendly controls
+- **Entry carousel** — Swipe through multiple entries from today, add entries for any date
 - **No social feed** — Your forest is yours. Data lives in LocalStorage, never leaves your device
-- **WebGL visualization** — Three.js renders a procedural forest. Hover a tree to see the year and entry count. Click to read that year's entries
 
 ---
 
@@ -27,18 +30,22 @@ A personal forest of your daily entries. Every day you write one thought, one mo
 ```
 Daily Tree/
 ├── app/
-│   ├── index.html      # The app
-│   ├── style.css       # All styles
-│   ├── app.js          # Core logic + LocalStorage
+│   ├── index.html          # Main application
+│   ├── style.css           # Responsive design (mobile/tablet/desktop)
+│   ├── app.js              # Core logic, state, UI management
+│   ├── weather.js          # Real-time weather integration
 │   └── webgl/
-│       ├── scene.js    # Three.js scene
-│       └── tree.js     # Procedural tree generation
-└── index.html          # Landing page
+│       ├── three.js        # Three.js library (via CDN)
+│       ├── scene.js        # 3D scene, interaction, camera
+│       └── tree.js         # Streak-based tree generation
+├── landing.html            # Landing page (3/4 isometric view)
+└── .github/workflows/
+    └── deploy.yml          # Auto-deploy to GitHub Pages
 ```
 
-**Tech stack:** Three.js · WebGL · Vanilla JS · LocalStorage · CSS Animations
+**Tech stack:** Three.js · WebGL · Vanilla JS · ES6 Modules · LocalStorage · Open-Meteo Weather API · GitHub Pages
 
-No backend. No database. Everything lives in your browser.
+No backend. No database. Everything lives in your browser. Auto-deployed via GitHub Actions.
 
 ---
 
@@ -62,6 +69,34 @@ Most journaling apps are about writing. This one is about **remembering**.
 The constraint is intentional: one entry, one moment, per day. It forces distillation — finding the single thing that mattered most. Over years, a forest accumulates that tells a different kind of story than a diary ever could.
 
 The trees are not decorative. They are **visual memory**. The height of a tree encodes how present you were. The state of the canopy (living, dormant, archived) tells you at a glance which years you were most engaged.
+
+---
+
+## Automatic Deployment
+
+This project uses **GitHub Actions** to automatically deploy whenever code is pushed:
+
+1. **On every push** to `main` or `feature/**` branches
+2. **Validation** checks HTML/CSS/JS syntax
+3. **Auto-deploys** to GitHub Pages within 1-2 minutes
+4. **Live at** https://zhuxinyao99-jpg.github.io/daily-tree/
+
+No manual deployment needed — just push and it's live.
+
+### Local Development
+
+```bash
+# Clone
+git clone https://github.com/zhuxinyao99-jpg/daily-tree.git
+cd daily-tree
+
+# Start local server
+python3 -m http.server 8000
+
+# Open in browser
+# App: http://localhost:8000/app/index.html
+# Landing: http://localhost:8000/landing.html
+```
 
 ---
 

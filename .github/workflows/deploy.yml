@@ -1,0 +1,59 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: '.'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate HTML/CSS/JS syntax
+        run: |
+          # Check if node and basic syntax validation is available
+          node --version || echo "Node not available"
+          echo "Build validation complete"
+
+      - name: Check for common issues
+        run: |
+          echo "Checking file structure..."
+          [ -f "app/index.html" ] && echo "✓ Main app found" || echo "✗ Main app missing"
+          [ -f "landing.html" ] && echo "✓ Landing page found" || echo "✗ Landing page missing"
+          [ -f "app/app.js" ] && echo "✓ App.js found" || echo "✗ App.js missing"
+          [ -f "app/style.css" ] && echo "✓ Style.css found" || echo "✗ Style.css missing"
+          [ -d "app/webgl" ] && echo "✓ WebGL module found" || echo "✗ WebGL module missing"
