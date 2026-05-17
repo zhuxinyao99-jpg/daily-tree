@@ -47,6 +47,8 @@ export class Tree {
     this.isCurrentYear = (year === new Date().getFullYear());
     this.stage      = getGrowthStage(this.streakDays);
 
+    console.log('[DEBUG] Tree constructed:', { year, streakDays: this.streakDays, stage: this.stage });
+
     this.group  = new this.THREE.Group();
     this.blobs  = [];     // leaf blob meshes
     this.glowMesh = null; // soft glow sphere
