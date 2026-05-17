@@ -294,7 +294,8 @@
     }
 
     const lastDate = yearEntries[yearEntries.length - 1].date;
-    forestScene.addTree(window._TreeClass, currentYear, yearEntries.length, { lastEntryDate: lastDate });
+    const streakDays = computeStreak();
+    forestScene.addTree(window._TreeClass, currentYear, streakDays, { lastEntryDate: lastDate });
 
     updateDock(entries, currentYear);
     updateTodayChip();

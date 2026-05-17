@@ -74,8 +74,8 @@ export class ForestScene {
   }
 
   /** Add the current year's tree (centered at origin) */
-  addTree(TreeClass, year, entryCount, options) {
-    const tree = new TreeClass(year, entryCount, {
+  addTree(TreeClass, year, streakDays, options) {
+    const tree = new TreeClass(year, streakDays, {
       THREE,
       lastEntryDate: (options && options.lastEntryDate) || null,
     });
