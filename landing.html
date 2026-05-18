@@ -30,6 +30,7 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
   transition:transform 0.8s cubic-bezier(0.4,0,0.2,1),opacity 0.8s ease;
 }
 #stage.shift-up{transform:translateY(-14vh);}
+#stage.cta-vis{transform:translateY(-9vh);}
 #ring-wrap{
   position:relative;width:340px;height:340px;flex-shrink:0;
   display:flex;align-items:center;justify-content:center;
@@ -270,7 +271,7 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
     0 50px 130px rgba(0,0,0,0.75),
     0 0 0 1px rgba(160,130,50,0.25),
     inset 0 0 80px rgba(180,140,40,0.06);
-  overflow:hidden;
+  overflow:clip;
   transform:translateY(30px) scale(0.95);
   opacity:0;
   transition:transform 0.7s cubic-bezier(0.34,1.35,0.64,1) 0.4s,opacity 0.5s ease 0.4s;
@@ -286,7 +287,7 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
 #letter-scroll{
   overflow-y:auto;
   max-height:82vh;
-  padding:52px 44px 52px;
+  padding:52px 52px 52px;
   -webkit-overflow-scrolling:touch;
 }
 #letter-scroll::-webkit-scrollbar{width:4px;}
@@ -531,7 +532,7 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
         <div class="letter-body">
           <p>不知道你是怎么找到这里的。也许是某个朋友分享的链接，也许是随手搜索到的。不管怎样，很高兴你来了。</p>
           <p>我叫鑫垚，Daily Tree 是我一个人从零开始做的小东西。起因很简单——那段时间我想记录每一天，但写日记太正式，发朋友圈又太嘈杂。于是我想，能不能有一个地方，只需要一句话？</p>
-          <p>一天，一句，一圈年轮。你可以在这里记录任何事情——最近的见闻，看的书听的歌，各种胡思乱想。一年之后翻回来，会发现自己其实走了很远。</p>
+          <p>一天，一句，一圈年轮。你可以在这里记录任何事情——最近的见闻，看的书听的歌，各种胡思乱想。一年之后翻开来，会发现自己其实走了很远。</p>
           <p>还有一件事我觉得值得说：<strong>你写的每一个字，都只存在你自己的手机里。</strong>没有服务器，我看不到任何内容。数据完全本地化，这不是功能说明，是我对你的承诺。</p>
           <p>如果你用了之后有什么想说的——bug 也好，感受也好，或者只是想聊聊，或者有合作的想法——都欢迎来找我：</p>
           <div class="letter-link-row">
@@ -544,7 +545,7 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
         </div>
         <div class="letter-divider"></div>
         <div class="letter-sign">
-          鑫垚 敬上<br>
+          鑫垚<br>
           <span class="year">二〇二六年夏</span>
         </div>
       </div>
@@ -602,7 +603,7 @@ function lastCard(){
   old.classList.remove('up'); old.classList.add('exit-up');
   document.getElementById('scrim').classList.remove('on');
   document.getElementById('stage').classList.remove('shift-up');
-  setTimeout(()=>{ old.classList.remove('exit-up'); document.getElementById('final-cta').classList.add('show'); },320);
+  setTimeout(()=>{ old.classList.remove('exit-up'); document.getElementById('final-cta').classList.add('show'); document.getElementById('stage').classList.add('cta-vis'); },320);
 }
 function initSwipe(){
   const stage=document.getElementById('cards-stage');
@@ -669,6 +670,7 @@ function run(){
   document.querySelectorAll('.t').forEach(t=>{t.style.opacity='0';t.style.transform='translateY(16px)';t.style.transition='';});
   document.getElementById('scrim').classList.remove('on');
   document.getElementById('stage').classList.remove('shift-up');
+  document.getElementById('stage').classList.remove('cta-vis');
   document.getElementById('final-cta').classList.remove('show');
   document.querySelectorAll('.card').forEach(c=>c.classList.remove('up','exit-up','exit-down'));
 
