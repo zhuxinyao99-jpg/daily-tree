@@ -1,221 +1,420 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Daily Tree — Watch your life grow</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:wght@600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Outfit', sans-serif;
-      background: linear-gradient(135deg, #0F1419 0%, #1a1f2e 100%);
-      color: #E8EAEF;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Daily Tree — Watch your life grow</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;overflow:hidden;}
+body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
 
-    .landing-container {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-    }
+#bg{
+  position:fixed;inset:0;
+  background:radial-gradient(ellipse 65% 55% at 50% 46%,#071220 0%,#000 70%);
+  opacity:0;transition:opacity 1.4s ease;
+}
 
-    .landing-content {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-      max-width: 1200px;
-    }
+#scrim{
+  position:fixed;inset:0;z-index:30;
+  background:rgba(0,0,0,0);
+  transition:background 0.5s ease;
+  pointer-events:none;
+}
+#scrim.on{background:rgba(0,0,14,0.55);}
 
-    .landing-canvas-wrapper {
-      aspect-ratio: 1;
-      background: linear-gradient(135deg, rgba(74,124,89,0.1) 0%, rgba(107,144,122,0.1) 100%);
-      border-radius: 1rem;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+#stage{
+  position:fixed;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:40px;
+  transition:transform 0.8s cubic-bezier(0.4,0,0.2,1),opacity 0.8s ease;
+}
+#stage.shift-up{transform:translateY(-14vh);}
 
-    #landing-canvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
+#ring-wrap{
+  position:relative;
+  width:340px;height:340px;
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+}
+#ambient{
+  position:absolute;width:380px;height:380px;border-radius:50%;
+  background:radial-gradient(circle,rgba(80,140,220,0.13) 0%,transparent 65%);
+  opacity:0;transform:scale(0.5);
+  transition:opacity 1.6s ease,transform 1.6s cubic-bezier(.2,.8,.3,1);
+}
+.fp{
+  position:absolute;border-radius:50%;
+  background:radial-gradient(circle,rgba(140,190,255,0.75),transparent);
+  filter:blur(2px);opacity:0;
+  transition:opacity 0.7s ease;
+}
+@keyframes fp-bob{
+  0%,100%{transform:translate(0,0) scale(1);opacity:.35;}
+  50%{transform:translate(5px,-9px) scale(1.15);opacity:.75;}
+}
+#ring-svg{
+  position:relative;z-index:2;
+  transform:scale(0) rotate(-120deg);opacity:0;
+  transition:transform 1.8s cubic-bezier(.16,1,.3,1),opacity 0.5s ease;
+}
+@keyframes main-cw{to{transform:rotate(360deg);}}
+@keyframes ring-ccw{to{transform:rotate(-360deg);}}
 
-    .landing-text {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5rem;
-    }
+#text-block{
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+  text-align:center;z-index:2;
+}
+.t{opacity:0;transform:translateY(16px);transition:opacity .75s ease,transform .75s ease;}
+.eyebrow{
+  font-size:11px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(140,190,255,0.7);
+}
+.title{
+  font-family:'Fraunces',serif;
+  font-size:clamp(28px,4vw,48px);
+  font-weight:600;line-height:1.1;letter-spacing:-.02em;
+  color:#e8ecf4;
+}
+.title em{font-style:italic;color:#90c0f8;}
+.desc{
+  font-size:14px;color:rgba(255,255,255,0.38);
+  line-height:1.75;max-width:340px;
+}
 
-    .landing-title {
-      font-family: 'Fraunces', serif;
-      font-size: 3.5rem;
-      font-weight: 600;
-      line-height: 1.1;
-      color: #FFFFFF;
-    }
+#cards-stage{
+  position:fixed;inset:0;
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:44px;
+  z-index:40;
+  pointer-events:none;
+}
 
-    .landing-subtitle {
-      font-size: 1.1rem;
-      color: #B8C1D0;
-      line-height: 1.6;
-    }
+.card{
+  position:absolute;
+  width:min(420px,90vw);
+  border-radius:28px;
+  background:rgba(8,20,48,0.84);
+  border:1px solid rgba(100,160,240,0.22);
+  backdrop-filter:blur(28px) saturate(1.4);
+  -webkit-backdrop-filter:blur(28px) saturate(1.4);
+  padding:30px 26px 26px;
+  box-shadow:
+    0 32px 80px rgba(0,0,14,0.75),
+    0 0 0 0.5px rgba(255,255,255,0.06),
+    inset 0 1px 0 rgba(160,200,255,0.12);
+  pointer-events:all;
+  cursor:pointer;
+  transform:translateY(120%) scale(0.92);
+  opacity:0;
+  transition:transform 0.62s cubic-bezier(0.34,1.52,0.64,1),opacity 0.28s ease;
+  will-change:transform,opacity;
+}
+.card.up{transform:translateY(0) scale(1);opacity:1;}
+.card.exit-up{
+  transform:translateY(-90%) scale(0.88);opacity:0;
+  transition:transform 0.36s cubic-bezier(0.4,0,0.2,1),opacity 0.2s ease;
+}
 
-    .landing-features {
-      display: flex;
-      flex-direction: column;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
+.card-icon{
+  width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;margin-bottom:18px;
+  background:rgba(100,160,240,0.1);
+  border:1px solid rgba(100,160,240,0.16);
+}
+.card-tag{
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(120,175,255,0.5);margin-bottom:7px;
+}
+.card-title{
+  font-family:'Fraunces',serif;
+  font-size:clamp(20px,4vw,26px);
+  font-weight:600;line-height:1.2;
+  color:#e8ecf4;margin-bottom:10px;
+}
+.card-title em{font-style:italic;color:#90c0f8;}
+.card-desc{
+  font-size:13.5px;line-height:1.75;
+  color:rgba(255,255,255,0.4);
+}
+.card-footer{
+  margin-top:22px;padding-top:16px;
+  border-top:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.card-hint{font-size:11px;color:rgba(255,255,255,0.2);}
+.dots{display:flex;gap:6px;}
+.dot{
+  width:6px;height:6px;border-radius:50%;
+  background:rgba(255,255,255,0.15);
+  transition:background .3s,transform .3s;
+}
+.dot.on{background:rgba(120,175,255,0.85);transform:scale(1.3);}
 
-    .feature {
-      display: flex;
-      gap: 0.75rem;
-      align-items: flex-start;
-    }
+#final-cta{
+  position:fixed;bottom:44px;left:50%;transform:translateX(-50%);
+  z-index:50;
+  display:flex;gap:10px;
+  opacity:0;pointer-events:none;
+  transition:opacity 0.6s ease,transform 0.6s cubic-bezier(0.34,1.4,0.64,1);
+  transform:translateX(-50%) translateY(24px);
+}
+#final-cta.show{
+  opacity:1;pointer-events:all;
+  transform:translateX(-50%) translateY(0);
+}
+.btn-p{
+  padding:13px 28px;border-radius:999px;
+  background:rgba(100,160,240,0.88);color:#fff;
+  font-size:13px;font-weight:700;border:none;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+  box-shadow:0 0 28px rgba(80,140,220,0.4);
+  transition:transform .15s,box-shadow .15s;
+  text-decoration:none;display:inline-flex;align-items:center;
+}
+.btn-p:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(80,140,220,0.6);}
+.btn-g{
+  padding:13px 28px;border-radius:999px;
+  background:transparent;border:1px solid rgba(255,255,255,0.12);
+  color:rgba(255,255,255,0.5);font-size:13px;font-weight:500;cursor:pointer;
+  font-family:'Outfit',sans-serif;
+  transition:border-color .2s,color .2s;
+}
+.btn-g:hover{border-color:rgba(255,255,255,0.3);color:#fff;}
 
-    .feature-icon {
-      font-size: 1.5rem;
-      margin-top: 0.25rem;
-      flex-shrink: 0;
-    }
-
-    .feature-text {
-      font-size: 0.95rem;
-      color: #C8D0DB;
-    }
-
-    .landing-cta {
-      display: flex;
-      gap: 1rem;
-      margin-top: 2rem;
-    }
-
-    .cta-button {
-      padding: 0.875rem 2rem;
-      border: none;
-      border-radius: 0.5rem;
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-family: 'Outfit', sans-serif;
-    }
-
-    .cta-primary {
-      background: linear-gradient(135deg, #4A7C59 0%, #6B9B7A 100%);
-      color: #FFFFFF;
-    }
-
-    .cta-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(74,124,89,0.3);
-    }
-
-    .cta-secondary {
-      background: transparent;
-      color: #7DB88A;
-      border: 1.5px solid #7DB88A;
-    }
-
-    .cta-secondary:hover {
-      background: rgba(74,124,89,0.1);
-    }
-
-    @media (max-width: 768px) {
-      .landing-content {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .landing-title {
-        font-size: 2.5rem;
-      }
-
-      .landing-canvas-wrapper {
-        max-height: 400px;
-      }
-    }
-  </style>
+#replay{
+  position:fixed;bottom:16px;right:16px;z-index:999;
+  padding:6px 14px;border-radius:999px;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  color:rgba(255,255,255,0.35);font-size:11px;font-family:'Outfit',sans-serif;
+  cursor:pointer;transition:all .2s;
+}
+#replay:hover{background:rgba(255,255,255,0.12);color:#fff;}
+</style>
 </head>
 <body>
 
-<div class="landing-container">
-  <div class="landing-content">
-    <div class="landing-canvas-wrapper">
-      <canvas id="landing-canvas"></canvas>
-    </div>
+<div id="bg"></div>
+<div id="scrim"></div>
 
-    <div class="landing-text">
-      <h1 class="landing-title">Watch Your Life Grow</h1>
-      <p class="landing-subtitle">Record one moment each day. Your tree grows with your consistency.</p>
+<div id="stage">
+  <div id="ring-wrap">
+    <div id="ambient"></div>
+    <div class="fp" style="width:14px;height:14px;top:8%;left:12%;"></div>
+    <div class="fp" style="width:9px;height:9px;top:13%;right:11%;"></div>
+    <div class="fp" style="width:11px;height:11px;bottom:10%;left:10%;"></div>
+    <div class="fp" style="width:7px;height:7px;bottom:15%;right:13%;"></div>
+    <div class="fp" style="width:5px;height:5px;top:44%;left:3%;"></div>
+    <div class="fp" style="width:8px;height:8px;top:40%;right:4%;"></div>
 
-      <div class="landing-features">
-        <div class="feature">
-          <div class="feature-icon">🌱</div>
-          <div class="feature-text"><strong>Daily Growth:</strong> One entry a day keeps your tree thriving</div>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">🔥</div>
-          <div class="feature-text"><strong>Streaks Matter:</strong> Build consecutive day streaks and unlock growth stages</div>
-        </div>
-        <div class="feature">
-          <div class="feature-icon">🌍</div>
-          <div class="feature-text"><strong>Seasons Change:</strong> Your tree evolves with the natural seasons</div>
-        </div>
-      </div>
+    <svg id="ring-svg" width="320" height="320" viewBox="0 0 360 360">
+      <defs>
+        <radialGradient id="rg-light" cx="36%" cy="34%">
+          <stop offset="0%" stop-color="rgba(180,220,255,0.16)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <radialGradient id="rg-shadow" cx="64%" cy="66%">
+          <stop offset="0%" stop-color="rgba(0,4,14,0.4)"/>
+          <stop offset="100%" stop-color="transparent"/>
+        </radialGradient>
+        <path id="tp1" d="M180,14 A166,166 0 1,1 179.9,14" fill="none" style="transform-origin:180px 180px;animation:main-cw 90s linear infinite;"/>
+        <path id="tp2" d="M180,42 A138,138 0 1,1 179.9,42" fill="none" style="transform-origin:180px 180px;animation:ring-ccw 65s linear infinite;"/>
+        <path id="tp3" d="M180,70 A110,110 0 1,1 179.9,70" fill="none" style="transform-origin:180px 180px;animation:main-cw 45s linear infinite;"/>
+      </defs>
+      <circle cx="180" cy="180" r="172" fill="none" stroke="rgba(100,155,230,0.07)" stroke-width="1" stroke-dasharray="4 10" style="transform-origin:180px 180px;animation:ring-ccw 30s linear infinite;"/>
+      <circle cx="180" cy="180" r="162" fill="none" stroke="rgba(100,158,232,0.22)" stroke-width="16" style="transform-origin:180px 180px;animation:main-cw 90s linear infinite;"/>
+      <circle cx="180" cy="180" r="162" fill="none" stroke="rgba(160,205,255,0.14)" stroke-width="2" style="transform-origin:180px 180px;animation:main-cw 90s linear infinite;"/>
+      <circle cx="180" cy="180" r="136" fill="none" stroke="rgba(112,168,236,0.27)" stroke-width="14" style="transform-origin:180px 180px;animation:ring-ccw 65s linear infinite;"/>
+      <circle cx="180" cy="180" r="136" fill="none" stroke="rgba(168,212,255,0.16)" stroke-width="2" style="transform-origin:180px 180px;animation:ring-ccw 65s linear infinite;"/>
+      <circle cx="180" cy="180" r="110" fill="none" stroke="rgba(124,178,240,0.32)" stroke-width="13" style="transform-origin:180px 180px;animation:main-cw 45s linear infinite;"/>
+      <circle cx="180" cy="180" r="110" fill="none" stroke="rgba(175,218,255,0.18)" stroke-width="1.8" style="transform-origin:180px 180px;animation:main-cw 45s linear infinite;"/>
+      <circle cx="180" cy="180" r="85" fill="none" stroke="rgba(136,188,244,0.38)" stroke-width="11" style="transform-origin:180px 180px;animation:ring-ccw 32s linear infinite;"/>
+      <circle cx="180" cy="180" r="85" fill="none" stroke="rgba(182,224,255,0.21)" stroke-width="1.8" style="transform-origin:180px 180px;animation:ring-ccw 32s linear infinite;"/>
+      <circle cx="180" cy="180" r="60" fill="none" stroke="rgba(148,198,248,0.44)" stroke-width="10" style="transform-origin:180px 180px;animation:main-cw 22s linear infinite;"/>
+      <circle cx="180" cy="180" r="60" fill="none" stroke="rgba(188,228,255,0.24)" stroke-width="1.5" style="transform-origin:180px 180px;animation:main-cw 22s linear infinite;"/>
+      <text font-family="'Outfit',sans-serif" font-size="8.5" fill="rgba(160,205,255,0.5)" font-weight="500" letter-spacing="1.5">
+        <textPath href="#tp1" startOffset="0%">JAN · FEB · MAR · APR · MAY · JUN · JUL · AUG · SEP · OCT · NOV · DEC · </textPath>
+      </text>
+      <text font-family="'Outfit',sans-serif" font-size="7.5" fill="rgba(155,200,255,0.42)" font-weight="500" letter-spacing="1">
+        <textPath href="#tp2" startOffset="8%">2023 · · · · · · · · · · · · · · · · · · 2024 · · · · · · · · · · · · · · · · · · 2025 · · · · · · · · </textPath>
+      </text>
+      <text font-family="'Outfit',sans-serif" font-size="7" fill="rgba(150,195,255,0.35)" font-weight="400" letter-spacing="0.8">
+        <textPath href="#tp3" startOffset="16%">W1 · · W4 · · W8 · · W12 · · W16 · · W20 · · W24 · · W28 · · W32 · · W36 · · W40 · · W44 · · W48 · · W52 · · </textPath>
+      </text>
+      <text x="180" y="188" text-anchor="middle" font-family="'Fraunces',serif" font-size="52" fill="rgba(210,230,255,0.94)" font-weight="600" letter-spacing="-1">47</text>
+      <text x="180" y="205" text-anchor="middle" font-family="'Outfit',sans-serif" font-size="9" fill="rgba(140,190,248,0.48)" letter-spacing="3" font-weight="600">DAYS</text>
+      <circle cx="180" cy="180" r="162" fill="url(#rg-light)"/>
+      <circle cx="180" cy="180" r="162" fill="url(#rg-shadow)"/>
+    </svg>
+  </div>
 
-      <div class="landing-cta">
-        <a href="index.html" class="cta-button cta-primary">Start Recording</a>
-        <a href="#about" class="cta-button cta-secondary">Learn More</a>
-      </div>
-    </div>
+  <div id="text-block">
+    <div class="t title" id="hello" style="font-size:clamp(38px,5vw,58px);">Hello<em>.</em></div>
+    <div class="t eyebrow" id="t0">每日记录 · 见证成长</div>
+    <div class="t title" id="t1">Watch your <em>life grow.</em></div>
+    <div class="t desc" id="t2">像树一样记录每一天，每次坚持都留下一圈年轮。</div>
   </div>
 </div>
 
-<script src="webgl/three.js"></script>
-<script>if (typeof THREE !== 'undefined') window.THREE = THREE;</script>
-<script type="module">
-  import { ForestScene } from './app/webgl/scene.js';
-  import { Tree } from './app/webgl/tree.js';
+<div id="cards-stage">
 
-  async function initLanding() {
-    const canvas = document.getElementById('landing-canvas');
-    if (!canvas || !window.THREE) return;
+  <div class="card" id="c0" onclick="nextCard()">
+    <div class="card-icon">🌱</div>
+    <div class="card-tag">每日记录</div>
+    <div class="card-title">每天一句话，<em>足够了。</em></div>
+    <div class="card-desc">不需要长篇大论。Daily Tree 让你只记一件事、一句感受、一个决定——低门槛，高坚持率。</div>
+    <div class="card-footer">
+      <span class="card-hint">轻触继续</span>
+      <div class="dots" id="d0"></div>
+    </div>
+  </div>
 
-    try {
-      const scene = new ForestScene(canvas);
-      // Create an isometric-like view tree
-      scene.camera.position.set(100, 80, 120);
-      scene.camera.lookAt(0, 40, 0);
+  <div class="card" id="c1" onclick="nextCard()">
+    <div class="card-icon">🌳</div>
+    <div class="card-tag">成长可视化</div>
+    <div class="card-title">坚持，<em>长出年轮。</em></div>
+    <div class="card-desc">每次打卡都在年轮上留下一圈。时间越长，图案越深，成长越清晰——看得见的积累。</div>
+    <div class="card-footer">
+      <span class="card-hint">轻触继续</span>
+      <div class="dots" id="d1"></div>
+    </div>
+  </div>
 
-      // Add a sample mature tree for landing display
-      const tree = new Tree(new Date().getFullYear(), 65, { THREE: window.THREE });
-      tree.group.position.set(0, 0, 0);
-      scene.scene.add(tree.group);
-      scene.tree = tree;
+  <div class="card" id="c2" onclick="nextCard()">
+    <div class="card-icon">🔥</div>
+    <div class="card-tag">连续打卡</div>
+    <div class="card-title">第 <em>47</em> 天，<br>别断掉。</div>
+    <div class="card-desc">连续记录的天数是你与自己的约定。每一天都是一个新的最高记录，守护它。</div>
+    <div class="card-footer">
+      <span class="card-hint">轻触继续</span>
+      <div class="dots" id="d2"></div>
+    </div>
+  </div>
 
-      // Auto-rotate the tree slightly
-      let angle = 0;
-      const rotationLoop = setInterval(() => {
-        angle += 0.003;
-        tree.group.rotation.y = angle;
-        tree.update(angle / 0.5);
-      }, 16);
-    } catch (err) {
-      console.error('Landing init failed:', err);
+  <div class="card" id="c3" onclick="lastCard()">
+    <div class="card-icon">📅</div>
+    <div class="card-tag">时光回溯</div>
+    <div class="card-title">一年前的今天，<em>你在想什么？</em></div>
+    <div class="card-desc">随时翻回任意一天，重读当时的自己。过去不会消失，它都在年轮里。</div>
+    <div class="card-footer">
+      <span class="card-hint">轻触开始使用</span>
+      <div class="dots" id="d3"></div>
+    </div>
+  </div>
+
+</div>
+
+<div id="final-cta">
+  <a href="index.html" class="btn-p">免费开始</a>
+  <button class="btn-g">了解更多 →</button>
+</div>
+
+<button id="replay" onclick="run()">↺ 重播</button>
+
+<script>
+const TOTAL = 4;
+let cur = -1;
+
+function renderDots(idx){
+  ['d0','d1','d2','d3'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.innerHTML = '';
+    for(let i=0;i<TOTAL;i++){
+      const d = document.createElement('div');
+      d.className = 'dot' + (i===idx?' on':'');
+      el.appendChild(d);
     }
-  }
+  });
+}
 
-  initLanding();
+function showCard(idx){
+  document.getElementById('scrim').classList.add('on');
+  document.getElementById('stage').classList.add('shift-up');
+  requestAnimationFrame(()=>{
+    document.getElementById('c'+idx).classList.add('up');
+  });
+  renderDots(idx);
+}
+
+function nextCard(){
+  if(cur<0||cur>=TOTAL-1) return;
+  const old = document.getElementById('c'+cur);
+  old.classList.remove('up');
+  old.classList.add('exit-up');
+  const next = cur+1;
+  setTimeout(()=>{
+    old.classList.remove('exit-up');
+    cur = next;
+    showCard(cur);
+  }, 200);
+}
+
+function lastCard(){
+  const old = document.getElementById('c'+cur);
+  old.classList.remove('up');
+  old.classList.add('exit-up');
+  document.getElementById('scrim').classList.remove('on');
+  document.getElementById('stage').classList.remove('shift-up');
+  setTimeout(()=>{
+    old.classList.remove('exit-up');
+    document.getElementById('final-cta').classList.add('show');
+  }, 320);
+}
+
+function run(){
+  cur = -1;
+  document.getElementById('bg').style.opacity='0';
+  const amb = document.getElementById('ambient');
+  amb.style.opacity='0'; amb.style.transform='scale(0.5)';
+  const svg = document.getElementById('ring-svg');
+  svg.style.transition='transform 1.8s cubic-bezier(.16,1,.3,1),opacity 0.5s ease';
+  svg.style.transform='scale(0) rotate(-120deg)'; svg.style.opacity='0';
+  document.querySelectorAll('.fp').forEach(p=>{p.style.opacity='0';p.style.animation='';});
+  document.querySelectorAll('.t').forEach(t=>{t.style.opacity='0';t.style.transform='translateY(16px)';t.style.transition='';});
+  document.getElementById('scrim').classList.remove('on');
+  document.getElementById('stage').classList.remove('shift-up');
+  document.getElementById('final-cta').classList.remove('show');
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('up','exit-up'));
+
+  setTimeout(()=>{
+    document.getElementById('bg').style.opacity='1';
+    setTimeout(()=>{
+      svg.style.transform='scale(1) rotate(0deg)'; svg.style.opacity='1';
+      amb.style.opacity='1'; amb.style.transform='scale(1)';
+    }, 300);
+    document.querySelectorAll('.fp').forEach((p,i)=>{
+      const durs=['5s','4s','6s','3.5s','4.5s','5.5s'];
+      const dels=['0s','.8s','1.5s','.3s','1.1s','1.9s'];
+      setTimeout(()=>{
+        p.style.opacity='1';
+        setTimeout(()=>{ p.style.animation=`fp-bob ${durs[i]} ${dels[i]} ease-in-out infinite`; },700);
+      },700+i*100);
+    });
+    setTimeout(()=>{ svg.style.transition='none'; }, 2000);
+
+    setTimeout(()=>{
+      const hello = document.getElementById('hello');
+      hello.style.transition='opacity .7s ease,transform .7s ease';
+      hello.style.opacity='1'; hello.style.transform='translateY(0)';
+    }, 2000);
+
+    ['t0','t1','t2'].forEach((id,i)=>{
+      setTimeout(()=>{
+        const el = document.getElementById(id);
+        el.style.transition='opacity .75s ease,transform .75s ease';
+        el.style.opacity='1'; el.style.transform='translateY(0)';
+      }, 3600+i*200);
+    });
+
+    setTimeout(()=>{ cur=0; showCard(0); }, 4800);
+  }, 900);
+}
+
+window.addEventListener('load',()=>setTimeout(run,400));
 </script>
-
 </body>
 </html>
