@@ -22,6 +22,7 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
   pointer-events:none;
 }
 #scrim.on{background:rgba(0,0,14,0.55);}
+#scrim.clearing{background:rgba(0,0,0,0);transition:background 0.18s ease;}
 #stage{
   position:fixed;inset:0;
   display:flex;flex-direction:column;
@@ -95,8 +96,8 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
 }
 .card:active{cursor:grabbing;}
 .card.up{transform:translateY(0) scale(1);opacity:1;}
-.card.exit-up{transform:translateY(-90%) scale(0.88);opacity:0;transition:transform 0.36s cubic-bezier(0.4,0,0.2,1),opacity 0.2s ease;}
-.card.exit-down{transform:translateY(120%) scale(0.92);opacity:0;transition:transform 0.36s cubic-bezier(0.4,0,0.2,1),opacity 0.2s ease;}
+.card.exit-up{transform:translateY(-90%) scale(0.88);opacity:0;filter:blur(12px);transition:transform 0.36s cubic-bezier(0.4,0,0.2,1),opacity 0.22s ease,filter 0.28s ease;}
+.card.exit-down{transform:translateY(120%) scale(0.92);opacity:0;filter:blur(12px);transition:transform 0.36s cubic-bezier(0.4,0,0.2,1),opacity 0.22s ease,filter 0.28s ease;}
 .card-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px;background:rgba(100,160,240,0.1);border:1px solid rgba(100,160,240,0.16);}
 .card-tag{font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(120,175,255,0.5);margin-bottom:7px;}
 .card-title{font-family:'Fraunces',serif;font-size:clamp(20px,4vw,26px);font-weight:600;line-height:1.2;color:#e8ecf4;margin-bottom:10px;}
@@ -582,21 +583,26 @@ function nextCard(){
   if(cur<0||cur>=TOTAL-1) return;
   const old=document.getElementById('c'+cur);
   old.classList.remove('up'); old.classList.add('exit-up');
+  const scrim=document.getElementById('scrim');
+  scrim.classList.add('clearing');
   const next=cur+1;
-  setTimeout(()=>{ old.classList.remove('exit-up'); cur=next; showCard(cur); },200);
+  setTimeout(()=>{ old.classList.remove('exit-up'); scrim.classList.remove('clearing'); cur=next; showCard(cur); },220);
 }
 function prevCard(){
   if(cur<=0) return;
   const old=document.getElementById('c'+cur);
   old.classList.remove('up'); old.classList.add('exit-down');
+  const scrim=document.getElementById('scrim');
+  scrim.classList.add('clearing');
   const prev=cur-1;
   setTimeout(()=>{
     old.classList.remove('exit-down');
+    scrim.classList.remove('clearing');
     cur=prev;
     const p=document.getElementById('c'+cur);
     p.classList.remove('exit-up','exit-down'); p.classList.add('up');
     renderDots(cur);
-  },200);
+  },220);
 }
 function lastCard(){
   const old=document.getElementById('c'+cur);
@@ -685,7 +691,7 @@ function run(){
     setTimeout(()=>{ svg.style.transition='none'; },2000);
     setTimeout(()=>{ const h=document.getElementById('hello'); h.style.transition='opacity .7s ease,transform .7s ease'; h.style.opacity='1'; h.style.transform='translateY(0)'; },2000);
     ['t0','t1','t2'].forEach((id,i)=>{ setTimeout(()=>{ const el=document.getElementById(id); el.style.transition='opacity .75s ease,transform .75s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; },3600+i*200); });
-    setTimeout(()=>{ cur=0; showCard(0); },4800);
+    setTimeout(()=>{ cur=0; showCard(0); },6000);
   },900);
 }
 
