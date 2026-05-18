@@ -133,20 +133,20 @@ function initApp() {
   if (!treeCanvas) return;
 
   function resizeCanvases() {
-    const W = treeCanvas.clientWidth  * devicePixelRatio;
-    const H = treeCanvas.clientHeight * devicePixelRatio;
+    const W = Math.round(treeCanvas.clientWidth  * devicePixelRatio);
+    const H = Math.round(treeCanvas.clientHeight * devicePixelRatio);
+    if (W === 0 || H === 0) return;
     treeCanvas.width    = W; treeCanvas.height    = H;
     if (weatherCanvas) { weatherCanvas.width = W; weatherCanvas.height = H; }
   }
-  resizeCanvases();
-  window.addEventListener('resize', () => { resizeCanvases(); refreshTree(); });
-
   if (weatherCanvas) {
     weatherManager = new WeatherManager(weatherCanvas);
     weatherManager.init();
   }
 
-  refreshTree();
+  // defer until after first paint so clientWidth/Height are available on mobile
+  requestAnimationFrame(() => { resizeCanvases(); refreshTree(); });
+  window.addEventListener('resize', () => { resizeCanvases(); refreshTree(); });
 }
 
 function refreshTree() {
@@ -439,7 +439,12 @@ function showGuide() {
   guideStep = 0;
   updateGuideStep(0);
   const guideCanvas = document.getElementById('guide-tree-canvas');
-  if (guideCanvas) drawTree(guideCanvas, 45, 5);
+  if (guideCanvas) {
+    const dpr = devicePixelRatio || 1;
+    guideCanvas.width  = guideCanvas.offsetWidth  * dpr || 160 * dpr;
+    guideCanvas.height = guideCanvas.offsetHeight * dpr || 220 * dpr;
+    drawTree(guideCanvas, 20, 5);
+  }
 }
 
 function updateGuideStep(step) {
