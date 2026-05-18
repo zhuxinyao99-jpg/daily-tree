@@ -352,6 +352,13 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
 #letter-overlay.letter-open #letter-close{opacity:1;}
 #letter-close:hover{background:rgba(255,255,255,0.13);color:#fff;border-color:rgba(255,255,255,0.28);}
 </style>
+<script>
+  (function(){
+    if (localStorage.getItem('daily_tree_visited') === 'true') {
+      window.location.replace('app/index.html');
+    }
+  })();
+</script>
 </head>
 <body>
 
@@ -459,7 +466,7 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
 </div>
 
 <div id="final-cta">
-  <a href="app/index.html" class="btn-p">免费开始</a>
+  <a href="#" class="btn-p" onclick="goApp();return false;">免费开始</a>
   <button class="btn-g" onclick="showLetter()">了解更多 →</button>
 </div>
 
@@ -696,6 +703,11 @@ function run(){
 }
 
 window.addEventListener('load',()=>{ initSwipe(); initAmbientParticles(); setTimeout(run,400); });
+
+function goApp() {
+  localStorage.setItem('daily_tree_visited', 'true');
+  window.location.href = 'app/index.html';
+}
 </script>
 </body>
 </html>
