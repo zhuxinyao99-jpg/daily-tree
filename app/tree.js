@@ -91,29 +91,94 @@ function drawAmbient(ctx, x, y, W, H, pal) {
 // ── Stage renderers ──
 
 function drawSeed(ctx, W, H, pal) {
-  const cx = W/2, cy = H - 30;
-  const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 18);
-  grd.addColorStop(0, `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.7)`);
-  grd.addColorStop(0.5, `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.2)`);
-  grd.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI*2);
-  ctx.fillStyle = grd; ctx.fill();
-  ctx.beginPath(); ctx.arc(cx, cy, 4, 0, Math.PI*2);
-  ctx.fillStyle = `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.9)`; ctx.fill();
+  const cx = W / 2, cy = H * 0.62;
+  const rng = makeRng(7);
+
+  // ground soil line
+  const ground = cy + 22;
+  const gGrd = ctx.createLinearGradient(cx - 60, ground, cx + 60, ground);
+  gGrd.addColorStop(0, 'rgba(0,0,0,0)');
+  gGrd.addColorStop(0.3, `rgba(${pal.br[0]},${pal.br[1]},${pal.br[2]},0.30)`);
+  gGrd.addColorStop(0.7, `rgba(${pal.br[0]},${pal.br[1]},${pal.br[2]},0.30)`);
+  gGrd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = gGrd;
+  ctx.fillRect(cx - 60, ground, 120, 5);
+
+  // outer ambient glow
+  const outerGrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, 80);
+  outerGrd.addColorStop(0, `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.08)`);
+  outerGrd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = outerGrd;
+  ctx.fillRect(cx - 80, cy - 80, 160, 160);
+
+  // inner glow halo
+  const halo = ctx.createRadialGradient(cx, cy, 4, cx, cy, 36);
+  halo.addColorStop(0, `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.55)`);
+  halo.addColorStop(0.45, `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.18)`);
+  halo.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath(); ctx.arc(cx, cy, 36, 0, Math.PI * 2);
+  ctx.fillStyle = halo; ctx.fill();
+
+  // seed body (teardrop-ish oval)
+  ctx.beginPath();
+  ctx.ellipse(cx, cy, 9, 12, -0.15, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(${pal.br[0]+20},${pal.br[1]+18},${pal.br[2]+12},0.92)`;
+  ctx.fill();
+  ctx.strokeStyle = `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.55)`;
+  ctx.lineWidth = 1.5; ctx.stroke();
+
+  // sparkle particles
+  for (let i = 0; i < 7; i++) {
+    const ang = rng() * Math.PI * 2;
+    const dist = 22 + rng() * 28;
+    const px = cx + Math.cos(ang) * dist, py = cy + Math.sin(ang) * dist;
+    const sr = 1.2 + rng() * 1.8;
+    ctx.beginPath(); ctx.arc(px, py, sr, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${pal.dot[0]},${pal.dot[1]},${pal.dot[2]},${0.35 + rng() * 0.4})`;
+    ctx.fill();
+  }
 }
 
 function drawSprout(ctx, W, H, pal) {
-  const bx = W/2, by = H - 28;
+  const bx = W / 2, by = H - 28;
+  const stemH = H * 0.18;
   drawAmbient(ctx, bx, by, W, H, pal);
-  ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx, by - 30);
-  ctx.lineWidth = 3; ctx.strokeStyle = `rgba(${pal.br[0]},${pal.br[1]},${pal.br[2]},0.75)`;
+
+  // ground soil
+  const gGrd = ctx.createLinearGradient(bx - 55, by, bx + 55, by);
+  gGrd.addColorStop(0, 'rgba(0,0,0,0)');
+  gGrd.addColorStop(0.3, `rgba(${pal.br[0]},${pal.br[1]},${pal.br[2]},0.28)`);
+  gGrd.addColorStop(0.7, `rgba(${pal.br[0]},${pal.br[1]},${pal.br[2]},0.28)`);
+  gGrd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = gGrd; ctx.fillRect(bx - 55, by, 110, 5);
+
+  // stem
+  ctx.beginPath(); ctx.moveTo(bx, by); ctx.lineTo(bx, by - stemH);
+  ctx.lineWidth = 5; ctx.strokeStyle = `rgba(${pal.br[0]},${pal.br[1]},${pal.br[2]},0.82)`;
   ctx.lineCap = 'round'; ctx.stroke();
-  for (const [sign, rx, ry] of [[-1, 12, 8], [1, 12, 8]]) {
+
+  // two main leaves
+  const ty = by - stemH;
+  for (const [sign, tilt] of [[-1, 0.5], [1, -0.5]]) {
+    const lw = stemH * 0.58, lh = stemH * 0.35;
+    const lx = bx + sign * stemH * 0.38, ly = ty + stemH * 0.08;
     ctx.beginPath();
-    ctx.ellipse(bx + sign * 10, by - 40, rx, ry, sign * 0.4, 0, Math.PI*2);
-    ctx.fillStyle = `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.55)`; ctx.fill();
-    ctx.strokeStyle = `rgba(${pal.rim[0]},${pal.rim[1]},${pal.rim[2]},0.3)`; ctx.lineWidth = 0.6; ctx.stroke();
+    ctx.ellipse(lx, ly, lw, lh, tilt, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.62)`; ctx.fill();
+    ctx.strokeStyle = `rgba(${pal.rim[0]},${pal.rim[1]},${pal.rim[2]},0.35)`; ctx.lineWidth = 1; ctx.stroke();
+    // leaf vein
+    ctx.beginPath(); ctx.moveTo(bx, ty); ctx.lineTo(lx + sign*lw*0.45, ly);
+    ctx.lineWidth = 0.8; ctx.strokeStyle = `rgba(${pal.rim[0]},${pal.rim[1]},${pal.rim[2]},0.22)`; ctx.stroke();
   }
+
+  // tip bud
+  const budGrd = ctx.createRadialGradient(bx, ty - 6, 0, bx, ty - 6, 14);
+  budGrd.addColorStop(0, `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.5)`);
+  budGrd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath(); ctx.arc(bx, ty - 6, 14, 0, Math.PI * 2);
+  ctx.fillStyle = budGrd; ctx.fill();
+  ctx.beginPath(); ctx.arc(bx, ty - 6, 5, 0, Math.PI * 2);
+  ctx.fillStyle = `rgba(${pal.lf[0]},${pal.lf[1]},${pal.lf[2]},0.85)`; ctx.fill();
 }
 
 function drawSapling(ctx, W, H, pal) {

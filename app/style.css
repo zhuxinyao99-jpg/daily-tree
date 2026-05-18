@@ -79,12 +79,17 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
   z-index: 100;
 }
 .bar-icon {
-  width: 36px; height: 36px; border-radius: 50%;
-  background: none; border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; border-radius: 14px;
+  background: rgba(108, 195, 90, 0.08);
+  border: 1px solid rgba(108, 195, 90, 0.12);
+  cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  transition: background .15s, border-color .15s;
 }
-.bar-icon svg { width: 16px; height: 16px; stroke: rgba(120, 190, 120, 0.45); transition: stroke .15s; }
-.bar-icon:hover svg { stroke: rgba(150, 220, 150, 0.8); }
+.bar-icon:hover { background: rgba(108, 195, 90, 0.16); border-color: rgba(108, 195, 90, 0.28); }
+.bar-icon svg { width: 20px; height: 20px; stroke: rgba(140, 210, 140, 0.82); transition: stroke .15s; }
+.bar-icon:hover svg { stroke: rgba(170, 240, 160, 1); }
+.bar-icon-label { font-size: 10px; color: rgba(140, 210, 140, 0.65); font-family: var(--font); letter-spacing: .02em; line-height: 1; }
 .bar-fab {
   width: 50px; height: 50px; border-radius: 50%;
   background: var(--accent);
@@ -97,12 +102,24 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); font-family:
 .bar-fab svg { width: 22px; height: 22px; stroke: #fff; }
 .bar-chart { display: flex; gap: 3px; align-items: flex-end; }
 .bar-day {
-  width: 5px; border-radius: 2px;
+  width: 5px; height: 20px; border-radius: 2px;
   background: rgba(80, 160, 80, 0.18);
-  transition: background .2s;
+  transition: background .2s, height .2s;
 }
-.bar-day.done { background: rgba(110, 200, 100, 0.55); }
-.bar-day.today { background: rgba(140, 230, 120, 0.85); }
+.bar-day.done { background: rgba(110, 200, 100, 0.55); height: 28px; }
+.bar-day.today { background: rgba(140, 230, 120, 0.85); height: 32px; }
+
+/* ── Empty Hint ── */
+.empty-hint {
+  position: absolute; inset: 0; z-index: 3;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  pointer-events: none;
+  opacity: 1; transition: opacity .4s;
+}
+.empty-hint.hidden { opacity: 0; }
+.empty-hint-icon { font-size: 42px; line-height: 1; filter: drop-shadow(0 0 18px rgba(108,195,90,0.55)); }
+.empty-hint-title { font-size: 17px; font-weight: 600; color: rgba(200, 235, 200, 0.75); letter-spacing: .02em; }
+.empty-hint-sub { font-size: 13px; color: rgba(140, 200, 140, 0.42); letter-spacing: .04em; }
 
 /* ── Branch Panel ── */
 .branch-panel {

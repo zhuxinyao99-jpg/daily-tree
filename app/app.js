@@ -157,6 +157,17 @@ function refreshTree() {
   drawTree(canvas, total, vitality);
   updateTopBar();
   updateBottomBar();
+  updateEmptyHint(total);
+}
+
+function updateEmptyHint(total) {
+  const hint = document.getElementById('empty-hint');
+  if (!hint) return;
+  if (total > 0) {
+    hint.classList.add('hidden');
+  } else {
+    hint.classList.remove('hidden');
+  }
 }
 
 // ── Top Bar ───────────────────────────────────────────────────────────────
