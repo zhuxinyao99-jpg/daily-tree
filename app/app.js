@@ -1,4 +1,4 @@
-import { drawTree, drawAnimated, getTrunkBounds, getStage } from './tree.js';
+import { drawTree, drawAnimated, getStage } from './tree.js';
 import { WeatherManager } from './weather.js';
 
 const STORAGE_KEY   = 'daily_tree_entries';
@@ -55,20 +55,89 @@ function computeTotalDaysThisYear() {
   return days.size;
 }
 
-function computeVitality7() {
-  const entries = loadEntries();
-  const now = Date.now();
-  let count = 0;
-  const seen = new Set();
-  for (const year in entries) {
-    for (const e of entries[year]) {
-      const dayKey = e.date.substring(0, 10);
-      if (seen.has(dayKey)) continue;
-      const diff = (now - new Date(e.date).getTime()) / 86400000;
-      if (diff >= 0 && diff < 7) { seen.add(dayKey); count++; }
-    }
+function getTreeSeed() {
+  let seed = parseInt(localStorage.getItem('daily_tree_seed') || '0', 10);
+  if (!seed) {
+    seed = Math.floor(Math.random() * 99999) + 1;
+    localStorage.setItem('daily_tree_seed', String(seed));
   }
-  return Math.min(7, count);
+  return seed;
+}
+
+// ── selectedDate ──────────────────────────────────────────────────────────
+
+let selectedDate = getTodayKey();
+
+function selectDate(dateKey) {
+  selectedDate = dateKey;
+  const todayKey = getTodayKey();
+  const chip = document.getElementById('today-chip');
+  if (chip) chip.classList.toggle('hidden', dateKey === todayKey);
+
+  const entries = loadEntries();
+  const year = parseInt(dateKey.split('-')[0], 10);
+  const entry = (entries[year] || []).find(e => e.date.substring(0, 10) === dateKey);
+
+  document.querySelectorAll('.timeline-cell').forEach(cell => {
+    cell.classList.toggle('selected', cell.dataset.date === dateKey);
+  });
+
+  if (entry) {
+    openModal(entry, dateKey !== todayKey);
+  } else if (dateKey === todayKey) {
+    openModal(null, false);
+  } else {
+    showToast('那天没有记录。');
+  }
+}
+
+function renderTimeline() {
+  const strip = document.getElementById('timeline-strip');
+  if (!strip) return;
+
+  const entries = loadEntries();
+  const todayKey = getTodayKey();
+  const today = new Date();
+
+  const doneSet = new Set();
+  for (const year in entries) {
+    for (const e of entries[year]) doneSet.add(e.date.substring(0, 10));
+  }
+
+  strip.innerHTML = '';
+  let todayCell = null;
+
+  for (let i = 59; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    const key = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    const isToday = key === todayKey;
+    const hasDot = doneSet.has(key);
+
+    const cell = document.createElement('div');
+    cell.className = 'timeline-cell' + (isToday ? ' today' : '') + (key === selectedDate ? ' selected' : '');
+    cell.dataset.date = key;
+
+    const label = document.createElement('div');
+    label.className = 'timeline-day';
+    label.textContent = `${d.getMonth()+1}/${d.getDate()}`;
+
+    const dot = document.createElement('div');
+    dot.className = 'timeline-dot' + (hasDot ? '' : ' empty');
+
+    cell.appendChild(label);
+    cell.appendChild(dot);
+    cell.addEventListener('click', () => selectDate(key));
+    strip.appendChild(cell);
+
+    if (isToday) todayCell = cell;
+  }
+
+  if (todayCell) {
+    requestAnimationFrame(() => {
+      todayCell.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+    });
+  }
 }
 
 // ── Toast ─────────────────────────────────────────────────────────────────
@@ -199,23 +268,34 @@ function initBgParticles(canvas) {
 
 let weatherManager = null;
 let treeAnimRafId  = null;
+let _branchSegments = [];
+
+function pointSegDist(px, py, ax, ay, bx, by) {
+  const dx = bx - ax, dy = by - ay;
+  const lenSq = dx*dx + dy*dy;
+  if (lenSq === 0) return Math.hypot(px-ax, py-ay);
+  const t = Math.max(0, Math.min(1, ((px-ax)*dx + (py-ay)*dy) / lenSq));
+  return Math.hypot(px - (ax + t*dx), py - (ay + t*dy));
+}
 
 function startTreeAnimation() {
   if (treeAnimRafId) { cancelAnimationFrame(treeAnimRafId); treeAnimRafId = null; }
   const canvas = document.getElementById('tree-canvas');
   if (!canvas) return;
-  const total    = computeTotalDaysThisYear();
-  const vitality = computeVitality7();
-  const stage    = getStage(total);
+  const total = computeTotalDaysThisYear();
+  const seed  = getTreeSeed();
+  const stage = getStage(total);
 
-  if (stage === 'seed' || stage === 'sprout') {
+  if (stage === 'seed' || stage === 'crack' || stage === 'sprout') {
     function frame(t) {
-      drawAnimated(canvas, total, vitality, t);
+      drawAnimated(canvas, total, seed, t);
       treeAnimRafId = requestAnimationFrame(frame);
     }
     treeAnimRafId = requestAnimationFrame(frame);
+    _branchSegments = [];
   } else {
-    drawTree(canvas, total, vitality);
+    const result = drawTree(canvas, total, seed);
+    _branchSegments = result.branchSegments || [];
   }
 }
 
@@ -247,7 +327,7 @@ function refreshTree() {
   const total = computeTotalDaysThisYear();
   startTreeAnimation();
   updateTopBar();
-  updateBottomBar();
+  renderTimeline();
   updateEmptyHint(total);
 }
 
@@ -276,39 +356,6 @@ function updateTopBar() {
   }
 }
 
-// ── Bottom Bar ────────────────────────────────────────────────────────────
-
-function updateBottomBar() {
-  const leftChart  = document.getElementById('bar-chart');
-  const rightChart = document.getElementById('bar-chart-right');
-  if (!leftChart || !rightChart) return;
-
-  const entries = loadEntries();
-  const today   = new Date();
-
-  const days = [];
-  for (let i = 13; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    const key  = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    const year = d.getFullYear();
-    const done = (entries[year] || []).some(e => e.date.substring(0,10) === key);
-    const isToday = i === 0;
-    days.push({ key, done, isToday });
-  }
-
-  function renderBars(container, slice) {
-    container.innerHTML = '';
-    slice.forEach(day => {
-      const bar = document.createElement('div');
-      bar.className = 'bar-day' + (day.done ? ' done' : '') + (day.isToday ? ' today' : '');
-      container.appendChild(bar);
-    });
-  }
-
-  renderBars(leftChart,  days.slice(0, 7));
-  renderBars(rightChart, days.slice(7, 14));
-}
 
 // ── Branch Panel ──────────────────────────────────────────────────────────
 
@@ -370,43 +417,57 @@ function closeBranchPanel() {
 }
 
 function onTreeClick(e) {
+  if (!_branchSegments.length) return;
   const canvas = document.getElementById('tree-canvas');
   if (!canvas) return;
 
-  const rect      = canvas.getBoundingClientRect();
-  const clickY    = e.clientY - rect.top;
-  const dpr       = devicePixelRatio || 1;
-  const stage     = getStage(computeTotalDaysThisYear());
-  const bounds    = getTrunkBounds(canvas, stage);
-  const trunkTopY = bounds[3] / dpr;
-  const trunkBotY = bounds[1] / dpr;
+  const rect = canvas.getBoundingClientRect();
+  const dpr  = devicePixelRatio || 1;
+  const cx   = (e.clientX - rect.left) * dpr;
+  const cy   = (e.clientY - rect.top)  * dpr;
 
-  if (clickY > trunkBotY || clickY < trunkTopY - 20) return;
+  let minDist = Infinity, nearest = null;
+  for (const seg of _branchSegments) {
+    const d = pointSegDist(cx, cy, seg.x0, seg.y0, seg.x1, seg.y1);
+    if (d < minDist) { minDist = d; nearest = seg; }
+  }
 
-  const relY = (clickY - trunkTopY) / (trunkBotY - trunkTopY);
-  const zone = relY < 0.33 ? 'recent' : relY < 0.66 ? 'mid' : 'early';
-  openBranchPanel(zone);
+  if (minDist < 18 * dpr) openBranchPanel(nearest.period);
 }
 
 // ── Modal ─────────────────────────────────────────────────────────────────
 
 let _editEntry = null;
 
-function openModal(entryToEdit) {
-  _editEntry = entryToEdit || null;
+function openModal(entryToEdit, readOnly) {
+  _editEntry = (!readOnly && entryToEdit) ? entryToEdit : null;
   const overlay  = document.getElementById('modal-overlay');
   const textarea = document.getElementById('entry-text');
   const label    = document.getElementById('modal-label');
+  const submit   = document.getElementById('entry-submit');
 
-  if (textarea) { textarea.value = entryToEdit ? entryToEdit.text : ''; updateCharCount(); }
-  if (label)    label.textContent = entryToEdit ? '修改记录' : '今天最重要的一件事？';
+  if (textarea) {
+    textarea.value = entryToEdit ? entryToEdit.text : '';
+    textarea.readOnly = !!readOnly;
+    updateCharCount();
+  }
+  if (label) {
+    label.textContent = readOnly
+      ? (entryToEdit?.date?.substring(0,10) || selectedDate)
+      : (entryToEdit ? '修改记录' : '今天最重要的一件事？');
+  }
+  if (submit) submit.style.display = readOnly ? 'none' : '';
 
   overlay?.classList.add('active');
-  setTimeout(() => textarea?.focus(), 150);
+  if (!readOnly) setTimeout(() => textarea?.focus(), 150);
 }
 
 function closeModal() {
   document.getElementById('modal-overlay')?.classList.remove('active');
+  const textarea = document.getElementById('entry-text');
+  const submit   = document.getElementById('entry-submit');
+  if (textarea) textarea.readOnly = false;
+  if (submit)   submit.style.display = '';
   _editEntry = null;
 }
 
@@ -416,6 +477,25 @@ function updateCharCount() {
   if (ta && cc) cc.textContent = ta.value.length;
 }
 
+function playSproutTransition(canvas, dayCount, seed) {
+  const stageBefore = getStage(dayCount - 1);
+  const stageAfter  = getStage(dayCount);
+  if (stageBefore === stageAfter) return;
+  if (!['seed','crack','sprout'].includes(stageAfter)) return;
+
+  const start = performance.now();
+  const DURATION = stageAfter === 'crack' ? 400 : 600;
+
+  function frame(now) {
+    const t = Math.min(1, (now - start) / DURATION);
+    drawAnimated(canvas, dayCount, seed, now);
+    if (t < 1) requestAnimationFrame(frame);
+    else startTreeAnimation();
+  }
+  if (treeAnimRafId) { cancelAnimationFrame(treeAnimRafId); treeAnimRafId = null; }
+  requestAnimationFrame(frame);
+}
+
 function submitEntry() {
   const ta   = document.getElementById('entry-text');
   const text = ta ? ta.value.trim() : '';
@@ -423,12 +503,20 @@ function submitEntry() {
   if (_editEntry) {
     updateEntry(_editEntry.id, text);
     showToast('已保存！', 'success');
+    closeModal();
+    refreshTree();
   } else {
+    const prevTotal = computeTotalDaysThisYear();
     addEntryWithDate(getTodayKey(), text);
     showSaveSuccess();
+    closeModal();
+    const newTotal = computeTotalDaysThisYear();
+    const canvas   = document.getElementById('tree-canvas');
+    if (canvas && newTotal !== prevTotal && getStage(newTotal) !== getStage(prevTotal)) {
+      playSproutTransition(canvas, newTotal, getTreeSeed());
+    }
+    refreshTree();
   }
-  closeModal();
-  refreshTree();
 }
 
 // ── Search ────────────────────────────────────────────────────────────────
@@ -548,7 +636,7 @@ function showGuide() {
     guideCanvas.style.height = GH + 'px';
     guideCanvas.width  = GW * dpr;
     guideCanvas.height = GH * dpr;
-    drawTree(guideCanvas, 20, 5);
+    drawTree(guideCanvas, 20, 12345);
   }
 }
 
@@ -575,7 +663,33 @@ function bindEvents() {
   });
 
   document.getElementById('fab-new')?.addEventListener('click', () => {
-    openModal(getTodayEntry());
+    selectedDate = getTodayKey();
+    openModal(getTodayEntry(), false);
+  });
+
+  document.getElementById('today-chip')?.addEventListener('click', () => {
+    selectedDate = getTodayKey();
+    document.getElementById('today-chip')?.classList.add('hidden');
+    document.querySelectorAll('.timeline-cell').forEach(cell => {
+      cell.classList.toggle('selected', cell.dataset.date === selectedDate);
+    });
+    const todayCell = document.querySelector('.timeline-cell.today');
+    if (todayCell) todayCell.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+  });
+
+  document.getElementById('btn-tree')?.addEventListener('click', () => {
+    const total = computeTotalDaysThisYear();
+    openBranchPanel(total >= 91 ? 'recent' : 'early');
+  });
+
+  document.getElementById('btn-cal')?.addEventListener('click', () => {
+    const todayCell = document.querySelector('.timeline-cell.today');
+    if (todayCell) todayCell.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+  });
+
+  document.getElementById('btn-stats')?.addEventListener('click', () => {
+    const total = computeTotalDaysThisYear();
+    showToast(`今年共记录 ${total} 天 🌱`);
   });
 
   document.getElementById('tree-canvas')?.addEventListener('click', onTreeClick);
@@ -593,7 +707,6 @@ function bindEvents() {
     if (e.key === 'Escape') closeModal();
   });
 
-  document.getElementById('btn-search')?.addEventListener('click', openSearch);
   document.getElementById('search-close')?.addEventListener('click', closeSearch);
   document.getElementById('search-overlay')?.addEventListener('click', e => {
     if (e.target.id === 'search-overlay') closeSearch();
