@@ -1,0 +1,3 @@
+{"type":"server-started","port":64304,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:64304","screen_dir":"/tmp/daily-tree/.superpowers/brainstorm/25623-1779026977/content","state_dir":"/tmp/daily-tree/.superpowers/brainstorm/25623-1779026977/state"}
+{"type":"screen-added","file":"/tmp/daily-tree/.superpowers/brainstorm/25623-1779026977/content/current-state.html"}
+{"type":"server-stopped","reason":"idle timeout"}

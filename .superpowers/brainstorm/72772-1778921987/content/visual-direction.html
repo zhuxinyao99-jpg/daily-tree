@@ -1,0 +1,81 @@
+<h2>Daily Tree — 整体视觉风格方向</h2>
+<p class="subtitle">选择一个最符合你期望的设计基调。三种方向都保留深色底和树林主题。</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #0A0A0B;
+      display: flex; align-items: center; justify-content: center;
+      height: 160px; flex-direction: column; gap: 12px;
+      font-family: 'Inter', system-ui, sans-serif;
+    ">
+      <!-- Minimal ring tree -->
+      <svg viewBox="0 0 80 80" fill="none" width="72" height="72">
+        <circle cx="40" cy="40" r="32" stroke="#4A7C59" stroke-width="0.6" opacity="0.25"/>
+        <circle cx="40" cy="40" r="22" stroke="#4A7C59" stroke-width="0.8" opacity="0.45"/>
+        <circle cx="40" cy="40" r="13" stroke="#4A7C59" stroke-width="1" opacity="0.65"/>
+        <circle cx="40" cy="40" r="6" fill="#4A7C59" opacity="0.8"/>
+      </svg>
+      <div style="display:flex; gap: 20px; align-items: center;">
+        <div style="width:2px; height:28px; background: linear-gradient(to bottom, #8B7355, transparent); border-radius: 1px;"></div>
+        <div style="font-size:11px; color: rgba(232,232,236,0.35); letter-spacing: 0.15em; font-weight:500;">2026 · 12 entries</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 极简禅意</h3>
+      <p>更少的视觉噪音。环形树更轻盈，更多留白，排版精致克制。类似 Linear / Craft 的极简感。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #0D1117;
+      display: flex; align-items: center; justify-content: center;
+      height: 160px; flex-direction: column; gap: 8px;
+      font-family: 'Inter', system-ui, sans-serif;
+      position: relative; overflow: hidden;
+    ">
+      <!-- Atmospheric glow effect -->
+      <div style="position:absolute; width:120px; height:120px; border-radius:50%; background: radial-gradient(circle, rgba(74,124,89,0.15) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%);"></div>
+      <svg viewBox="0 0 80 80" fill="none" width="76" height="76" style="position:relative; z-index:1;">
+        <circle cx="40" cy="40" r="30" stroke="#4A7C59" stroke-width="1" opacity="0.2"/>
+        <circle cx="40" cy="40" r="22" stroke="#4A7C59" stroke-width="1.2" opacity="0.4"/>
+        <circle cx="40" cy="40" r="15" stroke="#6B9B7A" stroke-width="1.5" opacity="0.6"/>
+        <circle cx="40" cy="40" r="8" fill="#4A7C59" opacity="0.85"/>
+        <circle cx="40" cy="40" r="8" fill="#4A7C59" opacity="0.3" style="filter: blur(4px);"/>
+      </svg>
+      <div style="font-size:10px; color: rgba(107,155,122,0.6); letter-spacing: 0.2em; font-weight:500; position:relative; z-index:1;">GROWING · TODAY</div>
+    </div>
+    <div class="card-body">
+      <h3>B. 有机发光</h3>
+      <p>深色底上有柔和的绿色光晕。树有更强的存在感和"呼吸感"。类似 Vercel Dashboard / Raycast 的氛围感。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #0F0E0C;
+      display: flex; align-items: center; justify-content: center;
+      height: 160px; flex-direction: column; gap: 10px;
+      font-family: Georgia, serif;
+      position: relative; overflow: hidden;
+    ">
+      <!-- Warm earth tones -->
+      <div style="position:absolute; inset:0; background: linear-gradient(135deg, rgba(196,167,125,0.04) 0%, transparent 60%);"></div>
+      <svg viewBox="0 0 80 90" fill="none" width="68" height="76" style="position:relative;">
+        <rect x="37" y="60" width="6" height="26" rx="2" fill="#6B5A40"/>
+        <circle cx="40" cy="38" r="26" stroke="#C4A77D" stroke-width="0.5" opacity="0.2"/>
+        <circle cx="40" cy="38" r="19" stroke="#C4A77D" stroke-width="0.8" opacity="0.4"/>
+        <circle cx="40" cy="38" r="12" stroke="#8B7355" stroke-width="1" opacity="0.6"/>
+        <circle cx="40" cy="38" r="6" fill="#8B7355" opacity="0.75"/>
+      </svg>
+      <div style="font-size:9px; color: rgba(196,167,125,0.5); letter-spacing: 0.25em; text-transform: uppercase; font-family: 'Georgia', serif;">May · 2026</div>
+    </div>
+    <div class="card-body">
+      <h3>C. 自然纸质</h3>
+      <p>暖棕色调取代纯绿，像木头年轮的材质感。排版偏衬线字体，有手帐/日记的温度。</p>
+    </div>
+  </div>
+
+</div>

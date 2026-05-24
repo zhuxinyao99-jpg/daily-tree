@@ -1,0 +1,204 @@
+<h2>树的形态 — 侧视图风格</h2>
+<p class="subtitle">每天记录让树生长。哪种形态最符合你的感觉？</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #0A0C10;
+      display: flex; align-items: flex-end; justify-content: center;
+      height: 200px; gap: 18px; padding-bottom: 16px;
+      position: relative; overflow: hidden;
+    ">
+      <div style="position:absolute; bottom:0; left:0; right:0; height:2px; background: linear-gradient(to right, transparent, rgba(74,124,89,0.3), transparent);"></div>
+      <!-- 早期小树 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+        <svg viewBox="0 0 40 60" fill="none" width="36">
+          <ellipse cx="20" cy="28" rx="10" ry="12" fill="none" stroke="#3D5A47" stroke-width="1" opacity="0.5"/>
+          <rect x="18" y="38" width="4" height="18" rx="1.5" fill="#4A3A28"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(232,232,236,0.3);letter-spacing:.1em;">7天</span>
+      </div>
+      <!-- 中期树 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+        <svg viewBox="0 0 56 80" fill="none" width="48">
+          <ellipse cx="28" cy="34" rx="16" ry="20" fill="none" stroke="#4A7C59" stroke-width="1.2" opacity="0.6"/>
+          <ellipse cx="28" cy="28" rx="10" ry="12" fill="none" stroke="#6B9B7A" stroke-width="1" opacity="0.4"/>
+          <rect x="25" y="52" width="6" height="24" rx="2" fill="#5A4630"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(232,232,236,0.3);letter-spacing:.1em;">3个月</span>
+      </div>
+      <!-- 成熟大树 + 发光 -->
+      <div style="display:flex;flex-direction:column;align-items:center;gap:0;position:relative;">
+        <div style="position:absolute;top:10px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(74,124,89,0.2) 0%,transparent 70%);"></div>
+        <svg viewBox="0 0 80 110" fill="none" width="72">
+          <defs>
+            <radialGradient id="canopyGlow" cx="50%" cy="45%" r="50%">
+              <stop offset="0%" stop-color="#6B9B7A" stop-opacity="0.8"/>
+              <stop offset="60%" stop-color="#4A7C59" stop-opacity="0.5"/>
+              <stop offset="100%" stop-color="#4A7C59" stop-opacity="0.1"/>
+            </radialGradient>
+          </defs>
+          <!-- 树冠层叠 -->
+          <ellipse cx="40" cy="44" rx="30" ry="34" fill="url(#canopyGlow)" opacity="0.3"/>
+          <ellipse cx="40" cy="46" rx="24" ry="28" fill="none" stroke="#4A7C59" stroke-width="1" opacity="0.5"/>
+          <ellipse cx="40" cy="38" rx="18" ry="22" fill="none" stroke="#6B9B7A" stroke-width="1.2" opacity="0.65"/>
+          <ellipse cx="40" cy="30" rx="11" ry="14" fill="none" stroke="#6B9B7A" stroke-width="1.5" opacity="0.8"/>
+          <!-- 树干 -->
+          <path d="M34 70 Q36 78 38 86 L42 86 Q40 78 46 70" fill="#6B5A40" opacity="0.9"/>
+          <rect x="36" y="84" width="8" height="24" rx="2.5" fill="#6B5A40"/>
+          <!-- 年轮暗示 in trunk -->
+          <ellipse cx="40" cy="92" rx="4" ry="1.5" fill="none" stroke="#4A3A28" stroke-width="0.5" opacity="0.4"/>
+          <ellipse cx="40" cy="96" rx="4" ry="1.5" fill="none" stroke="#4A3A28" stroke-width="0.5" opacity="0.3"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(107,155,122,0.6);letter-spacing:.1em;">1年</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 树冠轮廓生长</h3>
+      <p>树冠由小变大，层层椭圆叠加形成冠幅。记录越多树越茂盛。树干微微可见年轮纹理。简洁又有树的意象。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #080A0D;
+      display: flex; align-items: flex-end; justify-content: center;
+      height: 200px; gap: 14px; padding-bottom: 16px;
+      position: relative; overflow: hidden;
+    ">
+      <div style="position:absolute; bottom:0; left:0; right:0; height:1px; background: linear-gradient(to right, transparent, rgba(139,115,85,0.25), transparent);"></div>
+
+      <!-- 早期 -->
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <svg viewBox="0 0 36 64" fill="none" width="30">
+          <line x1="18" y1="8" x2="18" y2="52" stroke="#4A3A28" stroke-width="2" stroke-linecap="round"/>
+          <line x1="18" y1="20" x2="10" y2="30" stroke="#3D5A47" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+          <line x1="18" y1="28" x2="26" y2="36" stroke="#3D5A47" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+          <circle cx="18" cy="10" r="3" fill="#3D5A47" opacity="0.5"/>
+          <circle cx="10" cy="28" r="2" fill="#3D5A47" opacity="0.4"/>
+          <circle cx="26" cy="34" r="2" fill="#3D5A47" opacity="0.4"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(232,232,236,0.25);letter-spacing:.1em;margin-top:4px;">幼苗</span>
+      </div>
+
+      <!-- 中期 -->
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <svg viewBox="0 0 52 80" fill="none" width="44">
+          <line x1="26" y1="6" x2="26" y2="62" stroke="#5A4830" stroke-width="2.5" stroke-linecap="round"/>
+          <line x1="26" y1="18" x2="12" y2="32" stroke="#4A7C59" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+          <line x1="26" y1="26" x2="40" y2="36" stroke="#4A7C59" stroke-width="1.5" stroke-linecap="round" opacity="0.6"/>
+          <line x1="26" y1="36" x2="14" y2="46" stroke="#4A7C59" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+          <line x1="26" y1="42" x2="38" y2="50" stroke="#4A7C59" stroke-width="1.2" stroke-linecap="round" opacity="0.5"/>
+          <circle cx="26" cy="8" r="4" fill="#4A7C59" opacity="0.7"/>
+          <circle cx="10" cy="30" r="3" fill="#4A7C59" opacity="0.5"/>
+          <circle cx="42" cy="34" r="3" fill="#4A7C59" opacity="0.5"/>
+          <circle cx="12" cy="44" r="2.5" fill="#6B9B7A" opacity="0.45"/>
+          <circle cx="40" cy="48" r="2.5" fill="#6B9B7A" opacity="0.45"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(232,232,236,0.3);letter-spacing:.1em;margin-top:4px;">3个月</span>
+      </div>
+
+      <!-- 成熟 -->
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;">
+        <div style="position:absolute;top:5px;width:72px;height:72px;border-radius:50%;background:radial-gradient(circle,rgba(74,124,89,0.18) 0%,transparent 70%);"></div>
+        <svg viewBox="0 0 72 100" fill="none" width="64">
+          <defs>
+            <filter id="leafGlow"><feGaussianBlur stdDeviation="1.5" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
+          </defs>
+          <!-- 树干 -->
+          <line x1="36" y1="5" x2="36" y2="78" stroke="#7A6848" stroke-width="3.5" stroke-linecap="round"/>
+          <!-- 主枝 -->
+          <line x1="36" y1="22" x2="16" y2="40" stroke="#6B9B7A" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          <line x1="36" y1="30" x2="56" y2="44" stroke="#6B9B7A" stroke-width="2" stroke-linecap="round" opacity="0.7"/>
+          <line x1="36" y1="40" x2="18" y2="55" stroke="#4A7C59" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+          <line x1="36" y1="48" x2="54" y2="60" stroke="#4A7C59" stroke-width="1.8" stroke-linecap="round" opacity="0.6"/>
+          <line x1="36" y1="14" x2="28" y2="28" stroke="#6B9B7A" stroke-width="1.5" stroke-linecap="round" opacity="0.65"/>
+          <line x1="36" y1="58" x2="20" y2="68" stroke="#4A7C59" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <line x1="36" y1="62" x2="52" y2="70" stroke="#4A7C59" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+          <!-- 叶点 + 发光 -->
+          <circle cx="36" cy="6"  r="5"  fill="#6B9B7A" opacity="0.9" filter="url(#leafGlow)"/>
+          <circle cx="14" cy="38" r="4"  fill="#6B9B7A" opacity="0.8" filter="url(#leafGlow)"/>
+          <circle cx="58" cy="42" r="4"  fill="#6B9B7A" opacity="0.8" filter="url(#leafGlow)"/>
+          <circle cx="16" cy="53" r="3.5" fill="#4A7C59" opacity="0.7"/>
+          <circle cx="56" cy="58" r="3.5" fill="#4A7C59" opacity="0.7"/>
+          <circle cx="26" cy="26" r="3"  fill="#4A7C59" opacity="0.6"/>
+          <circle cx="18" cy="66" r="3"  fill="#4A7C59" opacity="0.6"/>
+          <circle cx="54" cy="68" r="3"  fill="#4A7C59" opacity="0.6"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(107,155,122,0.55);letter-spacing:.1em;margin-top:4px;">1年</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 枝丫生长型</h3>
+      <p>每次记录长出新枝丫+叶点。像真实树的生长过程，能感受到"又多了一天"的具体变化。发光叶点就是最近的记录。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="
+      background: #09080D;
+      display: flex; align-items: flex-end; justify-content: center;
+      height: 200px; gap: 16px; padding-bottom: 16px;
+      position: relative; overflow: hidden;
+    ">
+      <!-- Starfield dots -->
+      <div style="position:absolute;inset:0;">
+        <div style="position:absolute;width:2px;height:2px;border-radius:50%;background:rgba(107,155,122,0.4);top:20px;left:40px;"></div>
+        <div style="position:absolute;width:1.5px;height:1.5px;border-radius:50%;background:rgba(107,155,122,0.3);top:35px;right:55px;"></div>
+        <div style="position:absolute;width:1px;height:1px;border-radius:50%;background:rgba(196,167,125,0.3);top:15px;left:80px;"></div>
+      </div>
+
+      <!-- 早期 -->
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <svg viewBox="0 0 40 70" fill="none" width="32">
+          <path d="M20 60 Q20 40 20 28" stroke="#4A3A28" stroke-width="2" stroke-linecap="round"/>
+          <!-- small triangular crown -->
+          <polygon points="20,8 10,30 30,30" fill="none" stroke="#3D5A47" stroke-width="1" opacity="0.5"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(232,232,236,0.25);letter-spacing:.1em;margin-top:2px;">初期</span>
+      </div>
+
+      <!-- 中期 -->
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <svg viewBox="0 0 54 80" fill="none" width="46">
+          <path d="M27 72 Q26 58 27 45" stroke="#5A4830" stroke-width="2.5" stroke-linecap="round"/>
+          <polygon points="27,6 10,30 44,30" fill="rgba(74,124,89,0.12)" stroke="#4A7C59" stroke-width="1" opacity="0.7"/>
+          <polygon points="27,16 14,38 40,38" fill="rgba(74,124,89,0.1)" stroke="#4A7C59" stroke-width="0.8" opacity="0.5"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(232,232,236,0.3);letter-spacing:.1em;margin-top:2px;">中期</span>
+      </div>
+
+      <!-- 成熟 -->
+      <div style="display:flex;flex-direction:column;align-items:center;position:relative;">
+        <div style="position:absolute;top:0;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(74,124,89,0.22) 0%,transparent 65%);"></div>
+        <svg viewBox="0 0 78 105" fill="none" width="70">
+          <defs>
+            <radialGradient id="crownFill" cx="50%" cy="40%" r="55%">
+              <stop offset="0%" stop-color="#6B9B7A" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#4A7C59" stop-opacity="0.05"/>
+            </radialGradient>
+          </defs>
+          <!-- trunk -->
+          <path d="M39 92 Q38 75 39 58" stroke="#7A6848" stroke-width="4" stroke-linecap="round"/>
+          <!-- crown layers (triangular/organic) -->
+          <polygon points="39,4 14,42 64,42" fill="url(#crownFill)" stroke="#4A7C59" stroke-width="1.2" opacity="0.8"/>
+          <polygon points="39,16 18,50 60,50" fill="url(#crownFill)" stroke="#6B9B7A" stroke-width="1" opacity="0.7"/>
+          <polygon points="39,28 20,58 58,58" fill="url(#crownFill)" stroke="#6B9B7A" stroke-width="0.8" opacity="0.55"/>
+          <!-- glow tip -->
+          <circle cx="39" cy="6" r="4" fill="#6B9B7A" opacity="0.9"/>
+          <circle cx="39" cy="6" r="7" fill="#4A7C59" opacity="0.15"/>
+          <!-- year ring hint in trunk -->
+          <ellipse cx="39" cy="80" rx="3" ry="1" fill="none" stroke="#5A4830" stroke-width="0.6" opacity="0.35"/>
+          <ellipse cx="39" cy="85" rx="3" ry="1" fill="none" stroke="#5A4830" stroke-width="0.6" opacity="0.25"/>
+        </svg>
+        <span style="font-size:9px;color:rgba(107,155,122,0.55);letter-spacing:.1em;margin-top:2px;">成熟</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 轮廓树冠 + 年轮树干</h3>
+      <p>外轮廓是经典三角形树冠（松/杉意象），树干上隐约可见年轮纹路。极简线条，但能同时传递"树"和"年轮"两个概念。</p>
+    </div>
+  </div>
+
+</div>

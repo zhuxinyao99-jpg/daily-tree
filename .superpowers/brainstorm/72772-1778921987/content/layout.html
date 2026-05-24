@@ -1,0 +1,145 @@
+<h2>整体布局方向</h2>
+<p class="subtitle">树在中间不变。左侧 / 右侧 / 底部的信息如何组织？</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="A" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0A0C10;height:220px;padding:12px;display:flex;flex-direction:column;gap:0;overflow:hidden;">
+      <!-- Layout A: Left sidebar + full canvas -->
+      <div style="display:flex;height:100%;gap:8px;">
+        <!-- Narrow left sidebar -->
+        <div style="width:56px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid rgba(255,255,255,0.06);padding:8px 0;display:flex;flex-direction:column;align-items:center;gap:6px;flex-shrink:0;">
+          <!-- tree icons in sidebar -->
+          <div style="width:28px;height:28px;border-radius:6px;background:rgba(74,124,89,0.3);display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 20 26" fill="none" width="16"><path d="M10 24 C10 20 9 16 10 10" stroke="#7A6848" stroke-width="1.8" stroke-linecap="round"/><ellipse cx="10" cy="10" rx="7" ry="8" fill="rgba(74,124,89,0.6)"/></svg>
+          </div>
+          <div style="width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;opacity:0.5;">
+            <svg viewBox="0 0 20 26" fill="none" width="14"><path d="M10 24 C10 20 9 16 10 10" stroke="#5A4830" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="10" cy="10" rx="5" ry="6" fill="rgba(61,79,95,0.5)"/></svg>
+          </div>
+          <div style="width:28px;height:28px;border-radius:6px;background:rgba(255,255,255,0.04);display:flex;align-items:center;justify-content:center;opacity:0.35;">
+            <svg viewBox="0 0 20 26" fill="none" width="12"><path d="M10 24 C10 20 9 16 10 10" stroke="#4A3A28" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="10" cy="10" rx="4" ry="5" fill="rgba(50,40,30,0.5)"/></svg>
+          </div>
+          <div style="flex:1;"></div>
+          <!-- streak badge -->
+          <div style="font-size:9px;color:rgba(196,167,125,0.7);font-weight:600;text-align:center;line-height:1.2;">7<br><span style="font-size:7px;opacity:0.6;">days</span></div>
+          <!-- add button -->
+          <div style="width:28px;height:28px;border-radius:6px;background:rgba(74,124,89,0.4);display:flex;align-items:center;justify-content:center;">
+            <span style="color:#6B9B7A;font-size:16px;line-height:1;">+</span>
+          </div>
+        </div>
+        <!-- Main canvas -->
+        <div style="flex:1;background:rgba(255,255,255,0.015);border-radius:8px;border:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;position:relative;">
+          <svg viewBox="0 0 90 110" fill="none" width="72">
+            <defs><radialGradient id="lg1" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#7DB88A" stop-opacity="0.85"/><stop offset="100%" stop-color="#3D6B4A" stop-opacity="0.5"/></radialGradient></defs>
+            <path d="M45 105 C43 88 42 70 44 50 C46 38 44 24 45 12" stroke="#8B7355" stroke-width="4" stroke-linecap="round"/>
+            <ellipse cx="38" cy="56" rx="14" ry="13" fill="url(#lg1)" opacity="0.55" transform="rotate(-12 38 56)"/>
+            <ellipse cx="54" cy="50" rx="15" ry="13" fill="url(#lg1)" opacity="0.6"/>
+            <ellipse cx="36" cy="43" rx="13" ry="14" fill="url(#lg1)" opacity="0.65" transform="rotate(-8 36 43)"/>
+            <ellipse cx="54" cy="37" rx="13" ry="12" fill="url(#lg1)" opacity="0.65"/>
+            <ellipse cx="45" cy="28" rx="14" ry="13" fill="url(#lg1)" opacity="0.75"/>
+            <ellipse cx="45" cy="16" rx="10" ry="10" fill="url(#lg1)" opacity="0.85"/>
+          </svg>
+          <!-- today status chip -->
+          <div style="position:absolute;top:8px;right:8px;background:rgba(74,124,89,0.2);border:1px solid rgba(74,124,89,0.4);border-radius:20px;padding:3px 8px;font-size:8px;color:rgba(107,155,122,0.9);">今天已记录 ✓</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. 极窄图标侧边栏</h3>
+      <p>左侧只有 56px 图标栏，每棵树缩略图+streak+按钮。树占主视野。点树图标弹出详情面板。最大化沉浸感。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="B" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0A0C10;height:220px;padding:12px;display:flex;flex-direction:column;gap:8px;overflow:hidden;">
+      <div style="display:flex;height:100%;gap:8px;">
+        <!-- Left sidebar medium -->
+        <div style="width:110px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid rgba(255,255,255,0.06);padding:10px 8px;display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+          <div style="font-size:8px;color:rgba(232,232,236,0.3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:2px;">我的树</div>
+          <!-- year items -->
+          <div style="background:rgba(74,124,89,0.15);border-radius:6px;padding:5px 6px;border:1px solid rgba(74,124,89,0.3);">
+            <div style="font-size:9px;color:rgba(232,232,236,0.9);font-weight:600;">2026</div>
+            <div style="font-size:8px;color:rgba(107,155,122,0.7);">23 entries</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:5px 6px;opacity:0.6;">
+            <div style="font-size:9px;color:rgba(232,232,236,0.6);">2025</div>
+            <div style="font-size:8px;color:rgba(100,100,100,0.7);">87 entries</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:6px;padding:5px 6px;opacity:0.4;">
+            <div style="font-size:9px;color:rgba(232,232,236,0.5);">2024</div>
+            <div style="font-size:8px;color:rgba(100,100,100,0.6);">62 entries</div>
+          </div>
+          <div style="flex:1;"></div>
+          <!-- streak -->
+          <div style="background:rgba(196,167,125,0.1);border-radius:6px;padding:5px 6px;border:1px solid rgba(196,167,125,0.2);">
+            <div style="font-size:8px;color:rgba(196,167,125,0.6);">连续</div>
+            <div style="font-size:11px;color:rgba(196,167,125,0.9);font-weight:700;">7天 🔥</div>
+          </div>
+        </div>
+        <!-- Canvas -->
+        <div style="flex:1;background:rgba(255,255,255,0.015);border-radius:8px;border:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;position:relative;">
+          <svg viewBox="0 0 90 110" fill="none" width="70">
+            <defs><radialGradient id="lg2" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#7DB88A" stop-opacity="0.85"/><stop offset="100%" stop-color="#3D6B4A" stop-opacity="0.5"/></radialGradient></defs>
+            <path d="M45 105 C43 88 42 70 44 50 C46 38 44 24 45 12" stroke="#8B7355" stroke-width="4" stroke-linecap="round"/>
+            <ellipse cx="38" cy="56" rx="14" ry="13" fill="url(#lg2)" opacity="0.55" transform="rotate(-12 38 56)"/>
+            <ellipse cx="54" cy="50" rx="15" ry="13" fill="url(#lg2)" opacity="0.6"/>
+            <ellipse cx="36" cy="43" rx="13" ry="14" fill="url(#lg2)" opacity="0.65"/>
+            <ellipse cx="54" cy="37" rx="13" ry="12" fill="url(#lg2)" opacity="0.65"/>
+            <ellipse cx="45" cy="28" rx="14" ry="13" fill="url(#lg2)" opacity="0.75"/>
+            <ellipse cx="45" cy="16" rx="10" ry="10" fill="url(#lg2)" opacity="0.85"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. 信息侧边栏</h3>
+      <p>左侧 110px，显示年份列表+条目数+streak。信息密度适中，一眼看到历年数据。当前方案的升级版。</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="C" onclick="toggleSelect(this)">
+    <div class="card-image" style="background:#0A0C10;height:220px;padding:12px;display:flex;flex-direction:column;gap:8px;overflow:hidden;">
+      <!-- Full canvas, bottom bar -->
+      <div style="flex:1;background:rgba(255,255,255,0.015);border-radius:8px;border:1px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:center;position:relative;">
+        <svg viewBox="0 0 100 120" fill="none" width="80">
+          <defs><radialGradient id="lg3" cx="50%" cy="40%" r="55%"><stop offset="0%" stop-color="#7DB88A" stop-opacity="0.85"/><stop offset="100%" stop-color="#3D6B4A" stop-opacity="0.5"/></radialGradient></defs>
+          <path d="M50 114 C48 95 47 76 49 55 C51 42 49 26 50 10" stroke="#8B7355" stroke-width="4.5" stroke-linecap="round"/>
+          <ellipse cx="42" cy="62" rx="15" ry="14" fill="url(#lg3)" opacity="0.55" transform="rotate(-12 42 62)"/>
+          <ellipse cx="60" cy="55" rx="16" ry="14" fill="url(#lg3)" opacity="0.6"/>
+          <ellipse cx="40" cy="48" rx="14" ry="15" fill="url(#lg3)" opacity="0.65"/>
+          <ellipse cx="60" cy="41" rx="14" ry="13" fill="url(#lg3)" opacity="0.65"/>
+          <ellipse cx="50" cy="30" rx="15" ry="14" fill="url(#lg3)" opacity="0.75"/>
+          <ellipse cx="50" cy="14" rx="11" ry="11" fill="url(#lg3)" opacity="0.85"/>
+        </svg>
+        <!-- year label floating -->
+        <div style="position:absolute;top:8px;left:10px;font-size:9px;color:rgba(232,232,236,0.3);letter-spacing:.1em;">2026</div>
+        <!-- streak floating -->
+        <div style="position:absolute;top:8px;right:10px;font-size:9px;color:rgba(196,167,125,0.6);font-weight:600;">🔥 7天</div>
+      </div>
+      <!-- Bottom dock -->
+      <div style="height:36px;background:rgba(255,255,255,0.03);border-radius:8px;border:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-around;padding:0 8px;flex-shrink:0;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1px;">
+          <svg viewBox="0 0 16 20" fill="none" width="12"><path d="M8 18 C8 14 7 10 8 6" stroke="#8B7355" stroke-width="1.5" stroke-linecap="round"/><ellipse cx="8" cy="6" rx="5" ry="6" fill="rgba(74,124,89,0.7)"/></svg>
+          <span style="font-size:6px;color:rgba(107,155,122,0.6);">2026</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1px;opacity:0.5;">
+          <svg viewBox="0 0 16 20" fill="none" width="10"><path d="M8 18 C8 14 7 10 8 6" stroke="#5A4830" stroke-width="1.2" stroke-linecap="round"/><ellipse cx="8" cy="6" rx="4" ry="5" fill="rgba(61,79,95,0.5)"/></svg>
+          <span style="font-size:6px;color:rgba(100,100,100,0.5);">2025</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:1px;opacity:0.35;">
+          <svg viewBox="0 0 16 20" fill="none" width="9"><path d="M8 18 C8 14 7 10 8 6" stroke="#4A3A28" stroke-width="1" stroke-linecap="round"/><ellipse cx="8" cy="6" rx="3" ry="4" fill="rgba(40,30,20,0.5)"/></svg>
+          <span style="font-size:6px;color:rgba(100,100,100,0.4);">2024</span>
+        </div>
+        <div style="width:1px;height:20px;background:rgba(255,255,255,0.06);"></div>
+        <div style="width:24px;height:24px;border-radius:50%;background:rgba(74,124,89,0.5);display:flex;align-items:center;justify-content:center;">
+          <span style="color:#6B9B7A;font-size:14px;line-height:1;">+</span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. 全屏树 + 底部导航坞</h3>
+      <p>树占满屏幕，底部一条导航坞放年份缩略树+记录按钮。最沉浸，最移动端友好。像手机 App 的感觉。</p>
+    </div>
+  </div>
+
+</div>

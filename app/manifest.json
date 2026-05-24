@@ -1,0 +1,15 @@
+{
+  "name": "Daily Tree",
+  "short_name": "Daily Tree",
+  "description": "每日成长，一棵属于你的树",
+  "start_url": "/daily-tree/app/index.html",
+  "scope": "/daily-tree/",
+  "display": "standalone",
+  "background_color": "#2a0c04",
+  "theme_color": "#2a0c04",
+  "orientation": "portrait",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

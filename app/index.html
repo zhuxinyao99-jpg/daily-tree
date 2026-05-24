@@ -1,201 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daily Tree — Watch your life grow in rings</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Daily Tree</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#2a0c04">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Daily Tree">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+  <link rel="apple-touch-icon" sizes="167x167" href="icons/icon-167.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/icon-180.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/icon-60.png">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <!-- Load Three.js as global BEFORE modules parse their `import * as THREE from 'three'` -->
-  <script src="webgl/three.js"></script>
-  <script>
-    // Ensure THREE is available before any ES module imports it
-    if (typeof THREE !== 'undefined') window.THREE = THREE;
-  </script>
 </head>
 <body>
 
-<!-- Hamburger: mobile only -->
-<button class="sidebar-toggle" id="sidebar-toggle" aria-label="Toggle menu">
-  <span></span>
-  <span></span>
-  <span></span>
-</button>
-
-<div class="app">
-  <!-- ── Sidebar ── -->
-  <aside class="sidebar">
-    <div class="sidebar-top">
-      <a href="../index.html" class="sidebar-logo">
-        <svg viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="4" fill="#4A7C59"/>
-          <circle cx="12" cy="12" r="8" stroke="#4A7C59" stroke-width="1" opacity="0.4"/>
-          <circle cx="12" cy="12" r="11" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/>
-        </svg>
-        Daily Tree
-      </a>
-      <button class="lang-toggle" id="lang-toggle" title="Switch language">EN / 中文</button>
-    </div>
-    <div class="sidebar-label" data-i18n="years">Years</div>
-    <ul class="year-list" id="year-list">
-      <!-- populated by JS -->
-    </ul>
-    <p class="sidebar-hint" data-i18n="sidebarHint">Click a year to read. Click + to record today.</p>
-  </aside>
-
-  <!-- ── Main Canvas Area ── -->
-  <main class="main-canvas">
-    <canvas id="forest-canvas"></canvas>
-
-    <!-- Year Ring Nav (top-left of canvas) -->
-    <div class="year-nav" id="year-nav">
-      <!-- populated by JS: concentric ring with year labels -->
-    </div>
-
-    <!-- Today Status (top-right of canvas) -->
-    <div class="today-status" id="today-status">
-      <div class="today-status-ring" id="today-dot">
-        <div class="ring-fill"></div>
-      </div>
-      <span class="today-status-msg" id="today-msg" data-i18n="todayNotRecorded">Today's tree hasn't grown yet.</span>
-    </div>
-
-    <!-- Empty forest hint -->
-    <div class="forest-hint" id="forest-hint">
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none">
-        <circle cx="28" cy="28" r="7" fill="#4A7C59" opacity="0.5"/>
-        <circle cx="28" cy="28" r="16" stroke="#4A7C59" stroke-width="1" opacity="0.2"/>
-        <circle cx="28" cy="28" r="25" stroke="#4A7C59" stroke-width="0.5" opacity="0.1"/>
-      </svg>
-      <p class="forest-hint-title" data-i18n="emptyForestTitle">Start your forest</p>
-      <p class="forest-hint-desc" data-i18n="emptyForestDesc">Click + to write your first entry.</p>
-    </div>
-  </main>
-</div>
-
-<!-- ── FAB ── -->
-<button class="fab" id="fab-new" title="New entry (Ctrl+N)">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-    <line x1="12" y1="5" x2="12" y2="19"/>
-    <line x1="5" y1="12" x2="19" y2="12"/>
-  </svg>
-</button>
-
-<!-- ── Entry Modal ── -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal-card">
-    <div class="modal-header">
-      <span class="modal-year" id="modal-year">2025</span>
-      <button class="modal-close" id="modal-close" title="Close (Esc)">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-          <line x1="18" y1="6" x2="6" y2="18"/>
-          <line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
-    <label class="modal-label" id="modal-label" for="entry-text" data-i18n="whatMattersToday">What's the single most important thing today?</label>
-    <textarea
-      class="modal-textarea"
-      id="entry-text"
-      data-i18n-placeholder="placeholder"
-      placeholder="One moment. One thought. One thing worth remembering..."
-      maxlength="500"
-    ></textarea>
-    <div class="modal-footer">
-      <div class="modal-footer-left">
-        <span class="char-count"><span id="char-count">0</span> <span data-i18n="charCount">/ 500</span></span>
-        <span class="modal-hint" data-i18n="ctrlEnter">Ctrl+Enter to save</span>
-      </div>
-      <button class="modal-submit" id="entry-submit">
-        <span data-i18n="saveEntry">Save</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-      </button>
-    </div>
+<!-- ── Top Status Bar ── -->
+<header class="top-bar" id="top-bar">
+  <button class="top-back" id="top-back" aria-label="返回首页">← Daily Tree</button>
+  <span class="top-date" id="top-date"></span>
+  <div class="top-right" id="top-right">
+    <span class="top-reminder" id="top-reminder">✦ 今天还没记录</span>
   </div>
+</header>
+
+<canvas id="bg-canvas" aria-hidden="true"></canvas>
+
+<!-- ── Full-screen Tree Canvas ── -->
+<main class="canvas-wrap">
+  <canvas id="tree-canvas"></canvas>
+  <canvas id="weather-canvas" aria-hidden="true"></canvas>
+  <div class="empty-hint" id="empty-hint">
+    <div class="empty-hint-icon">🌱</div>
+    <div class="empty-hint-title">种下今天的第一颗种子</div>
+    <div class="empty-hint-sub">点击下方 + 开始记录</div>
+  </div>
+</main>
+
+<!-- ── Bottom Area (timeline + nav) ── -->
+<div class="bottom-area" id="bottom-area">
+  <div class="timeline-strip" id="timeline-strip"></div>
+  <nav class="bottom-bar" id="bottom-bar">
+    <button class="bar-icon" id="btn-cal" aria-label="日历">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <rect x="3" y="4" width="18" height="18" rx="2"/>
+        <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/>
+        <line x1="3" y1="10" x2="21" y2="10"/>
+      </svg>
+      <span class="bar-icon-label">日历</span>
+    </button>
+
+    <button class="bar-icon" id="btn-stats" aria-label="统计">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <line x1="18" y1="20" x2="18" y2="10"/>
+        <line x1="12" y1="20" x2="12" y2="4"/>
+        <line x1="6" y1="20" x2="6" y2="14"/>
+      </svg>
+      <span class="bar-icon-label">统计</span>
+    </button>
+
+    <button class="bar-fab" id="fab-new" aria-label="记录今天">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+      </svg>
+    </button>
+
+    <button class="bar-icon" id="btn-tree" aria-label="树">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22v-7"/>
+        <path d="M9 15l-4-5h14l-4 5"/>
+        <path d="M7 10l-3-4h16l-3 4"/>
+      </svg>
+      <span class="bar-icon-label">树</span>
+    </button>
+
+    <button class="bar-icon" id="btn-settings" aria-label="设置">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+      </svg>
+      <span class="bar-icon-label">设置</span>
+    </button>
+  </nav>
 </div>
 
-<!-- ── Year Detail Panel ── -->
-<div class="year-panel" id="year-panel">
-  <div class="panel-header">
-    <span class="panel-title" id="panel-title">2025</span>
-    <button class="panel-close" id="panel-close" title="Close">
-      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-        <line x1="18" y1="6" x2="6" y2="18"/>
-        <line x1="6" y1="6" x2="18" y2="18"/>
+<!-- ── Branch Tap Panel (history viewer) ── -->
+<div class="branch-panel" id="branch-panel" role="dialog" aria-modal="true">
+  <div class="branch-panel-handle"></div>
+  <div class="branch-panel-header">
+    <span class="branch-panel-title" id="branch-panel-title">记录</span>
+    <button class="branch-panel-close" id="branch-panel-close" aria-label="关闭">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
       </svg>
     </button>
   </div>
-  <ul class="panel-entries" id="panel-entries">
-    <!-- populated by JS -->
-  </ul>
+  <ul class="branch-panel-entries" id="branch-panel-entries"></ul>
 </div>
 
-<!-- ── Guide Overlay ── -->
-<div class="guide-overlay" id="guide-overlay">
-  <div class="guide-card">
-    <div class="guide-header">
-      <span class="guide-eyebrow">Daily Tree</span>
-      <span class="guide-num" id="guide-num">01</span>
+<!-- ── Entry Modal ── -->
+<div class="modal-overlay" id="modal-overlay" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <div class="modal-header">
+      <span class="modal-label" id="modal-label">今天最重要的一件事？</span>
+      <button class="modal-close" id="modal-close" aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
     </div>
-    <div class="guide-steps">
-      <div class="guide-dot active" data-step="0"></div>
-      <div class="guide-dot" data-step="1"></div>
-      <div class="guide-dot" data-step="2"></div>
-      <div class="guide-dot" data-step="3"></div>
-    </div>
-    <h2 class="guide-step-title" id="guide-step-title">One moment a day</h2>
-    <p class="guide-step-desc" id="guide-step-desc">Click the + button to record the single most important thing that happened today.</p>
-
-    <!-- Preview row: shown on step 4 -->
-    <div class="guide-preview-row" id="guide-preview-row" style="display:none">
-      <div class="preview-card">
-        <div class="preview-tree-col">
-          <div class="preview-tree dormant">
-            <svg width="28" height="44" viewBox="0 0 28 44" fill="none">
-              <rect x="12" y="26" width="4" height="14" rx="1" fill="#6B6050"/>
-              <circle cx="14" cy="14" r="10" fill="none" stroke="#3D4F5F" stroke-width="1.5" opacity="0.5"/>
-              <circle cx="14" cy="14" r="6" fill="none" stroke="#3D4F5F" stroke-width="1" opacity="0.35"/>
-            </svg>
-          </div>
-          <span class="preview-label">1 week</span>
-          <span class="preview-state dormant-label">Dormant</span>
-        </div>
-        <div class="preview-tree-col">
-          <div class="preview-tree living">
-            <svg width="32" height="54" viewBox="0 0 32 54" fill="none">
-              <rect x="14" y="32" width="4" height="18" rx="1" fill="#8B7355"/>
-              <circle cx="16" cy="16" r="12" fill="none" stroke="#4A7C59" stroke-width="1.5" opacity="0.7"/>
-              <circle cx="16" cy="16" r="7" fill="none" stroke="#4A7C59" stroke-width="1" opacity="0.5"/>
-              <circle cx="16" cy="16" r="3" fill="#4A7C59" opacity="0.4"/>
-            </svg>
-          </div>
-          <span class="preview-label">1 month</span>
-          <span class="preview-state living-label">Living</span>
-        </div>
-        <div class="preview-tree-col">
-          <div class="preview-tree archived">
-            <svg width="36" height="64" viewBox="0 0 36 64" fill="none">
-              <rect x="16" y="38" width="4" height="22" rx="1" fill="#4A3A2A"/>
-              <circle cx="18" cy="18" r="14" fill="none" stroke="#5C4A3A" stroke-width="1.5" opacity="0.6"/>
-              <circle cx="18" cy="18" r="9" fill="none" stroke="#5C4A3A" stroke-width="1" opacity="0.45"/>
-              <circle cx="18" cy="18" r="5" fill="none" stroke="#5C4A3A" stroke-width="1" opacity="0.3"/>
-              <circle cx="18" cy="18" r="2" fill="#5C4A3A" opacity="0.4"/>
-            </svg>
-          </div>
-          <span class="preview-label">1 year</span>
-          <span class="preview-state archived-label">Archived</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="guide-actions">
-      <button class="guide-skip" id="guide-skip">Skip</button>
-      <button class="guide-next" id="guide-next">Start now</button>
+    <textarea class="modal-textarea" id="entry-text"
+      placeholder="一个瞬间，一个想法，一件值得记住的事……"
+      maxlength="500"></textarea>
+    <div class="modal-footer">
+      <span class="char-count"><span id="char-count">0</span> / 500</span>
+      <button class="modal-submit" id="entry-submit">保存</button>
     </div>
   </div>
 </div>
+
+
+<!-- ── Settings Panel ── -->
+<div class="settings-overlay" id="settings-overlay" role="dialog" aria-modal="true">
+  <div class="settings-card">
+    <div class="settings-header">
+      <h2 class="settings-title">设置</h2>
+      <button class="settings-close" id="settings-close" aria-label="关闭">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <div class="settings-section">
+      <button class="settings-action-btn" id="btn-export">导出备份</button>
+      <label class="settings-action-btn">
+        导入备份
+        <input type="file" id="import-file" accept=".json" style="display:none">
+      </label>
+    </div>
+    <div class="settings-section">
+      <button class="settings-action-btn settings-action-danger" id="btn-reset-visited">
+        重新查看引导页
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── Onboarding Guide ── -->
+<div class="guide-overlay" id="guide-overlay" role="dialog" aria-modal="true">
+  <div class="guide-card">
+    <div class="guide-dots" id="guide-dots">
+      <div class="guide-dot active" data-step="0"></div>
+      <div class="guide-dot" data-step="1"></div>
+      <div class="guide-dot" data-step="2"></div>
+    </div>
+
+    <div class="guide-step" id="guide-step-0">
+      <div class="guide-visual">
+        <canvas id="guide-tree-canvas" width="160" height="220"></canvas>
+      </div>
+      <h2 class="guide-title">你的树，从今天开始生长</h2>
+      <p class="guide-desc">每天记录一件事，你的树就会长大。记录越多，树越茂盛。</p>
+    </div>
+
+    <div class="guide-step hidden" id="guide-step-1">
+      <div class="guide-visual guide-visual-fab">
+        <div class="guide-fab-demo">
+          <div class="guide-fab-btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+              <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+            </svg>
+          </div>
+          <div class="guide-fab-arrow">↑</div>
+        </div>
+      </div>
+      <h2 class="guide-title">每天写下一件事</h2>
+      <p class="guide-desc">点击底部的 + 按钮，写下今天最重要的一件事。</p>
+    </div>
+
+    <div class="guide-step hidden" id="guide-step-2">
+      <div class="guide-visual guide-visual-branch">
+        <svg viewBox="0 0 120 160" width="90" height="120" fill="none">
+          <line x1="60" y1="155" x2="60" y2="100" stroke="rgba(105,78,48,0.8)" stroke-width="8" stroke-linecap="round"/>
+          <line x1="60" y1="120" x2="35" y2="80" stroke="rgba(105,78,48,0.7)" stroke-width="5" stroke-linecap="round"/>
+          <line x1="60" y1="120" x2="82" y2="75" stroke="rgba(105,78,48,0.7)" stroke-width="5" stroke-linecap="round"/>
+          <ellipse cx="28" cy="68" rx="16" ry="12" fill="rgba(108,195,90,0.45)" stroke="rgba(150,230,130,0.5)" stroke-width="0.8"/>
+          <ellipse cx="85" cy="62" rx="16" ry="12" fill="rgba(108,195,90,0.45)" stroke="rgba(150,230,130,0.5)" stroke-width="0.8"/>
+          <circle cx="35" cy="80" r="10" fill="none" stroke="rgba(150,230,130,0.8)" stroke-width="1.5" stroke-dasharray="3 2"/>
+          <text x="20" y="42" font-size="10" fill="rgba(150,230,130,0.8)" font-family="sans-serif">点我</text>
+        </svg>
+      </div>
+      <h2 class="guide-title">点击树枝，回顾过去</h2>
+      <p class="guide-desc">树的不同部位对应不同时期的记录，点击树枝可以查看那段时间写的内容。</p>
+    </div>
+
+    <div class="guide-actions">
+      <button class="guide-skip" id="guide-skip">跳过</button>
+      <button class="guide-next" id="guide-next">
+        <span id="guide-next-label">下一步</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<button class="today-chip hidden" id="today-chip">↩ 今天</button>
 
 <script type="module" src="app.js"></script>
 </body>

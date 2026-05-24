@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script>window.location.replace('landing.html');</script>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Daily Tree — Watch your life grow in rings</title>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;400;600;1,9..144,300&display=swap" rel="stylesheet">
   <style>
     :root {
       --void-black: #0A0A0B;
@@ -27,46 +28,73 @@
       color: var(--mist-white);
       line-height: 1.6;
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
     }
 
+    /* ── Nav ── */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 100;
-      padding: 1.25rem 2rem;
+      padding: 1.125rem 2rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(10,10,11,0.8);
+      background: rgba(10,10,11,0.85);
       backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--whisper-border);
+      gap: 1rem;
     }
 
     .nav-logo {
       display: flex;
       align-items: center;
       gap: 0.625rem;
-      font-weight: 600;
-      font-size: 1.1rem;
-      letter-spacing: -0.02em;
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 400;
+      font-size: 1.125rem;
+      font-optical-sizing: auto;
+      letter-spacing: 0.01em;
       color: var(--mist-white);
       text-decoration: none;
+      flex-shrink: 0;
     }
-    .nav-logo svg { width: 24px; height: 24px; }
+    .nav-logo svg { width: 22px; height: 22px; }
 
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
     .nav-links {
       display: flex;
       align-items: center;
-      gap: 2rem;
+      gap: 1.5rem;
     }
     .nav-links a {
       font-size: 0.875rem;
       font-weight: 500;
-      color: rgba(232,232,236,0.6);
+      color: rgba(232,232,236,0.55);
       text-decoration: none;
       transition: color 0.15s;
     }
     .nav-links a:hover { color: var(--mist-white); }
+
+    .nav-lang {
+      background: transparent;
+      border: 1px solid var(--whisper-border-strong);
+      border-radius: 9999px;
+      padding: 0.3rem 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      letter-spacing: 0.06em;
+      color: rgba(232,232,236,0.45);
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .nav-lang:hover { color: var(--mist-white); border-color: var(--canopy-green); }
 
     .nav-cta {
       display: inline-flex;
@@ -74,7 +102,7 @@
       gap: 0.5rem;
       padding: 0.5rem 1.125rem;
       background: var(--canopy-green);
-      color: var(--void-black);
+      color: #fff;
       font-size: 0.875rem;
       font-weight: 600;
       border-radius: 9999px;
@@ -83,7 +111,7 @@
     }
     .nav-cta:hover { background: var(--living-glow); transform: translateY(-1px); }
 
-    /* Hero */
+    /* ── Hero ── */
     .hero {
       min-height: 100dvh;
       display: grid;
@@ -96,10 +124,8 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 8rem 2rem 6rem;
-      padding-left: max(2rem, calc((100vw - 980px) / 2 + 2rem));
-      position: relative;
-      z-index: 2;
+      padding: 8rem 2.5rem 6rem;
+      padding-left: max(2.5rem, calc((100vw - 1000px) / 2 + 2.5rem));
     }
 
     .hero-eyebrow {
@@ -117,13 +143,12 @@
     .hero-eyebrow::before {
       content: '';
       display: block;
-      width: 16px;
-      height: 1px;
+      width: 16px; height: 1px;
       background: var(--canopy-green);
     }
 
     h1 {
-      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-size: clamp(2.5rem, 5vw, 4.25rem);
       font-weight: 700;
       letter-spacing: -0.03em;
       line-height: 1.07;
@@ -131,10 +156,9 @@
     }
 
     .hero-sub {
-      font-size: 1.0625rem;
-      font-weight: 400;
-      color: rgba(232,232,236,0.55);
-      line-height: 1.7;
+      font-size: 1rem;
+      color: rgba(232,232,236,0.5);
+      line-height: 1.75;
       margin-bottom: 2.5rem;
       max-width: 440px;
     }
@@ -150,9 +174,9 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.75rem 1.5rem;
+      padding: 0.8rem 1.625rem;
       background: var(--canopy-green);
-      color: var(--void-black);
+      color: #fff;
       font-size: 0.9375rem;
       font-weight: 600;
       border-radius: 9999px;
@@ -167,9 +191,9 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.75rem 1.25rem;
+      padding: 0.8rem 1.375rem;
       background: transparent;
-      color: rgba(232,232,236,0.65);
+      color: rgba(232,232,236,0.6);
       font-size: 0.9375rem;
       font-weight: 500;
       border-radius: 9999px;
@@ -179,74 +203,79 @@
     }
     .btn-ghost:hover { color: var(--mist-white); border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); }
 
+    /* Hero visual: rings */
     .hero-visual {
       position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      padding: 2rem;
+      overflow: visible;
     }
 
     .tree-ring-container {
-      width: 380px;
-      height: 380px;
+      /* size is set to the outermost ring + label space */
+      width: min(380px, 90vw);
+      height: min(380px, 90vw);
       position: relative;
+      flex-shrink: 0;
     }
 
     .ring {
       position: absolute;
       border-radius: 50%;
       border: 1px solid;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       animation: breathe-ring 4s ease-in-out infinite;
     }
-
-    .ring-1 { width: 100px; height: 100px; border-color: var(--canopy-green); opacity: 0.9; animation-delay: 0s; }
-    .ring-2 { width: 170px; height: 170px; border-color: var(--living-glow); opacity: 0.7; animation-delay: 0.5s; }
-    .ring-3 { width: 250px; height: 250px; border-color: var(--root-earth); opacity: 0.5; animation-delay: 1s; }
-    .ring-4 { width: 340px; height: 340px; border-color: rgba(74,124,89,0.3); opacity: 0.35; animation-delay: 1.5s; }
+    /* sizes as % of container so they always fit */
+    .ring-1 { width: 26%;  height: 26%;  border-color: var(--canopy-green);            opacity: 0.9; animation-delay: 0s;   }
+    .ring-2 { width: 44%;  height: 44%;  border-color: var(--living-glow);             opacity: 0.7; animation-delay: 0.5s; }
+    .ring-3 { width: 65%;  height: 65%;  border-color: var(--root-earth);              opacity: 0.5; animation-delay: 1s;   }
+    .ring-4 { width: 88%;  height: 88%;  border-color: rgba(74,124,89,0.3);            opacity: 0.35; animation-delay: 1.5s; }
 
     .tree-dot {
       position: absolute;
-      width: 8px;
-      height: 8px;
+      width: 10px; height: 10px;
       background: var(--canopy-green);
       border-radius: 50%;
-      top: 50%;
-      left: 50%;
+      top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       box-shadow: 0 0 20px rgba(107,155,122,0.6);
       animation: pulse-dot 3s ease-in-out infinite;
+      z-index: 2;
     }
 
     .ring-label {
       position: absolute;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.625rem;
-      color: rgba(232,232,236,0.3);
+      color: rgba(232,232,236,0.35);
       letter-spacing: 0.05em;
+      transform: translateX(-50%);
+      white-space: nowrap;
     }
-    .ring-label-2025 { top: calc(50% - 50px - 1.5rem); left: 50%; transform: translateX(-50%); }
-    .ring-label-2024 { top: calc(50% - 85px - 1.5rem); left: 50%; transform: translateX(-50%); }
-    .ring-label-2023 { top: calc(50% - 125px - 1.5rem); left: 50%; transform: translateX(-50%); }
+    /* labels sit just above each ring — use % so they scale with container */
+    .ring-label-2025 { top: calc(50% - 14%);  left: 50%; }
+    .ring-label-2024 { top: calc(50% - 24%);  left: 50%; }
+    .ring-label-2023 { top: calc(50% - 34.5%); left: 50%; }
 
     @keyframes breathe-ring {
       0%, 100% { transform: translate(-50%,-50%) scale(0.97); }
-      50% { transform: translate(-50%,-50%) scale(1.03); }
+      50%       { transform: translate(-50%,-50%) scale(1.03); }
     }
     @keyframes pulse-dot {
       0%, 100% { box-shadow: 0 0 20px rgba(107,155,122,0.6); }
-      50% { box-shadow: 0 0 40px rgba(107,155,122,0.9), 0 0 60px rgba(74,124,89,0.4); }
+      50%       { box-shadow: 0 0 40px rgba(107,155,122,0.9), 0 0 60px rgba(74,124,89,0.4); }
     }
 
-    /* Features */
+    /* ── Features ── */
     .features {
-      padding: 6rem 2rem;
+      padding: 6rem 2.5rem;
       border-top: 1px solid var(--whisper-border);
     }
-    .features-inner { max-width: 980px; margin: 0 auto; }
+    .features-inner { max-width: 1000px; margin: 0 auto; }
     .section-label {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.6875rem;
@@ -256,11 +285,10 @@
       color: var(--canopy-green);
       margin-bottom: 3rem;
     }
-
     .features-grid {
       display: grid;
       grid-template-columns: 1.2fr 1fr 0.8fr;
-      gap: 2rem;
+      gap: 1.5rem;
     }
     .feature-card {
       padding: 2rem;
@@ -271,12 +299,12 @@
     }
     .feature-card:hover { border-color: rgba(255,255,255,0.12); }
     .feature-icon { width: 40px; height: 40px; margin-bottom: 1.25rem; color: var(--canopy-green); }
-    .feature-card h3 { font-size: 1rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.625rem; }
-    .feature-card p { font-size: 0.875rem; color: rgba(232,232,236,0.5); line-height: 1.65; }
+    .feature-card h3 { font-size: 1.0625rem; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 0.625rem; }
+    .feature-card p { font-size: 0.875rem; color: rgba(232,232,236,0.5); line-height: 1.7; }
 
-    /* Demo Section */
-    .demo-section { padding: 6rem 2rem; border-top: 1px solid var(--whisper-border); }
-    .demo-inner { max-width: 980px; margin: 0 auto; }
+    /* ── Demo ── */
+    .demo-section { padding: 6rem 2.5rem; border-top: 1px solid var(--whisper-border); }
+    .demo-inner { max-width: 1000px; margin: 0 auto; }
     .demo-header {
       display: flex;
       align-items: flex-end;
@@ -285,7 +313,7 @@
       gap: 2rem;
     }
     .demo-header h2 { font-size: clamp(1.75rem,3vw,2.5rem); font-weight: 700; letter-spacing: -0.025em; line-height: 1.15; max-width: 480px; }
-    .demo-header p { font-size: 0.9375rem; color: rgba(232,232,236,0.5); max-width: 360px; line-height: 1.65; }
+    .demo-header p { font-size: 0.9375rem; color: rgba(232,232,236,0.45); max-width: 340px; line-height: 1.7; }
 
     .demo-window {
       background: var(--forest-floor);
@@ -301,26 +329,20 @@
       border-bottom: 1px solid var(--whisper-border);
     }
     .demo-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.1); }
-    .demo-dot.red { background: #E07A4A; opacity: 0.7; }
+    .demo-dot.red    { background: #E07A4A; opacity: 0.7; }
     .demo-dot.yellow { background: var(--root-earth); opacity: 0.7; }
-    .demo-dot.green { background: var(--canopy-green); opacity: 0.7; }
-    .demo-url { flex: 1; text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: rgba(232,232,236,0.3); }
+    .demo-dot.green  { background: var(--canopy-green); opacity: 0.7; }
+    .demo-url { flex:1; text-align:center; font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:rgba(232,232,236,0.25); }
 
     .demo-content {
-      height: 420px;
+      height: 380px;
       background: var(--void-black);
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
     }
 
-    .mini-forest {
-      display: flex;
-      align-items: flex-end;
-      gap: 3rem;
-      padding: 3rem;
-    }
+    .mini-forest { display: flex; align-items: flex-end; gap: 3rem; padding: 2rem; }
     .mini-tree {
       display: flex;
       flex-direction: column;
@@ -332,339 +354,375 @@
     .mini-tree:nth-child(1) { animation-delay: 0.1s; }
     .mini-tree:nth-child(2) { animation-delay: 0.25s; }
     .mini-tree:nth-child(3) { animation-delay: 0.4s; }
-
     @keyframes tree-grow {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { opacity:0; transform: translateY(20px); }
+      to   { opacity:1; transform: translateY(0); }
     }
 
-    .mini-trunk { background: var(--bark-brown); border-radius: 2px; width: 4px; }
-    .mini-tree:nth-child(1) .mini-trunk { height: 60px; }
-    .mini-tree:nth-child(2) .mini-trunk { height: 40px; }
-    .mini-tree:nth-child(3) .mini-trunk { height: 80px; }
+    /* SVG tree shared styles */
+    .tree-svg {
+      display: block;
+      transform-box: fill-box;
+      transform-origin: center bottom;
+    }
+    .tree-svg .tree-canopy {
+      transition: fill 0.8s ease, opacity 0.8s ease;
+    }
 
-    .mini-crown { position: relative; }
-    .mini-circle {
-      position: absolute;
-      border-radius: 50%;
-      background: var(--canopy-green);
-      opacity: 0.7;
+    /* Demo mini-trees: breathing animation on SVG */
+    .mini-tree .tree-svg {
       animation: mini-breathe 4s ease-in-out infinite;
     }
-    .mini-tree:nth-child(1) .mini-circle:nth-child(1) { width: 50px; height: 50px; top: -25px; left: -23px; animation-delay: 0s; }
-    .mini-tree:nth-child(1) .mini-circle:nth-child(2) { width: 35px; height: 35px; top: -20px; left: -5px; animation-delay: 0.7s; }
-    .mini-tree:nth-child(1) .mini-circle:nth-child(3) { width: 28px; height: 28px; top: -12px; left: -20px; animation-delay: 1.4s; }
-    .mini-tree:nth-child(2) .mini-circle:nth-child(1) { width: 40px; height: 40px; top: -20px; left: -18px; animation-delay: 0.2s; }
-    .mini-tree:nth-child(2) .mini-circle:nth-child(2) { width: 30px; height: 30px; top: -15px; left: 0px; animation-delay: 0.9s; }
-    .mini-tree:nth-child(3) .mini-circle:nth-child(1) { width: 65px; height: 65px; top: -32px; left: -30px; animation-delay: 0s; }
-    .mini-tree:nth-child(3) .mini-circle:nth-child(2) { width: 45px; height: 45px; top: -22px; left: -10px; animation-delay: 0.6s; }
-    .mini-tree:nth-child(3) .mini-circle:nth-child(3) { width: 35px; height: 35px; top: -18px; left: -28px; animation-delay: 1.2s; }
+    .mini-tree:nth-child(1) .tree-svg { animation-delay: 0s; }
+    .mini-tree:nth-child(2) .tree-svg { animation-delay: 0.7s; }
+    .mini-tree:nth-child(3) .tree-svg { animation-delay: 1.4s; }
 
-    .mini-year { font-family: 'JetBrains Mono', monospace; font-size: 0.6875rem; color: rgba(232,232,236,0.35); letter-spacing: 0.08em; }
+    .mini-year { font-family:'JetBrains Mono',monospace; font-size:0.6875rem; color:rgba(232,232,236,0.3); letter-spacing:0.08em; }
     @keyframes mini-breathe {
-      0%, 100% { transform: scale(0.96); opacity: 0.65; }
-      50% { transform: scale(1.04); opacity: 0.8; }
+      0%, 100% { transform: scale(0.97); opacity: 0.82; }
+      50%       { transform: scale(1.03); opacity: 1; }
     }
 
-    /* Try it section */
+    /* Seasonal color overrides */
+    .mini-forest { --canopy-season: #4A7C59; }
+    .mini-forest.season-spring { --canopy-season: #8BC34A; }
+    .mini-forest.season-summer { --canopy-season: #2E7D32; }
+    .mini-forest.season-autumn { --canopy-season: #D4760A; }
+    .mini-forest.season-winter { --canopy-season: transparent; }
+    .mini-forest .tree-canopy { fill: var(--canopy-season); }
+    .mini-forest.season-winter .tree-canopy { opacity: 0; }
+
+    /* ── Growth Section ── */
+    .growth-section {
+      padding: 6rem 2.5rem;
+      border-top: 1px solid var(--whisper-border);
+    }
+    .growth-inner { max-width: 1000px; margin: 0 auto; }
+
+    .growth-heading {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      margin-top: 0.5rem;
+    }
+    .growth-sub {
+      font-size: 1rem;
+      color: rgba(232,232,236,0.45);
+      line-height: 1.75;
+      max-width: 480px;
+      margin-bottom: 4rem;
+    }
+
+    /* Timeline */
+    .growth-timeline {
+      display: flex;
+      align-items: flex-end;
+      gap: 0;
+      margin-bottom: 5rem;
+      overflow-x: auto;
+      padding-bottom: 1rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .growth-stage {
+      flex: 0 0 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 0.625rem;
+    }
+
+    .stage-visual {
+      height: 160px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    /* tree: crown on top, trunk at bottom */
+    .stage-tree {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: stage-breathe 3s ease-in-out infinite;
+    }
+    #stage-week     { animation-delay: 0s; }
+    #stage-month    { animation-delay: 0.4s; }
+    #stage-halfyear { animation-delay: 0.8s; }
+    #stage-year     { animation-delay: 1.2s; }
+    @keyframes stage-breathe {
+      0%,100% { transform: scaleY(1) scaleX(1); }
+      50%      { transform: scaleY(1.025) scaleX(0.98); }
+    }
+
+
+    .growth-connector {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      /* vertically centre on the stage visual (160px) + gap */
+      padding-top: 80px;
+      min-width: 32px;
+    }
+    .connector-line {
+      width: 100%; height: 1px;
+      background: rgba(74,124,89,0.25);
+    }
+    .connector-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(74,124,89,0.45);
+      margin-top: -3px;
+    }
+
+    .stage-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(232,232,236,0.5);
+    }
+    .stage-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5625rem;
+      color: rgba(232,232,236,0.22);
+      letter-spacing: 0.04em;
+    }
+    .stage-desc {
+      font-size: 0.8125rem;
+      color: rgba(232,232,236,0.32);
+      line-height: 1.55;
+      max-width: 130px;
+    }
+    .stage-state {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.5625rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.625rem;
+      border-radius: 9999px;
+    }
+    .state-living {
+      background: rgba(74,124,89,0.12);
+      border: 1px solid rgba(74,124,89,0.25);
+      color: #6B9B7A;
+    }
+
+    /* ── Tree States ── */
+    .states-section {
+      border-top: 1px solid var(--whisper-border);
+      padding-top: 4rem;
+    }
+    .states-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(232,232,236,0.28);
+      margin-bottom: 2rem;
+    }
+    .states-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.25rem;
+    }
+    .state-card {
+      padding: 1.75rem;
+      background: var(--forest-floor);
+      border: 1px solid var(--whisper-border);
+      border-radius: 1rem;
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+      transition: border-color 0.2s;
+    }
+    .state-card:hover { border-color: rgba(255,255,255,0.1); }
+
+    /* ── State icon: proper upright tree ── */
+    .state-icon { flex-shrink: 0; padding-top: 2px; }
+    .state-icon-tree {
+      width: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+    /* State icon: breathing on canopy only */
+    .state-tree-svg .tree-canopy { animation: si-breathe 3s ease-in-out infinite; }
+    .state-tree-svg.dormant  .tree-canopy { animation: none; }
+    .state-tree-svg.archived .tree-canopy { animation: none; }
+
+    .state-tree-svg .tree-trunk { transition: fill 0.3s ease; }
+    .state-tree-svg.dormant  .tree-trunk { fill: #4A4A50; }
+    .state-tree-svg.archived .tree-trunk { fill: #3A3028; }
+    .state-tree-svg.dormant  .tree-canopy { fill: #3D4F5F; opacity: 0.5; }
+    .state-tree-svg.archived .tree-canopy { fill: #5C4A3A; opacity: 0.35; }
+
+    @keyframes si-breathe {
+      0%,100% { transform: scale(1);    opacity: 0.8; }
+      50%      { transform: scale(1.07); opacity: 1;   }
+    }
+
+    .state-card-content { min-width: 0; }
+    .state-card-title {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .state-dot {
+      display: inline-block;
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .state-living-dot   { background: #4A7C59; box-shadow: 0 0 6px rgba(74,124,89,0.6); }
+    .state-dormant-dot  { background: #3D4F5F; }
+    .state-archived-dot { background: #5C4A3A; }
+
+    .state-card-content p {
+      font-size: 0.875rem;
+      color: rgba(232,232,236,0.42);
+      line-height: 1.65;
+    }
+
+    /* ── Try section ── */
     .try-section {
-      padding: 6rem 2rem;
+      padding: 6rem 2.5rem;
       border-top: 1px solid var(--whisper-border);
       text-align: center;
     }
     .try-inner { max-width: 560px; margin: 0 auto; }
-    .try-inner h2 { font-size: clamp(1.75rem,3vw,2.5rem); font-weight: 700; letter-spacing: -0.025em; margin-bottom: 1rem; }
-    .try-inner p { font-size: 1rem; color: rgba(232,232,236,0.5); margin-bottom: 2rem; line-height: 1.7; }
+    .try-inner h2 { font-size: clamp(1.75rem,3vw,2.5rem); font-weight:700; letter-spacing:-0.025em; margin-bottom:1rem; }
+    .try-inner p  { font-size: 1rem; color:rgba(232,232,236,0.45); margin-bottom:2.5rem; line-height:1.75; }
 
-    /* Tech Stack */
-    .tech-stack { padding: 4rem 2rem; border-top: 1px solid var(--whisper-border); }
-    .tech-inner { max-width: 980px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 2rem; }
-    .tech-inner h2 { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; }
-    .tech-badges { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+    /* ── Tech ── */
+    .tech-stack { padding: 4rem 2.5rem; border-top: 1px solid var(--whisper-border); }
+    .tech-inner {
+      max-width: 1000px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center;
+      text-align: center; gap: 1.5rem;
+    }
+    .tech-inner h2 { font-size: 1.125rem; font-weight:600; letter-spacing:-0.02em; }
+    .tech-badges { display:flex; flex-wrap:wrap; gap:0.625rem; justify-content:center; }
     .tech-badge {
       display: inline-flex;
-      padding: 0.375rem 0.875rem;
+      padding: 0.35rem 0.875rem;
       background: var(--forest-floor);
       border: 1px solid var(--whisper-border);
       border-radius: 9999px;
       font-size: 0.8125rem;
       font-weight: 500;
-      color: rgba(232,232,236,0.6);
+      color: rgba(232,232,236,0.5);
       font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Footer */
+    /* ── Footer ── */
     footer {
-      padding: 3rem 2rem;
+      padding: 2.5rem 2.5rem;
       border-top: 1px solid var(--whisper-border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 980px;
+      max-width: 1000px;
       margin: 0 auto;
+      gap: 1rem;
     }
-    footer p { font-size: 0.8125rem; color: rgba(232,232,236,0.35); }
-    footer a { color: rgba(232,232,236,0.5); text-decoration: none; transition: color 0.15s; }
+    footer p { font-size: 0.8125rem; color: rgba(232,232,236,0.3); }
+    footer a { color: rgba(232,232,236,0.45); text-decoration: none; transition: color 0.15s; }
     footer a:hover { color: var(--mist-white); }
 
-    @media (max-width: 768px) {
-      .hero { grid-template-columns: 1fr; }
-      .hero-visual { order: -1; height: 280px; }
-      .tree-ring-container { width: 280px; height: 280px; }
-      .features-grid { grid-template-columns: 1fr; gap: 1rem; }
-      .demo-header { flex-direction: column; align-items: flex-start; }
-      nav { padding: 1rem 1.25rem; }
-      .nav-links a:not(.nav-cta) { display: none; }
-      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    /* ── Season Tabs ── */
+    .season-tabs {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 1.25rem;
     }
-  }
+    .season-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.1rem;
+      padding: 0.4rem 0.875rem;
+      border-radius: 9999px;
+      border: 1px solid var(--whisper-border-strong);
+      background: transparent;
+      color: rgba(232,232,236,0.4);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Outfit', sans-serif;
+      line-height: 1;
+    }
+    .season-tab .s-zh { font-size: 0.875rem; font-weight: 500; }
+    .season-tab .s-en { font-size: 0.5rem; letter-spacing: 0.08em; text-transform: uppercase; font-family: 'JetBrains Mono', monospace; }
+    .season-tab.active { background: rgba(74,124,89,0.12); border-color: rgba(74,124,89,0.4); color: var(--mist-white); }
+    .season-tab:hover:not(.active) { border-color: rgba(255,255,255,0.15); color: rgba(232,232,236,0.7); }
 
-  /* ── Growth Preview Section ─────────────────────────────────────── */
-  .growth-section {
-    padding: 6rem 2rem;
-    border-top: 1px solid var(--whisper-border);
-  }
-  .growth-inner { max-width: 1000px; margin: 0 auto; }
+    /* Particle canvas + season label overlay */
+    .demo-content { position: relative; }
+    #particle-canvas { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+    .season-label-overlay {
+      position: absolute;
+      top: 1rem;
+      right: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      pointer-events: none;
+      z-index: 3;
+    }
+    #season-overlay-zh { font-size: 1.5rem; font-weight: 600; color: rgba(232,232,236,0.1); line-height: 1; font-family: 'Fraunces', Georgia, serif; }
+    #season-overlay-en { font-size: 0.5rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(232,232,236,0.07); font-family: 'JetBrains Mono', monospace; }
 
-  .growth-heading {
-    font-size: clamp(2rem, 3.5vw, 3rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    margin-bottom: 1rem;
-    margin-top: 0.5rem;
-  }
-  .growth-sub {
-    font-size: 1.0625rem;
-    color: rgba(232,232,236,0.5);
-    line-height: 1.7;
-    max-width: 480px;
-    margin-bottom: 4rem;
-  }
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      nav { padding: 0.875rem 1.25rem; gap: 0.75rem; }
+      .nav-links a:not(.nav-cta) { display: none; }
+      .nav-right { gap: 0.75rem; }
 
-  /* Timeline */
-  .growth-timeline {
-    display: flex;
-    align-items: flex-start;
-    gap: 0;
-    margin-bottom: 5rem;
-    overflow-x: auto;
-    padding-bottom: 1rem;
-  }
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding-top: 64px;
+      }
+      .hero-visual { order: -1; padding: 2.5rem 1.5rem 1rem; }
+      .hero-content { padding: 1.5rem 1.5rem 5rem; }
+      .hero-sub { max-width: 100%; }
 
-  .growth-stage {
-    flex: 0 0 160px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 0.75rem;
-  }
+      /* rings: fixed size that fits mobile without clipping */
+      .tree-ring-container {
+        width: 260px; height: 260px;
+      }
 
-  .stage-visual {
-    height: 160px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-  }
+      .features { padding: 4rem 1.5rem; }
+      .features-grid { grid-template-columns: 1fr; gap: 1rem; }
 
-  .stage-tree {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+      .demo-section { padding: 4rem 1.5rem; }
+      .demo-header { flex-direction: column; align-items: flex-start; }
+      .demo-content { height: 300px; }
+      .mini-forest { gap: 2rem; }
 
-  .s-trunk {
-    width: 4px;
-    background: #8B7355;
-    border-radius: 2px;
-  }
+      .growth-section { padding: 4rem 1.5rem; }
+      .growth-timeline { gap: 0; scroll-snap-type: x mandatory; }
+      .growth-stage { flex: 0 0 160px; scroll-snap-align: start; }
+      .stage-desc { display: none; }
 
-  .s-crown { position: relative; }
+      .states-grid { grid-template-columns: 1fr; }
 
-  .s-circle {
-    position: absolute;
-    border-radius: 50%;
-    background: #4A7C59;
-  }
+      .try-section { padding: 4rem 1.5rem; }
+      .tech-stack  { padding: 3rem 1.5rem; }
 
-  /* Breathing animation for growth preview trees */
-  .stage-tree {
-    animation: stage-breathe 3s ease-in-out infinite;
-  }
-  #stage-week { animation-delay: 0s; }
-  #stage-month { animation-delay: 0.4s; }
-  #stage-halfyear { animation-delay: 0.8s; }
-  #stage-year { animation-delay: 1.2s; }
-
-  @keyframes stage-breathe {
-    0%, 100% { transform: scaleY(1) scaleX(1); }
-    50% { transform: scaleY(1.025) scaleX(0.98); }
-  }
-
-  .growth-connector {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 80px;
-    min-width: 40px;
-  }
-
-  .connector-line {
-    width: 100%;
-    height: 1px;
-    background: linear-gradient(to right, rgba(74,124,89,0.3), rgba(74,124,89,0.3));
-    position: relative;
-  }
-
-  .connector-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: rgba(74,124,89,0.5);
-    margin-top: -3px;
-  }
-
-  .stage-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(232,232,236,0.5);
-  }
-
-  .stage-count {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.625rem;
-    color: rgba(232,232,236,0.25);
-    letter-spacing: 0.04em;
-  }
-
-  .stage-desc {
-    font-size: 0.8125rem;
-    color: rgba(232,232,236,0.35);
-    line-height: 1.55;
-    max-width: 130px;
-  }
-
-  .stage-state {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.5625rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 0.2rem 0.6rem;
-    border-radius: 9999px;
-  }
-
-  .state-living {
-    background: rgba(74,124,89,0.12);
-    border: 1px solid rgba(74,124,89,0.25);
-    color: #6B9B7A;
-  }
-
-  /* Tree States Section */
-  .states-section { border-top: 1px solid var(--whisper-border); padding-top: 4rem; }
-
-  .states-label {
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.6875rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(232,232,236,0.3);
-    margin-bottom: 2.5rem;
-  }
-
-  .states-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1.5rem;
-  }
-
-  .state-card {
-    padding: 2rem;
-    background: var(--forest-floor);
-    border: 1px solid var(--whisper-border);
-    border-radius: 1rem;
-    display: flex;
-    gap: 1.5rem;
-    align-items: flex-start;
-    transition: border-color 0.2s;
-  }
-  .state-card:hover { border-color: rgba(255,255,255,0.1); }
-
-  .state-icon { flex-shrink: 0; }
-
-  .state-icon-tree {
-    width: 28px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .si-trunk {
-    width: 3px;
-    height: 24px;
-    background: #8B7355;
-    border-radius: 2px;
-  }
-  .si-circle {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #4A7C59;
-    margin-top: -10px;
-    animation: si-breathe 3s ease-in-out infinite;
-  }
-  .state-icon-tree.dormant .si-circle {
-    background: #3D4F5F;
-    animation: none;
-    opacity: 0.5;
-  }
-  .state-icon-tree.archived .si-circle {
-    background: #555555;
-    animation: none;
-    opacity: 0.3;
-  }
-  .state-icon-tree.dormant .si-trunk { background: #3D4F5F; }
-  .state-icon-tree.archived .si-trunk { background: #555555; }
-
-  @keyframes si-breathe {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.06); opacity: 1; }
-  }
-
-  .state-card-title {
-    font-size: 0.9375rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .state-dot {
-    display: inline-block;
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-  }
-  .state-living-dot { background: #4A7C59; box-shadow: 0 0 6px rgba(74,124,89,0.6); }
-  .state-dormant-dot { background: #3D4F5F; }
-  .state-archived-dot { background: #555555; }
-
-  .state-card-content p {
-    font-size: 0.8125rem;
-    color: rgba(232,232,236,0.4);
-    line-height: 1.65;
-  }
-
-  @media (max-width: 768px) {
-    .growth-timeline { gap: 0; }
-    .growth-stage { flex: 0 0 130px; }
-    .states-grid { grid-template-columns: 1fr; }
-  }
+      footer { flex-direction: column; gap: 0.75rem; text-align: center; padding: 2rem 1.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -674,25 +732,29 @@
       <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="4" fill="#4A7C59"/><circle cx="12" cy="12" r="8" stroke="#4A7C59" stroke-width="1" opacity="0.4"/><circle cx="12" cy="12" r="11" stroke="#4A7C59" stroke-width="0.5" opacity="0.2"/></svg>
       Daily Tree
     </a>
-    <div class="nav-links">
-      <a href="#features">Features</a>
-      <a href="#growth">Growth</a>
-      <a href="https://github.com/zhuxinyao99-jpg/daily-tree" target="_blank">GitHub</a>
-      <a href="app/" class="nav-cta">Open App</a>
+    <div class="nav-right">
+      <div class="nav-links">
+        <a href="#features" data-i18n="navFeatures">Features</a>
+        <a href="#growth" data-i18n="navGrowth">Growth</a>
+        <a href="https://github.com/zhuxinyao99-jpg/daily-tree" target="_blank">GitHub</a>
+      </div>
+      <button class="nav-lang" id="nav-lang">中文</button>
+      <a href="app/" class="nav-cta" data-i18n="navCta">Open App</a>
     </div>
   </nav>
 
+  <!-- ── Hero ── -->
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-eyebrow">A personal forest of your life</div>
-      <h1>Watch your life grow in rings.</h1>
-      <p class="hero-sub">Every day you write an entry, a tree adds a ring. Over years, a forest forms — a living map of your time, your thoughts, and your growth.</p>
+      <div class="hero-eyebrow" data-i18n="heroEyebrow">A personal forest of your life</div>
+      <h1 data-i18n="heroTitle">Watch your life grow in rings.</h1>
+      <p class="hero-sub" data-i18n="heroSub">Every day you write an entry, a tree adds a ring. Over years, a forest forms — a living map of your time, your thoughts, and your growth.</p>
       <div class="hero-actions">
         <a href="app/" class="btn-primary">
-          Start Your Forest
+          <span data-i18n="heroCta">Start Your Forest</span>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#demo" class="btn-ghost">See it in action</a>
+        <a href="#demo" class="btn-ghost" data-i18n="heroSecondary">See it in action</a>
       </div>
     </div>
     <div class="hero-visual">
@@ -709,169 +771,214 @@
     </div>
   </section>
 
+  <!-- ── Features ── -->
   <section class="features" id="features">
     <div class="features-inner">
-      <div class="section-label">What makes it different</div>
+      <div class="section-label" data-i18n="featuresLabel">What makes it different</div>
       <div class="features-grid">
         <div class="feature-card">
           <svg class="feature-icon" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="12" stroke="currentColor" stroke-width="1.5"/><circle cx="20" cy="20" r="7" stroke="currentColor" stroke-width="1" opacity="0.6"/><circle cx="20" cy="20" r="3" fill="currentColor"/></svg>
-          <h3>Time as rings</h3>
-          <p>Each year is a tree. Each entry adds growth. The older the tree, the more you can see the shape of that time in your life.</p>
+          <h3 data-i18n="feat1Title">Time as rings</h3>
+          <p data-i18n="feat1Desc">Each year is a tree. Each entry adds growth. The older the tree, the more you can see the shape of that time in your life.</p>
         </div>
         <div class="feature-card">
           <svg class="feature-icon" viewBox="0 0 40 40" fill="none"><rect x="8" y="8" width="24" height="24" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M14 20h12M20 14v12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-          <h3>365 moments</h3>
-          <p>One entry per day maximum. It forces you to find the single most important thing worth remembering.</p>
+          <h3 data-i18n="feat2Title">365 moments</h3>
+          <p data-i18n="feat2Desc">One entry per day maximum. It forces you to find the single most important thing worth remembering.</p>
         </div>
         <div class="feature-card">
           <svg class="feature-icon" viewBox="0 0 40 40" fill="none"><path d="M20 8v4M20 28v4M8 20h4M28 20h4M11 11l2.8 2.8M26.2 26.2L29 29M29 11l-2.8 2.8M13.8 26.2L11 29" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="20" cy="20" r="6" stroke="currentColor" stroke-width="1.5"/></svg>
-          <h3>Never forget a day</h3>
-          <p>Sleeping trees remind you which years you were present. Archived years hold their shape forever, even when dormant.</p>
+          <h3 data-i18n="feat3Title">Never forget a day</h3>
+          <p data-i18n="feat3Desc">Sleeping trees remind you which years you were present. Archived years hold their shape forever.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Growth Preview Section -->
+  <!-- ── Demo ── -->
+  <section class="demo-section" id="demo">
+    <div class="demo-inner">
+      <div class="demo-header">
+        <h2 data-i18n="demoTitle">Your forest, breathing.</h2>
+        <p data-i18n="demoDesc">Trees are alive. They breathe when you're active, rest when you pause, and archive when a year closes.</p>
+      </div>
+      <div class="season-tabs" role="tablist">
+        <button class="season-tab active" data-season="spring"><span class="s-zh">春</span><span class="s-en">Spring</span></button>
+        <button class="season-tab" data-season="summer"><span class="s-zh">夏</span><span class="s-en">Summer</span></button>
+        <button class="season-tab" data-season="autumn"><span class="s-zh">秋</span><span class="s-en">Autumn</span></button>
+        <button class="season-tab" data-season="winter"><span class="s-zh">冬</span><span class="s-en">Winter</span></button>
+      </div>
+
+      <div class="demo-window">
+        <div class="demo-titlebar">
+          <div class="demo-dot red"></div>
+          <div class="demo-dot yellow"></div>
+          <div class="demo-dot green"></div>
+          <span class="demo-url">daily-tree / forest</span>
+        </div>
+        <div class="demo-content" id="demo-content">
+          <canvas id="particle-canvas" aria-hidden="true"></canvas>
+          <div class="season-label-overlay" aria-hidden="true">
+            <span id="season-overlay-zh">春</span>
+            <span id="season-overlay-en">Spring</span>
+          </div>
+          <div class="mini-forest" id="mini-forest">
+          <div class="mini-forest">
+            <div class="mini-tree">
+              <svg class="tree-svg" viewBox="0 0 60 120" width="55" height="110" aria-hidden="true">
+                <polygon points="27,120 33,120 31,65 29,65" fill="#8B7355"/>
+                <path d="M30,85 Q20,75 14,68" stroke="#8B7355" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M30,75 Q40,65 46,58" stroke="#8B7355" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path class="tree-canopy" d="M30,65 C12,62 6,44 10,28 C14,14 22,8 30,12 C38,8 47,14 52,28 C57,44 50,62 30,65 Z" fill="#4A7C59" opacity="0.85"/>
+              </svg>
+              <div class="mini-year">2023</div>
+            </div>
+            <div class="mini-tree">
+              <svg class="tree-svg" viewBox="0 0 60 120" width="42" height="84" aria-hidden="true">
+                <polygon points="27,120 33,120 31,72 29,72" fill="#8B7355"/>
+                <path d="M30,92 Q22,82 16,76" stroke="#8B7355" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path class="tree-canopy" d="M30,72 C14,68 8,52 13,38 C18,24 26,18 30,20 C34,18 43,24 49,38 C55,52 48,68 30,72 Z" fill="#4A7C59" opacity="0.85"/>
+              </svg>
+              <div class="mini-year">2024</div>
+            </div>
+            <div class="mini-tree">
+              <svg class="tree-svg" viewBox="0 0 60 120" width="68" height="136" aria-hidden="true">
+                <polygon points="26,120 34,120 32,58 28,58" fill="#8B7355"/>
+                <path d="M30,82 Q18,70 10,62" stroke="#8B7355" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M30,70 Q42,60 50,52" stroke="#8B7355" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path class="tree-canopy" d="M30,58 C10,54 3,34 8,18 C13,4 22,0 30,4 C38,0 48,4 54,18 C60,34 52,54 30,58 Z" fill="#4A7C59" opacity="0.85"/>
+              </svg>
+              <div class="mini-year">2025</div>
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Growth Preview ── -->
   <section class="growth-section" id="growth">
     <div class="growth-inner">
-      <div class="section-label">What your forest becomes</div>
-      <h2 class="growth-heading">One year of moments.<br>Visible.</h2>
-      <p class="growth-sub">Every entry adds a ring. Every ring changes the shape. Here is what consistency looks like.</p>
+      <div class="section-label" data-i18n="growthLabel">What your forest becomes</div>
+      <h2 class="growth-heading" data-i18n="growthTitle">One year of moments.<br>Visible.</h2>
+      <p class="growth-sub" data-i18n="growthSub">Every entry adds a ring. Every ring changes the shape. Here is what consistency looks like.</p>
 
-      <!-- Timeline -->
       <div class="growth-timeline">
-        <!-- Week -->
+        <!-- 1 week -->
         <div class="growth-stage">
           <div class="stage-visual">
             <div class="stage-tree" id="stage-week">
-              <div class="s-trunk" style="height:28px"></div>
-              <div class="s-crown">
-                <div class="s-circle" style="width:18px;height:18px;top:-8px;left:-7px;opacity:0.5"></div>
-                <div class="s-circle" style="width:12px;height:12px;top:-5px;left:2px;opacity:0.4"></div>
-              </div>
+              <svg class="tree-svg" viewBox="0 0 60 120" width="30" height="60" aria-hidden="true">
+                <polygon points="28,120 32,120 31,82 29,82" fill="#8B7355"/>
+                <path class="tree-canopy" d="M30,82 C22,80 18,70 20,62 C22,54 28,52 30,54 C32,52 38,54 41,62 C44,70 40,80 30,82 Z" fill="#4A7C59" opacity="0.75"/>
+              </svg>
             </div>
           </div>
-          <div class="stage-label">1 week</div>
+          <div class="stage-label" data-i18n="tl1Week">1 week</div>
           <div class="stage-count">7 entries</div>
-          <div class="stage-desc">A tiny seedling. The beginning of a habit.</div>
-          <div class="stage-state state-living">Living</div>
+          <div class="stage-desc" data-i18n="tl1WeekDesc">A tiny seedling. The beginning of a habit.</div>
+          <div class="stage-state state-living" data-i18n="stateLiving">Living</div>
         </div>
 
-        <!-- Month -->
-        <div class="growth-connector">
-          <div class="connector-line"></div>
-          <div class="connector-dot"></div>
-        </div>
+        <div class="growth-connector"><div class="connector-line"></div><div class="connector-dot"></div></div>
 
-        <!-- Month -->
+        <!-- 1 month -->
         <div class="growth-stage">
           <div class="stage-visual">
             <div class="stage-tree" id="stage-month">
-              <div class="s-trunk" style="height:52px"></div>
-              <div class="s-crown">
-                <div class="s-circle" style="width:36px;height:36px;top:-16px;left:-16px;opacity:0.65"></div>
-                <div class="s-circle" style="width:26px;height:26px;top:-12px;left:0px;opacity:0.55"></div>
-                <div class="s-circle" style="width:18px;height:18px;top:-8px;left:-12px;opacity:0.45"></div>
-              </div>
+              <svg class="tree-svg" viewBox="0 0 60 120" width="44" height="88" aria-hidden="true">
+                <polygon points="27,120 33,120 32,70 28,70" fill="#8B7355"/>
+                <path d="M30,90 Q22,80 15,74" stroke="#8B7355" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path class="tree-canopy" d="M30,70 C16,66 10,50 14,36 C18,22 26,16 30,18 C34,16 43,22 47,36 C51,50 46,66 30,70 Z" fill="#4A7C59" opacity="0.80"/>
+              </svg>
             </div>
           </div>
-          <div class="stage-label">1 month</div>
+          <div class="stage-label" data-i18n="tl1Month">1 month</div>
           <div class="stage-count">30 entries</div>
-          <div class="stage-desc">A proper young tree. Breathing. Growing.</div>
-          <div class="stage-state state-living">Living</div>
+          <div class="stage-desc" data-i18n="tl1MonthDesc">A proper young tree. Breathing. Growing.</div>
+          <div class="stage-state state-living" data-i18n="stateLiving">Living</div>
         </div>
 
-        <!-- Connector -->
-        <div class="growth-connector">
-          <div class="connector-line"></div>
-          <div class="connector-dot"></div>
-        </div>
+        <div class="growth-connector"><div class="connector-line"></div><div class="connector-dot"></div></div>
 
-        <!-- Half Year -->
+        <!-- 6 months -->
         <div class="growth-stage">
           <div class="stage-visual">
             <div class="stage-tree" id="stage-halfyear">
-              <div class="s-trunk" style="height:76px"></div>
-              <div class="s-crown">
-                <div class="s-circle" style="width:48px;height:48px;top:-22px;left:-22px;opacity:0.7"></div>
-                <div class="s-circle" style="width:36px;height:36px;top:-16px;left:-2px;opacity:0.6"></div>
-                <div class="s-circle" style="width:28px;height:28px;top:-12px;left:-18px;opacity:0.5"></div>
-                <div class="s-circle" style="width:20px;height:20px;top:-8px;left:4px;opacity:0.4"></div>
-              </div>
+              <svg class="tree-svg" viewBox="0 0 60 120" width="56" height="112" aria-hidden="true">
+                <polygon points="27,120 33,120 31,62 29,62" fill="#8B7355"/>
+                <path d="M30,84 Q20,72 12,66" stroke="#8B7355" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M30,74 Q40,64 48,57" stroke="#8B7355" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path class="tree-canopy" d="M30,62 C12,58 5,40 9,24 C13,10 22,4 30,6 C38,4 48,10 53,24 C58,40 50,58 30,62 Z" fill="#4A7C59" opacity="0.85"/>
+              </svg>
             </div>
           </div>
-          <div class="stage-label">6 months</div>
+          <div class="stage-label" data-i18n="tl6Month">6 months</div>
           <div class="stage-count">~180 entries</div>
-          <div class="stage-desc">A tree with real presence. You can feel it in the space.</div>
-          <div class="stage-state state-living">Living</div>
+          <div class="stage-desc" data-i18n="tl6MonthDesc">A tree with real presence. You can feel it.</div>
+          <div class="stage-state state-living" data-i18n="stateLiving">Living</div>
         </div>
 
-        <!-- Connector -->
-        <div class="growth-connector">
-          <div class="connector-line"></div>
-          <div class="connector-dot"></div>
-        </div>
+        <div class="growth-connector"><div class="connector-line"></div><div class="connector-dot"></div></div>
 
-        <!-- Year -->
+        <!-- 1 year -->
         <div class="growth-stage">
           <div class="stage-visual">
             <div class="stage-tree" id="stage-year">
-              <div class="s-trunk" style="height:96px"></div>
-              <div class="s-crown">
-                <div class="s-circle" style="width:58px;height:58px;top:-28px;left:-27px;opacity:0.75"></div>
-                <div class="s-circle" style="width:44px;height:44px;top:-20px;left:-4px;opacity:0.65"></div>
-                <div class="s-circle" style="width:34px;height:34px;top:-15px;left:-22px;opacity:0.55"></div>
-                <div class="s-circle" style="width:24px;height:24px;top:-10px;left:4px;opacity:0.45"></div>
-                <div class="s-circle" style="width:16px;height:16px;top:-6px;left:-14px;opacity:0.35"></div>
-              </div>
+              <svg class="tree-svg" viewBox="0 0 60 120" width="68" height="136" aria-hidden="true">
+                <polygon points="26,120 34,120 32,55 28,55" fill="#8B7355"/>
+                <path d="M30,78 Q18,66 9,58" stroke="#8B7355" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M30,68 Q42,58 51,50" stroke="#8B7355" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path class="tree-canopy" d="M30,55 C8,50 2,30 8,14 C13,0 22,-4 30,0 C38,-4 48,0 54,14 C60,30 54,50 30,55 Z" fill="#4A7C59" opacity="0.88"/>
+              </svg>
             </div>
           </div>
-          <div class="stage-label">1 full year</div>
+          <div class="stage-label" data-i18n="tl1Year">1 full year</div>
           <div class="stage-count">365 entries</div>
-          <div class="stage-desc">A fully grown tree. Your first complete year, preserved.</div>
-          <div class="stage-state state-living">Living</div>
+          <div class="stage-desc" data-i18n="tl1YearDesc">A fully grown tree. Your first complete year.</div>
+          <div class="stage-state state-living" data-i18n="stateLiving">Living</div>
         </div>
       </div>
 
-      <!-- Tree States Explanation -->
+      <!-- States -->
       <div class="states-section">
-        <div class="states-label">What your trees tell you</div>
+        <div class="states-label" data-i18n="statesLabel">What your trees tell you</div>
         <div class="states-grid">
-          <div class="state-card state-living-card">
+          <div class="state-card">
             <div class="state-icon">
-              <div class="state-icon-tree">
-                <div class="si-trunk"></div>
-                <div class="si-circle"></div>
-              </div>
+              <svg class="state-tree-svg" viewBox="0 0 40 80" width="28" height="56">
+                <polygon class="tree-trunk" points="17,80 23,80 22,46 18,46" fill="#8B7355"/>
+                <path class="tree-canopy" d="M20,46 C10,43 6,32 9,22 C12,13 18,10 20,12 C22,10 28,13 32,22 C36,32 31,43 20,46 Z" fill="#4A7C59" opacity="0.85"/>
+              </svg>
             </div>
             <div class="state-card-content">
-              <div class="state-card-title">Living <span class="state-dot state-living-dot"></span></div>
-              <p>Active within the last 14 days. The tree breathes. You are present.</p>
+              <div class="state-card-title"><span data-i18n="stateLiving">Living</span> <span class="state-dot state-living-dot"></span></div>
+              <p data-i18n="stateLivingDesc">Active within the last 14 days. The tree breathes. You are present.</p>
             </div>
           </div>
-          <div class="state-card state-dormant-card">
+          <div class="state-card">
             <div class="state-icon">
-              <div class="state-icon-tree dormant">
-                <div class="si-trunk"></div>
-                <div class="si-circle"></div>
-              </div>
+              <svg class="state-tree-svg dormant" viewBox="0 0 40 80" width="28" height="56">
+                <polygon class="tree-trunk" points="17,80 23,80 22,46 18,46" fill="#4A4A50"/>
+                <path class="tree-canopy" d="M20,46 C10,43 6,32 9,22 C12,13 18,10 20,12 C22,10 28,13 32,22 C36,32 31,43 20,46 Z" fill="#3D4F5F" opacity="0.5"/>
+              </svg>
             </div>
             <div class="state-card-content">
-              <div class="state-card-title">Dormant <span class="state-dot state-dormant-dot"></span></div>
-              <p>14–30 days without a new entry. The tree is resting. You can come back.</p>
+              <div class="state-card-title"><span data-i18n="stateDormant">Dormant</span> <span class="state-dot state-dormant-dot"></span></div>
+              <p data-i18n="stateDormantDesc">14–30 days without a new entry. The tree is resting. You can come back.</p>
             </div>
           </div>
-          <div class="state-card state-archived-card">
+          <div class="state-card">
             <div class="state-icon">
-              <div class="state-icon-tree archived">
-                <div class="si-trunk"></div>
-                <div class="si-circle"></div>
-              </div>
+              <svg class="state-tree-svg archived" viewBox="0 0 40 80" width="28" height="56">
+                <polygon class="tree-trunk" points="17,80 23,80 22,46 18,46" fill="#3A3028"/>
+                <path class="tree-canopy" d="M20,46 C10,43 6,32 9,22 C12,13 18,10 20,12 C22,10 28,13 32,22 C36,32 31,43 20,46 Z" fill="#5C4A3A" opacity="0.35"/>
+              </svg>
             </div>
             <div class="state-card-content">
-              <div class="state-card-title">Archived <span class="state-dot state-archived-dot"></span></div>
-              <p>Over 30 days. The year is closed. The tree stays, preserving that time.</p>
+              <div class="state-card-title"><span data-i18n="stateArchived">Archived</span> <span class="state-dot state-archived-dot"></span></div>
+              <p data-i18n="stateArchivedDesc">Over 30 days. The year is closed. The tree stays, preserving that time.</p>
             </div>
           </div>
         </div>
@@ -879,35 +986,238 @@
     </div>
   </section>
 
+  <!-- ── Try ── -->
   <section class="try-section">
     <div class="try-inner">
-      <h2>Ready to plant your forest?</h2>
-      <p>Your data stays in your browser. Nothing leaves your device. Start today — it is already 2025.</p>
-      <a href="app/" class="btn-primary" style="display: inline-flex;">
-        Open Daily Tree
+      <h2 data-i18n="tryTitle">Ready to plant your forest?</h2>
+      <p data-i18n="tryDesc">Your data stays in your browser. Nothing leaves your device. Start today.</p>
+      <a href="app/" class="btn-primary">
+        <span data-i18n="tryCta">Open Daily Tree</span>
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </a>
     </div>
   </section>
 
+  <!-- ── Tech ── -->
   <section class="tech-stack">
     <div class="tech-inner">
-      <h2>Built with</h2>
+      <h2 data-i18n="techTitle">Built with</h2>
       <div class="tech-badges">
         <span class="tech-badge">Three.js</span>
         <span class="tech-badge">WebGL</span>
         <span class="tech-badge">Vanilla JS</span>
         <span class="tech-badge">LocalStorage</span>
         <span class="tech-badge">CSS Animations</span>
-        <span class="tech-badge">No backend</span>
+        <span class="tech-badge" data-i18n="techNoBackend">No backend</span>
       </div>
     </div>
   </section>
 
   <footer>
-    <p>Daily Tree — Open source. Your data stays yours.</p>
-    <p><a href="https://github.com/zhuxinyao99-jpg/daily-tree" target="_blank">GitHub</a> · <a href="app/">Open App</a></p>
+    <p data-i18n="footerText">Daily Tree — Open source. Your data stays yours.</p>
+    <p><a href="https://github.com/zhuxinyao99-jpg/daily-tree" target="_blank">GitHub</a> · <a href="app/" data-i18n="footerApp">Open App</a></p>
   </footer>
 
+  <script>
+    // ── i18n ──────────────────────────────────────────────────────────────
+    const I18N = {
+      en: {
+        navFeatures: 'Features', navGrowth: 'Growth', navCta: 'Open App',
+        heroEyebrow: 'A personal forest of your life',
+        heroTitle: 'Watch your life grow in rings.',
+        heroSub: 'Every day you write an entry, a tree adds a ring. Over years, a forest forms — a living map of your time, your thoughts, and your growth.',
+        heroCta: 'Start Your Forest', heroSecondary: 'See it in action',
+        featuresLabel: 'What makes it different',
+        feat1Title: 'Time as rings',
+        feat1Desc: 'Each year is a tree. Each entry adds growth. The older the tree, the more you can see the shape of that time in your life.',
+        feat2Title: '365 moments',
+        feat2Desc: 'One entry per day maximum. It forces you to find the single most important thing worth remembering.',
+        feat3Title: 'Never forget a day',
+        feat3Desc: 'Sleeping trees remind you which years you were present. Archived years hold their shape forever.',
+        demoTitle: 'Your forest, breathing.',
+        demoDesc: 'Trees are alive. They breathe when you\'re active, rest when you pause, and archive when a year closes.',
+        growthLabel: 'What your forest becomes',
+        growthTitle: 'One year of moments.<br>Visible.',
+        growthSub: 'Every entry adds a ring. Every ring changes the shape. Here is what consistency looks like.',
+        tl1Week: '1 week', tl1Month: '1 month', tl6Month: '6 months', tl1Year: '1 full year',
+        tl1WeekDesc: 'A tiny seedling. The beginning of a habit.',
+        tl1MonthDesc: 'A proper young tree. Breathing. Growing.',
+        tl6MonthDesc: 'A tree with real presence. You can feel it.',
+        tl1YearDesc: 'A fully grown tree. Your first complete year.',
+        statesLabel: 'What your trees tell you',
+        stateLiving: 'Living', stateDormant: 'Dormant', stateArchived: 'Archived',
+        stateLivingDesc: 'Active within the last 14 days. The tree breathes. You are present.',
+        stateDormantDesc: '14–30 days without a new entry. The tree is resting. You can come back.',
+        stateArchivedDesc: 'Over 30 days. The year is closed. The tree stays, preserving that time.',
+        tryTitle: 'Ready to plant your forest?',
+        tryDesc: 'Your data stays in your browser. Nothing leaves your device. Start today.',
+        tryCta: 'Open Daily Tree',
+        techTitle: 'Built with', techNoBackend: 'No backend',
+        footerText: 'Daily Tree — Open source. Your data stays yours.',
+        footerApp: 'Open App',
+      },
+      zh: {
+        navFeatures: '功能', navGrowth: '成长', navCta: '打开应用',
+        heroEyebrow: '一片属于你自己的森林',
+        heroTitle: '看着你的生命，长出年轮。',
+        heroSub: '每天写下一条记录，树就长出一圈年轮。年复一年，一片森林逐渐成形 —— 一张你的时光、你的思绪、你的成长地图。',
+        heroCta: '开始你的森林', heroSecondary: '看看效果',
+        featuresLabel: '是什么让它与众不同',
+        feat1Title: '时间即年轮',
+        feat1Desc: '每一年是一棵树，每一条记录让树生长。树越老，你越能看到那段时光在你生命里的样子。',
+        feat2Title: '365个瞬间',
+        feat2Desc: '每天最多一条记录。这迫使你找到那一天最值得记住的事情。',
+        feat3Title: '不忘任何一天',
+        feat3Desc: '沉睡的树提醒你哪些年你曾经在场。归档的年份永远保持它的形状。',
+        demoTitle: '你的森林，在呼吸。',
+        demoDesc: '树是有生命的。你活跃时它呼吸，你停下时它休眠，一年结束后它归档。',
+        growthLabel: '你的森林会变成什么',
+        growthTitle: '一年的瞬间。<br>看得见。',
+        growthSub: '每一条记录都是一圈年轮，每一圈都改变形状。这就是坚持的样子。',
+        tl1Week: '1周', tl1Month: '1个月', tl6Month: '6个月', tl1Year: '整整1年',
+        tl1WeekDesc: '一颗小小的种子，习惯的开始。',
+        tl1MonthDesc: '一棵真正的小树，在呼吸，在生长。',
+        tl6MonthDesc: '一棵有存在感的树，你能感受到它。',
+        tl1YearDesc: '一棵长大的树，你的第一个完整年份。',
+        statesLabel: '你的树在告诉你什么',
+        stateLiving: '活着', stateDormant: '沉睡', stateArchived: '归档',
+        stateLivingDesc: '14天内有过记录。树在呼吸，你在场。',
+        stateDormantDesc: '14到30天没有新记录。树在休息，你可以回来。',
+        stateArchivedDesc: '超过30天。这一年已经关闭，树永远留在那里。',
+        tryTitle: '准备好种下你的森林了吗？',
+        tryDesc: '你的数据留在浏览器里，永远不会离开你的设备。今天就开始。',
+        tryCta: '打开 Daily Tree',
+        techTitle: '技术栈', techNoBackend: '无后端',
+        footerText: 'Daily Tree — 开源。数据永远是你的。',
+        footerApp: '打开应用',
+      },
+    };
+
+    const LANG_KEY = 'daily_tree_lang';
+    let lang = localStorage.getItem(LANG_KEY) ||
+               ((navigator.language || 'en').startsWith('zh') ? 'zh' : 'en');
+
+    function applyLang() {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        const val = (I18N[lang] && I18N[lang][key]) || (I18N.en && I18N.en[key]);
+        if (val) el.innerHTML = val;
+      });
+      const btn = document.getElementById('nav-lang');
+      if (btn) btn.textContent = lang === 'en' ? '中文' : 'English';
+      document.documentElement.lang = lang === 'zh' ? 'zh-CN' : 'en';
+    }
+
+    document.getElementById('nav-lang').addEventListener('click', () => {
+      lang = lang === 'en' ? 'zh' : 'en';
+      localStorage.setItem(LANG_KEY, lang);
+      applyLang();
+    });
+
+    applyLang();
+
+    // ── Seasonal Demo ───────────────────────────────────────────────
+    (function() {
+      const SEASONS = ['spring', 'summer', 'autumn', 'winter'];
+      const LABELS = {
+        spring: { zh: '春', en: 'Spring' },
+        summer: { zh: '夏', en: 'Summer' },
+        autumn: { zh: '秋', en: 'Autumn' },
+        winter: { zh: '冬', en: 'Winter' },
+      };
+      const PARTICLES = {
+        autumn: { color: '#D4760A', count: 14, sizeMin: 2, sizeMax: 4, speedMin: 0.4, speedMax: 0.9, leaf: true },
+        winter: { color: '#C8D8E8', count: 20, sizeMin: 1, sizeMax: 2.5, speedMin: 0.2, speedMax: 0.5, leaf: false },
+      };
+
+      let idx = 0, paused = false, timer = null, particles = [], raf = null;
+      const forest = document.getElementById('mini-forest');
+      const tabs = document.querySelectorAll('.season-tab');
+      const overlayZh = document.getElementById('season-overlay-zh');
+      const overlayEn = document.getElementById('season-overlay-en');
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas ? canvas.getContext('2d') : null;
+      const demoContent = document.getElementById('demo-content');
+
+      function resizeCanvas() {
+        if (!canvas || !demoContent) return;
+        canvas.width = demoContent.offsetWidth;
+        canvas.height = demoContent.offsetHeight;
+      }
+
+      function applySeason(season) {
+        SEASONS.forEach(s => forest.classList.remove('season-' + s));
+        forest.classList.add('season-' + season);
+        tabs.forEach(t => t.classList.toggle('active', t.dataset.season === season));
+        if (overlayZh) overlayZh.textContent = LABELS[season].zh;
+        if (overlayEn) overlayEn.textContent = LABELS[season].en;
+        particles = [];
+        if (raf) { cancelAnimationFrame(raf); raf = null; }
+        if (ctx) ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const cfg = PARTICLES[season];
+        if (cfg && ctx) {
+          resizeCanvas();
+          for (let i = 0; i < cfg.count; i++) spawnParticle(cfg, i / cfg.count);
+          tick(cfg);
+        }
+      }
+
+      function spawnParticle(cfg, startFrac) {
+        particles.push({
+          x: Math.random() * (canvas ? canvas.width : 400),
+          y: startFrac * (canvas ? canvas.height : 300),
+          size: cfg.sizeMin + Math.random() * (cfg.sizeMax - cfg.sizeMin),
+          vy: cfg.speedMin + Math.random() * (cfg.speedMax - cfg.speedMin),
+          vx: cfg.leaf ? (Math.random() - 0.5) * 0.5 : 0,
+          a: Math.random() * Math.PI * 2,
+          ra: (Math.random() - 0.5) * 0.05,
+          op: 0.25 + Math.random() * 0.5,
+        });
+      }
+
+      function tick(cfg) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        const h = canvas.height;
+        particles.forEach(p => {
+          p.y += p.vy; p.x += p.vx; p.a += p.ra;
+          if (p.y > h + 8) { p.y = -8; p.x = Math.random() * canvas.width; }
+          ctx.save();
+          ctx.globalAlpha = p.op;
+          ctx.fillStyle = cfg.color;
+          if (cfg.leaf) {
+            ctx.translate(p.x, p.y); ctx.rotate(p.a);
+            ctx.beginPath(); ctx.ellipse(0, 0, p.size, p.size * 0.5, 0, 0, Math.PI * 2); ctx.fill();
+          } else {
+            ctx.beginPath(); ctx.arc(p.x, p.y, p.size * 0.5, 0, Math.PI * 2); ctx.fill();
+          }
+          ctx.restore();
+        });
+        raf = requestAnimationFrame(() => tick(cfg));
+      }
+
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          idx = SEASONS.indexOf(tab.dataset.season);
+          paused = true;
+          applySeason(SEASONS[idx]);
+          clearTimeout(tab._rt);
+          tab._rt = setTimeout(() => { paused = false; }, 8000);
+        });
+      });
+
+      const win = demoContent && demoContent.closest('.demo-window');
+      if (win) {
+        win.addEventListener('mouseenter', () => { paused = true; });
+        win.addEventListener('mouseleave', () => { paused = false; });
+      }
+
+      timer = setInterval(() => {
+        if (!paused) { idx = (idx + 1) % SEASONS.length; applySeason(SEASONS[idx]); }
+      }, 3500);
+
+      applySeason('spring');
+      window.addEventListener('resize', resizeCanvas);
+    })();
+  </script>
 </body>
 </html>

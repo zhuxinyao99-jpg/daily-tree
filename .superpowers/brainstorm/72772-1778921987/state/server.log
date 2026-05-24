@@ -1,0 +1,16 @@
+{"type":"server-started","port":64089,"host":"127.0.0.1","url_host":"localhost","url":"http://localhost:64089","screen_dir":"/private/tmp/daily-tree/.superpowers/brainstorm/72772-1778921987/content","state_dir":"/private/tmp/daily-tree/.superpowers/brainstorm/72772-1778921987/state"}
+{"type":"screen-added","file":"/private/tmp/daily-tree/.superpowers/brainstorm/72772-1778921987/content/visual-direction.html"}
+{"source":"user-event","type":"click","text":"2026 · 12 entries\n      \n    \n    \n      A. 极简禅意\n      更少的视觉噪音。环形树更轻盈，更多留白，排版精致克制。类似 Linear / Craft 的极简感。","choice":"A","id":null,"timestamp":1778922049296}
+{"source":"user-event","type":"click","text":"GROWING · TODAY\n    \n    \n      B. 有机发光\n      深色底上有柔和的绿色光晕。树有更强的存在感和\"呼吸感\"。类似 Vercel Dashboard / Raycast 的氛围感。","choice":"B","id":null,"timestamp":1778922050347}
+{"source":"user-event","type":"click","text":"2026 · 12 entries\n      \n    \n    \n      A. 极简禅意\n      更少的视觉噪音。环形树更轻盈，更多留白，排版精致克制。类似 Linear / Craft 的极简感。","choice":"A","id":null,"timestamp":1778922052646}
+{"source":"user-event","type":"click","text":"GROWING · TODAY\n    \n    \n      B. 有机发光\n      深色底上有柔和的绿色光晕。树有更强的存在感和\"呼吸感\"。类似 Vercel Dashboard / Raycast 的氛围感。","choice":"B","id":null,"timestamp":1778922056328}
+{"source":"user-event","type":"click","text":"May · 2026\n    \n    \n      C. 自然纸质\n      暖棕色调取代纯绿，像木头年轮的材质感。排版偏衬线字体，有手帐/日记的温度。","choice":"C","id":null,"timestamp":1778922060094}
+{"source":"user-event","type":"click","text":"GROWING · TODAY\n    \n    \n      B. 有机发光\n      深色底上有柔和的绿色光晕。树有更强的存在感和\"呼吸感\"。类似 Vercel Dashboard / Raycast 的氛围感。","choice":"B","id":null,"timestamp":1778922061246}
+{"type":"screen-added","file":"/private/tmp/daily-tree/.superpowers/brainstorm/72772-1778921987/content/tree-style.html"}
+{"type":"screen-added","file":"/private/tmp/daily-tree/.superpowers/brainstorm/72772-1778921987/content/tree-shape.html"}
+{"source":"user-event","type":"click","text":"7天\n      \n      \n      \n        \n          \n          \n          \n        \n        3个月\n      \n      \n      \n        \n        \n          \n            \n              \n              \n              \n            \n          \n          \n          \n          \n          \n          \n          \n          \n          \n          \n          \n          \n        \n        1年\n      \n    \n    \n      A. 树冠轮廓生长\n      树冠由小变大，层层椭圆叠加形成冠幅。记录越多树越茂盛。树干微微可见年轮纹理。简洁又有树的意象。","choice":"A","id":null,"timestamp":1778922328819}
+{"type":"screen-added","file":"/private/tmp/daily-tree/.superpowers/brainstorm/72772-1778921987/content/tree-organic.html"}
+{"type":"screen-added","file":"/private/tmp/daily-tree/.superpowers/brainstorm/72772-1778921987/content/layout.html"}
+{"source":"user-event","type":"click","text":"7days\n          \n          \n            +\n          \n        \n        \n        \n          \n            \n            \n            \n            \n            \n            \n            \n            \n          \n          \n          今天已记录 ✓\n        \n      \n    \n    \n      A. 极窄图标侧边栏\n      左侧只有 56px 图标栏，每棵树缩略图+streak+按钮。树占主视野。点树图标弹出详情面板。最大化沉浸感。","choice":"A","id":null,"timestamp":1778922724951}
+{"type":"screen-added","file":"/private/tmp/daily-tree/.superpowers/brainstorm/72772-1778921987/content/waiting-1.html"}
+{"type":"server-stopped","reason":"idle timeout"}
