@@ -5,6 +5,15 @@ const STORAGE_KEY   = 'daily_tree_entries';
 const VISITED_KEY   = 'daily_tree_visited';
 const ONBOARDED_KEY = 'daily_tree_onboarded';
 
+const STAGE_CONFIG = [
+  { key:'seed',    name:'种子',   emoji:'🌰', unlock:1,   renderDays:1,   desc:'万物始于一粒种子' },
+  { key:'sprout',  name:'嫩芽',   emoji:'🌱', unlock:3,   renderDays:3,   desc:'破土而出，生命开始' },
+  { key:'sapling', name:'幼苗',   emoji:'🪴', unlock:7,   renderDays:15,  desc:'第一片叶，扎根成形' },
+  { key:'young',   name:'青树',   emoji:'🌿', unlock:30,  renderDays:50,  desc:'枝条分叉，树冠成型' },
+  { key:'mature',  name:'壮年树', emoji:'🌳', unlock:90,  renderDays:180, desc:'繁茂深根，见证岁月' },
+  { key:'ancient', name:'古树',   emoji:'🌲', unlock:300, renderDays:400, desc:'历经风雨，屹立不倒' },
+];
+
 // ── Data ──────────────────────────────────────────────────────────────────
 
 function loadEntries() {
@@ -564,6 +573,66 @@ function importBackup(file) {
   reader.readAsText(file);
 }
 
+// ── Stage Panel ───────────────────────────────────────────────────────────
+
+function getCurrentStageIndex(dayCount) {
+  let idx = 0;
+  for (let i = 0; i < STAGE_CONFIG.length; i++) {
+    if (dayCount >= STAGE_CONFIG[i].unlock) idx = i; else break;
+  }
+  return idx;
+}
+
+function openStagePanel() {
+  const dayCount = computeTotalDaysThisYear();
+  const stageIdx = getCurrentStageIndex(dayCount);
+  const stage = STAGE_CONFIG[stageIdx];
+  const nextStage = STAGE_CONFIG[stageIdx + 1];
+
+  document.getElementById('stage-panel-name').textContent = stage.name;
+  document.getElementById('stage-panel-desc').textContent = stage.desc;
+
+  const canvas = document.getElementById('stage-preview-canvas');
+  if (canvas) {
+    const dpr = devicePixelRatio || 1;
+    canvas.style.width = '90px'; canvas.style.height = '120px';
+    canvas.width = 90 * dpr; canvas.height = 120 * dpr;
+    drawTree(canvas, stage.renderDays, 12345);
+  }
+
+  const countdownEl = document.getElementById('stage-panel-countdown');
+  if (nextStage) {
+    countdownEl.textContent = `再 ${nextStage.unlock - dayCount} 天 → ${nextStage.name}`;
+  } else {
+    countdownEl.textContent = '已成长为古树 🌲';
+  }
+
+  const fillEl = document.getElementById('stage-panel-progress-fill');
+  if (fillEl && nextStage) {
+    const pct = Math.max(0, Math.min(100, Math.round(
+      ((dayCount - stage.unlock) / (nextStage.unlock - stage.unlock)) * 100
+    )));
+    fillEl.style.width = pct + '%';
+  } else if (fillEl) {
+    fillEl.style.width = '100%';
+  }
+
+  const pathEl = document.getElementById('stage-panel-path');
+  if (pathEl) {
+    pathEl.innerHTML = STAGE_CONFIG.map(s =>
+      `<span class="stage-path-item ${dayCount >= s.unlock ? 'unlocked' : ''}">${s.emoji}</span>`
+    ).join('');
+  }
+
+  document.getElementById('stage-panel-overlay').classList.add('active');
+  document.getElementById('stage-panel').classList.add('open');
+}
+
+function closeStagePanel() {
+  document.getElementById('stage-panel-overlay').classList.remove('active');
+  document.getElementById('stage-panel').classList.remove('open');
+}
+
 // ── Guide ─────────────────────────────────────────────────────────────────
 
 const GUIDE_TOTAL = 3;
@@ -583,6 +652,16 @@ function showGuide() {
     guideCanvas.width  = GW * dpr;
     guideCanvas.height = GH * dpr;
     drawTree(guideCanvas, 20, 12345);
+  }
+  const guideCanvas2 = document.getElementById('guide-tree-canvas-2');
+  if (guideCanvas2) {
+    const dpr = devicePixelRatio || 1;
+    const GW = 160, GH = 220;
+    guideCanvas2.style.width  = GW + 'px';
+    guideCanvas2.style.height = GH + 'px';
+    guideCanvas2.width  = GW * dpr;
+    guideCanvas2.height = GH * dpr;
+    drawTree(guideCanvas2, 35, 12345);
   }
 }
 
@@ -623,10 +702,7 @@ function bindEvents() {
     if (todayCell) todayCell.scrollIntoView({ inline: 'center', behavior: 'smooth' });
   });
 
-  document.getElementById('btn-tree')?.addEventListener('click', () => {
-    const total = computeTotalDaysThisYear();
-    openBranchPanel(total >= 91 ? 'recent' : 'early');
-  });
+  document.getElementById('btn-tree')?.addEventListener('click', openStagePanel);
 
   document.getElementById('btn-cal')?.addEventListener('click', () => {
     const todayCell = document.querySelector('.timeline-cell.today');
@@ -679,7 +755,7 @@ function bindEvents() {
   });
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeModal(); closeBranchPanel(); closeSettings(); closeGuide(); }
+    if (e.key === 'Escape') { closeModal(); closeBranchPanel(); closeSettings(); closeGuide(); closeStagePanel(); }
     if ((e.metaKey || e.ctrlKey) && e.key === 'n') { e.preventDefault(); openModal(getTodayEntry(), false); }
   });
 }

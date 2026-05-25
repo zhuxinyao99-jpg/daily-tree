@@ -56,7 +56,7 @@ class RainLayer {
     this._init();
   }
   _init() {
-    const count = Math.round(80 * this.density);
+    const count = Math.round(160 * this.density);
     const W = this.canvas.width, H = this.canvas.height;
     for (let i = 0; i < count; i++) {
       this.particles.push({
@@ -64,8 +64,8 @@ class RainLayer {
         y: Math.random() * H,
         speed: 6 + Math.random() * 6,
         drift: 0.5 + Math.random() * 1.2,
-        len:   8 + Math.random() * 8,
-        alpha: 0.2 + Math.random() * 0.3,
+        len:   14 + Math.random() * 12,
+        alpha: 0.45 + Math.random() * 0.3,
       });
     }
   }
@@ -73,8 +73,8 @@ class RainLayer {
     const ctx = this.canvas.getContext('2d');
     const W = this.canvas.width, H = this.canvas.height;
     ctx.clearRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(180, 220, 255, 0.5)';
-    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(200, 230, 255, 0.65)';
+    ctx.lineWidth = 1.2;
     this.particles.forEach(p => {
       ctx.globalAlpha = p.alpha;
       ctx.beginPath();

@@ -182,16 +182,8 @@
     </div>
 
     <div class="guide-step hidden" id="guide-step-2">
-      <div class="guide-visual guide-visual-branch">
-        <svg viewBox="0 0 120 160" width="90" height="120" fill="none">
-          <line x1="60" y1="155" x2="60" y2="100" stroke="rgba(105,78,48,0.8)" stroke-width="8" stroke-linecap="round"/>
-          <line x1="60" y1="120" x2="35" y2="80" stroke="rgba(105,78,48,0.7)" stroke-width="5" stroke-linecap="round"/>
-          <line x1="60" y1="120" x2="82" y2="75" stroke="rgba(105,78,48,0.7)" stroke-width="5" stroke-linecap="round"/>
-          <ellipse cx="28" cy="68" rx="16" ry="12" fill="rgba(108,195,90,0.45)" stroke="rgba(150,230,130,0.5)" stroke-width="0.8"/>
-          <ellipse cx="85" cy="62" rx="16" ry="12" fill="rgba(108,195,90,0.45)" stroke="rgba(150,230,130,0.5)" stroke-width="0.8"/>
-          <circle cx="35" cy="80" r="10" fill="none" stroke="rgba(150,230,130,0.8)" stroke-width="1.5" stroke-dasharray="3 2"/>
-          <text x="20" y="42" font-size="10" fill="rgba(150,230,130,0.8)" font-family="sans-serif">点我</text>
-        </svg>
+      <div class="guide-visual">
+        <canvas id="guide-tree-canvas-2" width="160" height="220"></canvas>
       </div>
       <h2 class="guide-title">点击树枝，回顾过去</h2>
       <p class="guide-desc">树的不同部位对应不同时期的记录，点击树枝可以查看那段时间写的内容。</p>
@@ -210,6 +202,27 @@
 </div>
 
 <button class="today-chip hidden" id="today-chip">↩ 今天</button>
+
+<!-- Stage Preview Panel -->
+<div id="stage-panel-overlay" onclick="closeStagePanel()"></div>
+<div id="stage-panel">
+  <div class="stage-panel-handle"></div>
+  <h2 class="stage-panel-title">树的一生</h2>
+  <div class="stage-panel-current">
+    <canvas id="stage-preview-canvas" width="120" height="160"></canvas>
+    <div class="stage-panel-info">
+      <div class="stage-panel-name" id="stage-panel-name"></div>
+      <div class="stage-panel-desc" id="stage-panel-desc"></div>
+    </div>
+  </div>
+  <div class="stage-panel-countdown" id="stage-panel-countdown"></div>
+  <div class="stage-panel-progress-wrap">
+    <div class="stage-panel-progress-bar">
+      <div class="stage-panel-progress-fill" id="stage-panel-progress-fill"></div>
+    </div>
+  </div>
+  <div class="stage-panel-path" id="stage-panel-path"></div>
+</div>
 
 <script type="module" src="app.js"></script>
 </body>
