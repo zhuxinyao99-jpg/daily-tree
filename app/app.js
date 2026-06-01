@@ -456,6 +456,7 @@ function onTreeClick(e) {
 
 let _editEntry = null;
 let _modalImages = []; // { id: string, objectUrl: string }[]
+let _modalSessionId = 0;
 
 function clearModalImages() {
   _modalImages.forEach(m => URL.revokeObjectURL(m.objectUrl));
@@ -473,6 +474,7 @@ function openModal(entryToEdit, readOnly) {
   const toolbar  = document.getElementById('modal-toolbar');
 
   clearModalImages();
+  const sessionId = ++_modalSessionId;
 
   if (textarea) {
     textarea.value = entryToEdit ? entryToEdit.text : '';
@@ -491,6 +493,7 @@ function openModal(entryToEdit, readOnly) {
   if (entryToEdit?.images?.length) {
     entryToEdit.images.forEach(imgId => {
       getImage(imgId).then(blob => {
+        if (sessionId !== _modalSessionId) { return; }
         if (!blob) return;
         const url = URL.createObjectURL(blob);
         _modalImages.push({ id: imgId, objectUrl: url });
@@ -531,6 +534,7 @@ function appendThumbToModal(imgId, objectUrl) {
   btn.addEventListener('click', () => {
     _modalImages = _modalImages.filter(m => m.id !== imgId);
     URL.revokeObjectURL(objectUrl);
+    deleteImage(imgId);
     wrap.remove();
     updateImageBtnState();
   });
@@ -798,17 +802,21 @@ function bindEvents() {
     const remaining = 3 - _modalImages.length;
     const toProcess = files.slice(0, remaining);
     for (const file of toProcess) {
-      const usage = await getDBSizeEstimate();
-      if (usage > 50 * 1024 * 1024) {
-        showToast('存储空间超过 50MB，请先清理旧记录。');
-        break;
+      try {
+        const usage = await getDBSizeEstimate();
+        if (usage > 50 * 1024 * 1024) {
+          showToast('存储空间超过 50MB，请先清理旧记录。');
+          break;
+        }
+        const blob = await compressImage(file);
+        const id   = `img_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+        await saveImage(id, blob);
+        const url  = URL.createObjectURL(blob);
+        _modalImages.push({ id, objectUrl: url });
+        appendThumbToModal(id, url);
+      } catch {
+        showToast('图片保存失败，请重试。');
       }
-      const blob = await compressImage(file);
-      const id   = `img_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
-      await saveImage(id, blob);
-      const url  = URL.createObjectURL(blob);
-      _modalImages.push({ id, objectUrl: url });
-      appendThumbToModal(id, url);
     }
   });
   document.getElementById('btn-emoji')?.addEventListener('click', e => {
