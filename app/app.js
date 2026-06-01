@@ -1,5 +1,8 @@
 import { drawTree, drawAnimated, getStage } from './tree.js';
 import { WeatherManager } from './weather.js';
+import { saveImage, getImage, deleteImage, getDBSizeEstimate } from './db.js';
+import { compressImage } from './image-compressor.js';
+import { initEmojiPicker, toggleEmojiPicker } from './emoji-picker.js';
 
 const STORAGE_KEY   = 'daily_tree_entries';
 const VISITED_KEY   = 'daily_tree_visited';
@@ -33,19 +36,24 @@ function getTodayEntry() {
   const today   = getTodayKey();
   return (entries[year] || []).find(e => e.date && e.date.substring(0,10) === today) || null;
 }
-function addEntryWithDate(dateStr, text) {
+function addEntryWithDate(dateStr, text, imageIds = []) {
   const [year, month, day] = dateStr.split('-').map(Number);
   const entries = loadEntries();
   if (!entries[year]) entries[year] = [];
   const d = new Date(year, month - 1, day, 12, 0, 0);
-  entries[year].push({ id: Date.now(), text: text.slice(0, 500), date: d.toISOString() });
+  entries[year].push({ id: Date.now(), text: text.slice(0, 500), date: d.toISOString(), images: imageIds });
   saveEntries(entries);
 }
-function updateEntry(id, text) {
+function updateEntry(id, text, imageIds) {
   const entries = loadEntries();
   for (const y in entries) {
     const e = entries[y].find(x => x.id === id);
-    if (e) { e.text = text.slice(0, 500); saveEntries(entries); return true; }
+    if (e) {
+      e.text = text.slice(0, 500);
+      if (imageIds !== undefined) e.images = imageIds;
+      saveEntries(entries);
+      return true;
+    }
   }
   return false;
 }
@@ -447,6 +455,14 @@ function onTreeClick(e) {
 // ── Modal ─────────────────────────────────────────────────────────────────
 
 let _editEntry = null;
+let _modalImages = []; // { id: string, objectUrl: string }[]
+
+function clearModalImages() {
+  _modalImages.forEach(m => URL.revokeObjectURL(m.objectUrl));
+  _modalImages = [];
+  const container = document.getElementById('modal-images');
+  if (container) container.innerHTML = '';
+}
 
 function openModal(entryToEdit, readOnly) {
   _editEntry = (!readOnly && entryToEdit) ? entryToEdit : null;
@@ -454,6 +470,9 @@ function openModal(entryToEdit, readOnly) {
   const textarea = document.getElementById('entry-text');
   const label    = document.getElementById('modal-label');
   const submit   = document.getElementById('entry-submit');
+  const toolbar  = document.getElementById('modal-toolbar');
+
+  clearModalImages();
 
   if (textarea) {
     textarea.value = entryToEdit ? entryToEdit.text : '';
@@ -466,6 +485,19 @@ function openModal(entryToEdit, readOnly) {
       : (entryToEdit ? '修改记录' : '今天最重要的一件事？');
   }
   if (submit) submit.style.display = readOnly ? 'none' : '';
+  if (toolbar) toolbar.style.display = readOnly ? 'none' : '';
+
+  // 加载已有图片缩略图
+  if (entryToEdit?.images?.length) {
+    entryToEdit.images.forEach(imgId => {
+      getImage(imgId).then(blob => {
+        if (!blob) return;
+        const url = URL.createObjectURL(blob);
+        _modalImages.push({ id: imgId, objectUrl: url });
+        appendThumbToModal(imgId, url);
+      });
+    });
+  }
 
   overlay?.classList.add('active');
   if (!readOnly) setTimeout(() => textarea?.focus(), 150);
@@ -475,9 +507,44 @@ function closeModal() {
   document.getElementById('modal-overlay')?.classList.remove('active');
   const textarea = document.getElementById('entry-text');
   const submit   = document.getElementById('entry-submit');
+  const toolbar  = document.getElementById('modal-toolbar');
   if (textarea) textarea.readOnly = false;
   if (submit)   submit.style.display = '';
+  if (toolbar)  toolbar.style.display = '';
+  clearModalImages();
   _editEntry = null;
+}
+
+function appendThumbToModal(imgId, objectUrl) {
+  const container = document.getElementById('modal-images');
+  if (!container) return;
+  const wrap = document.createElement('div');
+  wrap.className = 'modal-img-thumb';
+  wrap.dataset.imgId = imgId;
+  const img = document.createElement('img');
+  img.src = objectUrl;
+  img.alt = '';
+  const btn = document.createElement('button');
+  btn.className = 'modal-img-remove';
+  btn.textContent = '✕';
+  btn.type = 'button';
+  btn.addEventListener('click', () => {
+    _modalImages = _modalImages.filter(m => m.id !== imgId);
+    URL.revokeObjectURL(objectUrl);
+    wrap.remove();
+    updateImageBtnState();
+  });
+  wrap.appendChild(img);
+  wrap.appendChild(btn);
+  container.appendChild(wrap);
+  updateImageBtnState();
+}
+
+function updateImageBtnState() {
+  const btn = document.getElementById('btn-image');
+  if (btn) btn.style.opacity = _modalImages.length >= 3 ? '0.35' : '1';
+  const input = document.getElementById('image-file-input');
+  if (input) input.disabled = _modalImages.length >= 3;
 }
 
 function updateCharCount() {
@@ -505,18 +572,19 @@ function playSproutTransition(canvas, dayCount, seed) {
   requestAnimationFrame(frame);
 }
 
-function submitEntry() {
+async function submitEntry() {
   const ta   = document.getElementById('entry-text');
   const text = ta ? ta.value.trim() : '';
   if (!text) { showToast('先写点什么吧。'); ta?.focus(); return; }
+  const imageIds = _modalImages.map(m => m.id);
   if (_editEntry) {
-    updateEntry(_editEntry.id, text);
+    updateEntry(_editEntry.id, text, imageIds);
     showToast('已保存！', 'success');
     closeModal();
     refreshTree();
   } else {
     const prevTotal = computeTotalDaysThisYear();
-    addEntryWithDate(getTodayKey(), text);
+    addEntryWithDate(getTodayKey(), text, imageIds);
     showSaveSuccess();
     closeModal();
     const newTotal = computeTotalDaysThisYear();
@@ -724,6 +792,31 @@ function bindEvents() {
   document.getElementById('modal-close')?.addEventListener('click', closeModal);
   document.getElementById('entry-submit')?.addEventListener('click', submitEntry);
   document.getElementById('entry-text')?.addEventListener('input', updateCharCount);
+  document.getElementById('image-file-input')?.addEventListener('change', async e => {
+    const files = Array.from(e.target.files || []);
+    e.target.value = ''; // 允许重复选同一文件
+    const remaining = 3 - _modalImages.length;
+    const toProcess = files.slice(0, remaining);
+    for (const file of toProcess) {
+      const usage = await getDBSizeEstimate();
+      if (usage > 50 * 1024 * 1024) {
+        showToast('存储空间超过 50MB，请先清理旧记录。');
+        break;
+      }
+      const blob = await compressImage(file);
+      const id   = `img_${Date.now()}_${Math.random().toString(36).slice(2,7)}`;
+      await saveImage(id, blob);
+      const url  = URL.createObjectURL(blob);
+      _modalImages.push({ id, objectUrl: url });
+      appendThumbToModal(id, url);
+    }
+  });
+  document.getElementById('btn-emoji')?.addEventListener('click', e => {
+    e.stopPropagation();
+    const ta     = document.getElementById('entry-text');
+    const anchor = document.getElementById('btn-emoji');
+    toggleEmojiPicker(ta, anchor);
+  });
   document.getElementById('entry-text')?.addEventListener('keydown', e => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') submitEntry();
     if (e.key === 'Escape') closeModal();
@@ -763,6 +856,7 @@ function bindEvents() {
 // ── Bootstrap ─────────────────────────────────────────────────────────────
 
 window.addEventListener('DOMContentLoaded', () => {
+  initEmojiPicker();
   bindEvents();
   initApp();
   setTimeout(showGuide, 600);
