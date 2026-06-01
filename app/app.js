@@ -701,13 +701,16 @@ function getCurrentStageIndex(dayCount) {
   return idx;
 }
 
-function openStagePanel() {
-  const dayCount = computeTotalDaysThisYear();
-  const stageIdx = getCurrentStageIndex(dayCount);
-  const stage = STAGE_CONFIG[stageIdx];
-  const nextStage = STAGE_CONFIG[stageIdx + 1];
+let _stagePanelIdx = 0;
 
-  document.getElementById('stage-panel-name').textContent = stage.name;
+function renderStagePanel(idx) {
+  const dayCount = computeTotalDaysThisYear();
+  const stage = STAGE_CONFIG[idx];
+  const nextStage = STAGE_CONFIG[idx + 1];
+  const prevStage = STAGE_CONFIG[idx - 1];
+
+  document.getElementById('stage-panel-name').textContent =
+    `${stage.emoji} ${stage.name}` + (idx === getCurrentStageIndex(dayCount) ? ' ·当前' : '');
   document.getElementById('stage-panel-desc').textContent = stage.desc;
 
   const canvas = document.getElementById('stage-preview-canvas');
@@ -720,7 +723,10 @@ function openStagePanel() {
 
   const countdownEl = document.getElementById('stage-panel-countdown');
   if (nextStage) {
-    countdownEl.textContent = `再 ${nextStage.unlock - dayCount} 天 → ${nextStage.name}`;
+    const daysLeft = nextStage.unlock - dayCount;
+    countdownEl.textContent = daysLeft > 0
+      ? `再 ${daysLeft} 天 → ${nextStage.name}`
+      : `已解锁 ${nextStage.name}`;
   } else {
     countdownEl.textContent = '已成长为古树 🌲';
   }
@@ -737,11 +743,22 @@ function openStagePanel() {
 
   const pathEl = document.getElementById('stage-panel-path');
   if (pathEl) {
-    pathEl.innerHTML = STAGE_CONFIG.map(s =>
-      `<span class="stage-path-item ${dayCount >= s.unlock ? 'unlocked' : ''}">${s.emoji}</span>`
+    pathEl.innerHTML = STAGE_CONFIG.map((s, i) =>
+      `<span class="stage-path-item ${dayCount >= s.unlock ? 'unlocked' : ''} ${i === idx ? 'current' : ''}"
+        data-stage-idx="${i}">${s.emoji}</span>`
     ).join('');
+    pathEl.querySelectorAll('.stage-path-item').forEach(el => {
+      el.addEventListener('click', () => {
+        _stagePanelIdx = parseInt(el.dataset.stageIdx, 10);
+        renderStagePanel(_stagePanelIdx);
+      });
+    });
   }
+}
 
+function openStagePanel() {
+  _stagePanelIdx = getCurrentStageIndex(computeTotalDaysThisYear());
+  renderStagePanel(_stagePanelIdx);
   document.getElementById('stage-panel-overlay').classList.add('active');
   document.getElementById('stage-panel').classList.add('open');
 }
@@ -749,6 +766,25 @@ function openStagePanel() {
 function closeStagePanel() {
   document.getElementById('stage-panel-overlay').classList.remove('active');
   document.getElementById('stage-panel').classList.remove('open');
+}
+
+function initStagePanelSwipe() {
+  const panel = document.getElementById('stage-panel');
+  let touchStartX = 0;
+  panel.addEventListener('touchstart', e => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+  panel.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) < 40) return;
+    if (dx < 0 && _stagePanelIdx < STAGE_CONFIG.length - 1) {
+      _stagePanelIdx++;
+      renderStagePanel(_stagePanelIdx);
+    } else if (dx > 0 && _stagePanelIdx > 0) {
+      _stagePanelIdx--;
+      renderStagePanel(_stagePanelIdx);
+    }
+  }, { passive: true });
 }
 
 // ── Guide ─────────────────────────────────────────────────────────────────
@@ -823,8 +859,15 @@ function bindEvents() {
   document.getElementById('btn-tree')?.addEventListener('click', openStagePanel);
 
   document.getElementById('btn-cal')?.addEventListener('click', () => {
-    const todayCell = document.querySelector('.timeline-cell.today');
-    if (todayCell) todayCell.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+    const isHidden = document.body.classList.toggle('strip-hidden');
+    document.getElementById('btn-cal').classList.toggle('active', !isHidden);
+    if (!isHidden) {
+      // Strip just became visible — scroll to today
+      requestAnimationFrame(() => {
+        const todayCell = document.querySelector('.timeline-cell.today');
+        if (todayCell) todayCell.scrollIntoView({ inline: 'center', behavior: 'smooth' });
+      });
+    }
   });
 
   document.getElementById('btn-stats')?.addEventListener('click', () => {
@@ -904,6 +947,9 @@ function bindEvents() {
   document.getElementById('guide-overlay')?.addEventListener('click', e => {
     if (e.target.id === 'guide-overlay') closeGuide();
   });
+
+  document.getElementById('stage-panel-overlay')?.addEventListener('click', closeStagePanel);
+  initStagePanelSwipe();
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') { closeModal(); closeBranchPanel(); closeSettings(); closeGuide(); closeStagePanel(); closeImagePreview(); }

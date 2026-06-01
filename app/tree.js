@@ -293,15 +293,25 @@ function drawSapling(ctx, W, H, seed) {
   const cx = W / 2, gy = H - 40;
   drawAmbient(ctx, cx, gy, W, H);
   drawGround(ctx, cx, gy, W);
-  drawSimpleRoots(ctx, cx, gy, 0.6);
-  ctx.beginPath(); ctx.moveTo(cx, gy); ctx.lineTo(cx + 1, gy - 65);
-  ctx.lineWidth = 8; ctx.strokeStyle = 'rgba(105,78,48,0.82)'; ctx.lineCap = 'round'; ctx.stroke();
+  drawSimpleRoots(ctx, cx, gy, 0.75);
+
+  const trunkH = 85, topX = cx + 2, topY = gy - trunkH;
+  ctx.beginPath(); ctx.moveTo(cx, gy); ctx.lineTo(topX, topY);
+  ctx.lineWidth = 10; ctx.strokeStyle = 'rgba(105,78,48,0.85)'; ctx.lineCap = 'round'; ctx.stroke();
+
   const tips = [], segs = [];
-  growBranch(ctx, cx + 1, gy - 65, -Math.PI / 2 + 0.45, 32, 6, 1, rngFrom(seed + 10), tips, segs, 'early');
-  growBranch(ctx, cx + 1, gy - 65, -Math.PI / 2 - 0.45, 30, 5.5, 1, rngFrom(seed + 20), tips, segs, 'early');
-  tips.forEach(pt => {
-    drawCrown(ctx, pt.x, pt.y, 22, rngFrom(Math.floor(pt.x * 11 + pt.y * 17 + seed)));
+  // 4 branches: 2 upper pair + 2 lower pair → depth=2 gives ~16 tip clusters
+  const brDefs = [
+    { t: 0.90, ang: -Math.PI / 2 + 0.46, lenR: 0.54, wR: 0.50 },
+    { t: 0.90, ang: -Math.PI / 2 - 0.46, lenR: 0.51, wR: 0.48 },
+    { t: 0.55, ang: -Math.PI / 2 + 0.68, lenR: 0.36, wR: 0.34 },
+    { t: 0.55, ang: -Math.PI / 2 - 0.68, lenR: 0.34, wR: 0.32 },
+  ];
+  brDefs.forEach((def, idx) => {
+    growBranch(ctx, lerp(cx, topX, def.t), lerp(gy, topY, def.t),
+      def.ang, trunkH * def.lenR, 10 * def.wR, 2, rngFrom(seed + idx * 7), tips, segs, 'early');
   });
+  tips.forEach(pt => drawCrown(ctx, pt.x, pt.y, 24, rngFrom(Math.floor(pt.x * 11 + pt.y * 17 + seed))));
 }
 
 // ── Stage: Young (31–90 days) ────────────────────────────────────────────────
@@ -309,24 +319,27 @@ function drawYoung(ctx, W, H, seed) {
   const cx = W / 2, gy = H - 45;
   drawAmbient(ctx, cx, gy, W, H);
   drawGround(ctx, cx, gy, W);
-  drawSimpleRoots(ctx, cx, gy, 0.85);
-  ctx.beginPath(); ctx.moveTo(cx, gy); ctx.lineTo(cx + 2, gy - 95);
-  ctx.lineWidth = 13; ctx.strokeStyle = 'rgba(105,78,48,0.85)'; ctx.lineCap = 'round'; ctx.stroke();
-  const topY = gy - 95, tips = [], segs = [];
-  const branchDefs = [
-    { t: 0.80, ang: -Math.PI / 2 + 0.55, lenR: 0.44, wR: 0.30 },
-    { t: 0.80, ang: -Math.PI / 2 - 0.55, lenR: 0.42, wR: 0.28 },
-    { t: 0.50, ang: -Math.PI / 2 + 0.72, lenR: 0.32, wR: 0.20 },
-    { t: 0.50, ang: -Math.PI / 2 - 0.72, lenR: 0.30, wR: 0.18 },
+  drawSimpleRoots(ctx, cx, gy, 0.92);
+
+  const trunkH = 130, topX = cx + 3, topY = gy - trunkH;
+  ctx.beginPath(); ctx.moveTo(cx, gy); ctx.lineTo(topX, topY);
+  ctx.lineWidth = 16; ctx.strokeStyle = 'rgba(105,78,48,0.88)'; ctx.lineCap = 'round'; ctx.stroke();
+
+  const tips = [], segs = [];
+  // 6 branches across 3 heights → depth=3 gives dense canopy
+  const brDefs = [
+    { t: 0.92, ang: -Math.PI / 2 + 0.40, lenR: 0.60, wR: 0.54 },
+    { t: 0.92, ang: -Math.PI / 2 - 0.40, lenR: 0.57, wR: 0.52 },
+    { t: 0.65, ang: -Math.PI / 2 + 0.62, lenR: 0.45, wR: 0.40 },
+    { t: 0.65, ang: -Math.PI / 2 - 0.62, lenR: 0.43, wR: 0.38 },
+    { t: 0.38, ang: -Math.PI / 2 + 0.82, lenR: 0.30, wR: 0.26 },
+    { t: 0.38, ang: -Math.PI / 2 - 0.82, lenR: 0.28, wR: 0.24 },
   ];
-  branchDefs.forEach((def, idx) => {
-    const bx = lerp(cx, cx + 2, def.t);
-    const by = lerp(gy, topY, def.t);
-    growBranch(ctx, bx, by, def.ang, 95 * def.lenR, 13 * def.wR, 2, rngFrom(seed + idx * 7), tips, segs, 'early');
+  brDefs.forEach((def, idx) => {
+    growBranch(ctx, lerp(cx, topX, def.t), lerp(gy, topY, def.t),
+      def.ang, trunkH * def.lenR, 16 * def.wR, 3, rngFrom(seed + idx * 7), tips, segs, 'early');
   });
-  tips.forEach(pt => {
-    drawCrown(ctx, pt.x, pt.y, 28, rngFrom(Math.floor(pt.x * 11 + pt.y * 17 + seed)));
-  });
+  tips.forEach(pt => drawCrown(ctx, pt.x, pt.y, 32, rngFrom(Math.floor(pt.x * 11 + pt.y * 17 + seed))));
 }
 
 // ── Shared: mature/ancient full tree ─────────────────────────────────────────

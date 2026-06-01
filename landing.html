@@ -28,7 +28,7 @@ body{background:#000;font-family:'Outfit',sans-serif;color:#e8e8ec;}
   position:fixed;inset:0;
   display:flex;flex-direction:column;
   align-items:center;justify-content:center;
-  gap:40px;
+  gap:16px;
   padding-bottom:160px;
   transition:transform 0.8s cubic-bezier(0.4,0,0.2,1),opacity 0.8s ease;
 }
@@ -660,6 +660,9 @@ function togglePhilosophy(){
   } else {
     stage.classList.add('collapsed');
     document.getElementById('stage').classList.remove('shift-up','cta-vis');
+    if(document.getElementById('hero-cta').classList.contains('show')){
+      document.getElementById('stage').classList.add('cta-vis');
+    }
     document.getElementById('scrim').classList.remove('on');
     document.querySelectorAll('.card').forEach(c=>c.classList.remove('up','exit-up','exit-down'));
     cur=-1;
@@ -754,7 +757,7 @@ function run(){
     setTimeout(()=>{ svg.style.transition='none'; },2000);
     setTimeout(()=>{ const h=document.getElementById('hello'); h.style.transition='opacity .7s ease,transform .7s ease'; h.style.opacity='1'; h.style.transform='translateY(0)'; },2000);
     ['t0','t1','t2'].forEach((id,i)=>{ setTimeout(()=>{ const el=document.getElementById(id); el.style.transition='opacity .75s ease,transform .75s ease'; el.style.opacity='1'; el.style.transform='translateY(0)'; },3600+i*200); });
-    setTimeout(()=>{ document.getElementById('hero-cta').classList.add('show'); },4400);
+    setTimeout(()=>{ document.getElementById('hero-cta').classList.add('show'); document.getElementById('stage').classList.add('cta-vis'); },4400);
   },900);
 }
 
