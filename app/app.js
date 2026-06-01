@@ -529,16 +529,23 @@ function openModal(entryToEdit, readOnly) {
   if (toolbar) toolbar.style.display = readOnly ? 'none' : '';
 
   // 加载已有图片缩略图
+  // 先同步插入 ID（保证 submitEntry 读到完整 imageIds），再异步填充 objectUrl
   if (entryToEdit?.images?.length) {
     entryToEdit.images.forEach(imgId => {
+      _modalImages.push({ id: imgId, objectUrl: '' }); // 占位，确保 ID 不丢失
       getImage(imgId).then(blob => {
         if (sessionId !== _modalSessionId) { return; }
-        if (!blob) return;
+        if (!blob) {
+          _modalImages = _modalImages.filter(m => m.id !== imgId);
+          return;
+        }
         const url = URL.createObjectURL(blob);
-        _modalImages.push({ id: imgId, objectUrl: url });
+        const entry = _modalImages.find(m => m.id === imgId);
+        if (entry) entry.objectUrl = url;
         appendThumbToModal(imgId, url);
       });
     });
+    updateImageBtnState();
   }
 
   overlay?.classList.add('active');
@@ -573,7 +580,7 @@ function appendThumbToModal(imgId, objectUrl) {
   btn.addEventListener('click', () => {
     _modalImages = _modalImages.filter(m => m.id !== imgId);
     URL.revokeObjectURL(objectUrl);
-    deleteImage(imgId);
+    deleteImage(imgId).catch(() => {}); // 忽略删除失败，不影响 UI
     wrap.remove();
     updateImageBtnState();
   });

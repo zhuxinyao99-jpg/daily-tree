@@ -29,7 +29,8 @@ export function initEmojiPicker() {
 
   // 点击外部关闭
   document.addEventListener('click', e => {
-    if (!_picker.contains(e.target) && e.target.id !== 'btn-emoji') {
+    // 用 closest 兼容 label 内子元素点击
+    if (!_picker.contains(e.target) && !e.target.closest('#btn-emoji')) {
       _picker.classList.add('hidden');
     }
   });

@@ -31,7 +31,7 @@ export function compressImage(file) {
       // 先用高质量，超出再降
       canvas.toBlob(blob => {
         if (blob && blob.size <= MAX_BYTES) { resolve(blob); return; }
-        canvas.toBlob(blob2 => resolve(blob2 || file), 'image/jpeg', QUALITY_LO);
+        canvas.toBlob(blob2 => { resolve(blob2 ?? file); }, 'image/jpeg', QUALITY_LO);
       }, 'image/jpeg', QUALITY_HI);
     };
     img.onerror = reject;
