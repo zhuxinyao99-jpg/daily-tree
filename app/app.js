@@ -65,6 +65,44 @@ function escapeHtml(text) {
   return d.innerHTML;
 }
 
+async function renderEntryThumbs(entry, container) {
+  const ids = entry.images || [];
+  if (!ids.length) return;
+  const row = document.createElement('div');
+  row.className = 'entry-thumbs';
+  const show = ids.slice(0, 3);
+  for (const id of show) {
+    const blob = await getImage(id);
+    if (!blob) continue;
+    const url = URL.createObjectURL(blob);
+    const img = document.createElement('img');
+    img.src = url;
+    img.className = 'entry-thumb';
+    img.alt = '';
+    img.addEventListener('click', () => openImagePreview(url));
+    row.appendChild(img);
+  }
+  if (ids.length > 3) {
+    const more = document.createElement('div');
+    more.className = 'entry-thumb-more';
+    more.textContent = `+${ids.length - 3}`;
+    row.appendChild(more);
+  }
+  container.appendChild(row);
+}
+
+function openImagePreview(objectUrl) {
+  const overlay = document.getElementById('img-preview-overlay');
+  const img     = document.getElementById('img-preview-full');
+  if (!overlay || !img) return;
+  img.src = objectUrl;
+  overlay.classList.remove('hidden');
+}
+function closeImagePreview() {
+  const overlay = document.getElementById('img-preview-overlay');
+  if (overlay) overlay.classList.add('hidden');
+}
+
 function computeTotalDaysThisYear() {
   const year = new Date().getFullYear();
   const entries = getYearEntries(year);
@@ -422,6 +460,7 @@ function openBranchPanel(zone) {
         <span class="branch-entry-date">${dateStr}${isToday ? ' <em>今天</em>' : ''}</span>
         <p class="branch-entry-text">${escapeHtml(entry.text)}</p>
       `;
+      renderEntryThumbs(entry, li);
       list.appendChild(li);
     });
   }
@@ -794,6 +833,10 @@ function bindEvents() {
     if (e.target.id === 'modal-overlay') closeModal();
   });
   document.getElementById('modal-close')?.addEventListener('click', closeModal);
+  document.getElementById('img-preview-close')?.addEventListener('click', closeImagePreview);
+  document.getElementById('img-preview-overlay')?.addEventListener('click', e => {
+    if (e.target.id === 'img-preview-overlay') closeImagePreview();
+  });
   document.getElementById('entry-submit')?.addEventListener('click', submitEntry);
   document.getElementById('entry-text')?.addEventListener('input', updateCharCount);
   document.getElementById('image-file-input')?.addEventListener('change', async e => {
@@ -856,7 +899,7 @@ function bindEvents() {
   });
 
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') { closeModal(); closeBranchPanel(); closeSettings(); closeGuide(); closeStagePanel(); }
+    if (e.key === 'Escape') { closeModal(); closeBranchPanel(); closeSettings(); closeGuide(); closeStagePanel(); closeImagePreview(); }
     if ((e.metaKey || e.ctrlKey) && e.key === 'n') { e.preventDefault(); openModal(getTodayEntry(), false); }
   });
 }
