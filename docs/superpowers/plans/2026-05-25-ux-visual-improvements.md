@@ -572,14 +572,14 @@ git push origin worktree-fix-google-fonts
 - [ ] **Step 2: 确认 GitHub Actions 部署成功**
 
 ```bash
-gh run list --repo zhuxinyao99-jpg/daily-tree --limit 3
+gh run list --repo nuts-and-bytes/daily-tree --limit 3
 ```
 
 期望输出：最新一条状态为 `completed success`。
 
 - [ ] **Step 3: 手机验证**
 
-在手机上打开 `https://zhuxinyao99-jpg.github.io/daily-tree/`：
+在手机上打开 `https://nuts-and-bytes.github.io/daily-tree/`：
 1. Landing 底部直接看到「立即开始」按钮
 2. 点「了解产品理念」展开三张卡片，第三张显示「坚持，别中断。」
 3. 进入 App，重置引导，第三步看到真实树形

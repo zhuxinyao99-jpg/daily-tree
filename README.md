@@ -4,11 +4,11 @@
 
 A personal forest of your daily entries. Every day you write one thought, one moment worth remembering. Each year becomes a tree. Each entry adds growth. Over time, a living forest forms — a map of your time and thoughts.
 
-**[Open App →](https://zhuxinyao99-jpg.github.io/daily-tree/app/)**
+**[Open App →](https://nuts-and-bytes.github.io/daily-tree/app/)**
 &nbsp;&middot;&nbsp;
-**[Live Demo (Landing)](https://zhuxinyao99-jpg.github.io/daily-tree/)**
+**[Live Demo (Landing)](https://nuts-and-bytes.github.io/daily-tree/)**
 &nbsp;&middot;&nbsp;
-**[GitHub →](https://github.com/zhuxinyao99-jpg/daily-tree)**
+**[GitHub →](https://github.com/nuts-and-bytes/daily-tree)**
 
 ---
 
@@ -53,7 +53,7 @@ No backend. No database. Everything lives in your browser. Auto-deployed via Git
 
 ```bash
 # No installation needed — open in browser
-open https://zhuxinyao99-jpg.github.io/daily-tree/app/
+open https://nuts-and-bytes.github.io/daily-tree/app/
 
 # Or run locally with any static server
 npx serve .
@@ -79,7 +79,7 @@ This project uses **GitHub Actions** to automatically deploy whenever code is pu
 1. **On every push** to `main` or `feature/**` branches
 2. **Validation** checks HTML/CSS/JS syntax
 3. **Auto-deploys** to GitHub Pages within 1-2 minutes
-4. **Live at** https://zhuxinyao99-jpg.github.io/daily-tree/
+4. **Live at** https://nuts-and-bytes.github.io/daily-tree/
 
 No manual deployment needed — just push and it's live.
 
@@ -87,7 +87,7 @@ No manual deployment needed — just push and it's live.
 
 ```bash
 # Clone
-git clone https://github.com/zhuxinyao99-jpg/daily-tree.git
+git clone https://github.com/nuts-and-bytes/daily-tree.git
 cd daily-tree
 
 # Start local server
@@ -112,4 +112,4 @@ python3 -m http.server 8000
 
 ## License
 
-MIT · [View on GitHub](https://github.com/zhuxinyao99-jpg/daily-tree)
+MIT · [View on GitHub](https://github.com/nuts-and-bytes/daily-tree)

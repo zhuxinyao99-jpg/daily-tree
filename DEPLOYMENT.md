@@ -12,7 +12,7 @@ This project is set up to automatically deploy to GitHub Pages whenever code is 
 
 ### 1. Enable GitHub Pages
 
-1. Go to your repository: https://github.com/zhuxinyao99-jpg/daily-tree
+1. Go to your repository: https://github.com/nuts-and-bytes/daily-tree
 2. Click **Settings** → **Pages**
 3. Under "Build and deployment":
    - **Source**: Select "GitHub Actions"
@@ -38,8 +38,8 @@ After pushing code:
 2. Click **Actions** tab
 3. See "Deploy to GitHub Pages" workflow running
 4. Once green ✅, your changes are live at:
-   - App: https://zhuxinyao99-jpg.github.io/daily-tree/app/
-   - Landing: https://zhuxinyao99-jpg.github.io/daily-tree/
+   - App: https://nuts-and-bytes.github.io/daily-tree/app/
+   - Landing: https://nuts-and-bytes.github.io/daily-tree/
 
 ## Development Workflow
 
@@ -166,10 +166,10 @@ Example:
 
 ```bash
 # View recent deployments
-gh deployment list --repo=zhuxinyao99-jpg/daily-tree
+gh deployment list --repo=nuts-and-bytes/daily-tree
 
 # View workflow runs
-gh run list --repo=zhuxinyao99-jpg/daily-tree
+gh run list --repo=nuts-and-bytes/daily-tree
 ```
 
 ### Receive Notifications
